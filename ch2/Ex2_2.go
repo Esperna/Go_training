@@ -15,28 +15,23 @@ func main(){
 				fmt.Fprintf(os.Stderr, "cf: %v",err)
 				os.Exit(1)
 			}
-			f := tempconv.Fahrenheit(t)
-			c := tempconv.Celsius(t)
-			m := tempconv.Meter(t)
-			ft := tempconv.Feet(t)
-			pd := tempconv.Pond(t)
-			kg := tempconv.Kilogram(t)
-			fmt.Printf("%s = %s, %s = %s\n", f, tempconv.FToC(f), c, tempconv.CToF(c))
-			fmt.Printf("%s = %s, %s = %s\n", m, tempconv.MToFT(m), ft, tempconv.FTToMT(ft))
-			fmt.Printf("%s = %s, %s = %s\n", pd, tempconv.PDToKG(pd), kg, tempconv.KGToPD(kg))
+			printParameter(t)
 		}
 	}else {
 		var t float64
 		fmt.Scan(&t)
-			f := tempconv.Fahrenheit(t)
-			c := tempconv.Celsius(t)
-			m := tempconv.Meter(t)
-			ft := tempconv.Feet(t)
-			pd := tempconv.Pond(t)
-			kg := tempconv.Kilogram(t)
-			fmt.Printf("%s = %s, %s = %s\n", f, tempconv.FToC(f), c, tempconv.CToF(c))
-			fmt.Printf("%s = %s, %s = %s\n", m, tempconv.MToFT(m), ft, tempconv.FTToMT(ft))
-			fmt.Printf("%s = %s, %s = %s\n", pd, tempconv.PDToKG(pd), kg, tempconv.KGToPD(kg))
-		
+		printParameter(t)
 	}
+}
+
+func printParameter(t float64){
+	f := tempconv.Fahrenheit(t)
+	c := tempconv.Celsius(t)
+	m := tempconv.Meter(t)
+	ft := tempconv.Feet(t)
+	pd := tempconv.Pond(t)
+	kg := tempconv.Kilogram(t)
+	fmt.Printf("%s = %s, %s = %s\n", f, tempconv.FToC(f), c, tempconv.CToF(c))
+	fmt.Printf("%s = %s, %s = %s\n", m, tempconv.MToFT(m), ft, tempconv.FTToMT(ft))
+	fmt.Printf("%s = %s, %s = %s\n", pd, tempconv.PDToKG(pd), kg, tempconv.KGToPD(kg))
 }

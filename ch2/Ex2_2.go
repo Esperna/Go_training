@@ -4,7 +4,7 @@ import(
 	"fmt"
 	"os"
 	"strconv"
-	"gopl.io/ch2/tempconv"
+	"gopl.io/ch2/tempconv_Ex2_2"
 )
 
 func main(){
@@ -17,19 +17,26 @@ func main(){
 			}
 			f := tempconv.Fahrenheit(t)
 			c := tempconv.Celsius(t)
-			//m := tempconv.meter(t)
-			//ft := tempconv.feet(t)
-			//pd := tempconv.pond(t)
-			//kg := tempconv.kilogram(t)
+			m := tempconv.Meter(t)
+			ft := tempconv.Feet(t)
+			pd := tempconv.Pond(t)
+			kg := tempconv.Kilogram(t)
 			fmt.Printf("%s = %s, %s = %s\n", f, tempconv.FToC(f), c, tempconv.CToF(c))
-			//fmt.Printf("%s = %s, %s = %s\n", m, tempconv.MToFT(m), ft, tempconv.FTtoMT(ft))
-			//fmt.Printf("%s = %s, %s = %s\n", pd, tempconv.PDToKG(pd), kg, tempconv.KGToPD(kg))
+			fmt.Printf("%s = %s, %s = %s\n", m, tempconv.MToFT(m), ft, tempconv.FTToMT(ft))
+			fmt.Printf("%s = %s, %s = %s\n", pd, tempconv.PDToKG(pd), kg, tempconv.KGToPD(kg))
 		}
 	}else {
 		var t float64
 		fmt.Scan(&t)
-		f := tempconv.Fahrenheit(t)
-		c := tempconv.Celsius(t)
-		fmt.Printf("%s = %s, %s = %s\n", f, tempconv.FToC(f), c, tempconv.CToF(c))
+			f := tempconv.Fahrenheit(t)
+			c := tempconv.Celsius(t)
+			m := tempconv.Meter(t)
+			ft := tempconv.Feet(t)
+			pd := tempconv.Pond(t)
+			kg := tempconv.Kilogram(t)
+			fmt.Printf("%s = %s, %s = %s\n", f, tempconv.FToC(f), c, tempconv.CToF(c))
+			fmt.Printf("%s = %s, %s = %s\n", m, tempconv.MToFT(m), ft, tempconv.FTToMT(ft))
+			fmt.Printf("%s = %s, %s = %s\n", pd, tempconv.PDToKG(pd), kg, tempconv.KGToPD(kg))
+		
 	}
 }

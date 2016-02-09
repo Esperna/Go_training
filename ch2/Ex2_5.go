@@ -9,20 +9,17 @@ import(
 func main(){
 	var number uint64 = 1000
 	fmt.Printf("InputNumber %d\n", number)
-	count := 0
+	displayFuncTime(popcount.PopCount, number)
+	displayFuncTime(popcount.PopCountUsingFor, number)
+	displayFuncTime(popcount.PopCountUsingInputBitShift, number)
+	displayFuncTime(popcount.PopCountUsingBitAND, number)
+}
+
+type funcTemplate func(uint64) int
+
+func displayFuncTime(f funcTemplate, t uint64) {
 	start := time.Now()
-	count = popcount.PopCount(number)
-	fmt.Printf("%d elapsed %dbit\n", time.Since(start), count)
-	count = 0
-	start = time.Now()
-	count = popcount.PopCountUsingFor(number)
-	fmt.Printf("%d elapsed %dbit\n", time.Since(start), count)
-	count = 0
-	start = time.Now()
-	count = popcount.PopCountUsingInputBitShift(number)
-	fmt.Printf("%d elapsed %dbit\n", time.Since(start), count)
-	start = time.Now()
-	count = popcount.PopCountUsingBitAND(number)
+	count := f(t)
 	fmt.Printf("%d elapsed %dbit\n", time.Since(start), count)
 }
 

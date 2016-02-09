@@ -7,7 +7,7 @@ import(
 )
 
 func main(){
-	var number uint64 = 1000
+	const number uint64 = 1000
 	fmt.Printf("InputNumber %d\n", number)
 	displayFuncTime(popcount.PopCount, number)
 	displayFuncTime(popcount.PopCountUsingFor, number)

@@ -7,16 +7,17 @@ import(
 )
 
 func main(){
-	var number uint64 = 1000
-	fmt.Printf("InputNumber  %d\n", number)
-	count := 0
-	start := time.Now()
-	count = popcount.PopCount(number)
-	fmt.Printf("%d elapsed  %dbit\n", time.Since(start), count)
-	count = 0
-	start = time.Now()
-	count = popcount.PopCountUsingFor(number)
-	fmt.Printf("%d elapsed  %dbit\n", time.Since(start), count)
+	const number uint64 = 1000
+	fmt.Printf("InputNumber %d\n", number)
+	displayFuncTime(popcount.PopCount, number)
+	displayFuncTime(popcount.PopCountUsingFor, number)
 }
 
+type funcTemplate func(uint64) int
+
+func displayFuncTime(f funcTemplate, t uint64) {
+			start := time.Now()
+				count := f(t)
+					fmt.Printf("%d elapsed %dbit\n", time.Since(start), count)
+}
 //!-

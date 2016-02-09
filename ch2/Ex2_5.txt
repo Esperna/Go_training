@@ -1,0 +1,7 @@
+
+Yohei-no-MacBook-Air:ch2 Yohei_Katoh$ go run Ex2_5.go 
+InputNumber 1000
+215 elapsed 6bit
+196 elapsed 6bit
+312 elapsed 6bit
+100 elapsed 6bit

@@ -34,6 +34,7 @@ func main() {
 func comma(s string) string {
 	var sign, integer, decimal string
 
+	//check sign(+/-) of input
 	if strings.HasPrefix(s, "+") {
 		sign = "+"
 		s = s[1:]
@@ -44,6 +45,7 @@ func comma(s string) string {
 		sign = "+"
 	}
 
+	//seperate input into integer and decimal part
 	if strings.Contains(s, ".") {
 		for i := len(s) - 1; i >= 0; i-- {
 			if s[i] == '.' {
@@ -57,11 +59,11 @@ func comma(s string) string {
 		decimal = ""
 	}
 
+	//insert "," into integer part
 	n := len(integer)
 	if n <= 3 {
 		return sign + integer + decimal
 	}
-
 	var buf bytes.Buffer
 	for i := 0; i < n; i++ {
 		if (i > 0) && ((((n - 3) - i) % 3) == 0) {
@@ -70,6 +72,6 @@ func comma(s string) string {
 		buf.WriteByte(integer[i])
 	}
 	integer = buf.String()
-	return sign + integer + decimal
 
+	return sign + integer + decimal
 }

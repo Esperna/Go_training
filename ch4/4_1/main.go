@@ -8,7 +8,6 @@ package main
 
 import (
 	"fmt"
-
 	"gopl.io/ch2/popcount"
 )
 
@@ -18,16 +17,17 @@ import "crypto/sha256"
 func main() {
 	c1 := sha256.Sum256([]byte("x"))
 	c2 := sha256.Sum256([]byte("X"))
-	var result uint64 = 0
+	var temp uint8 = 0
+	count := 0
 
+	fmt.Println(len(c1))
 	for i := 0; i < len(c1); i++ {
 		if c1[i] != c2[i] {
-			result |= (1 << uint(i))
+			temp = ^(uint8(c1[i]) | uint8(c2[i]))
+			fmt.Println(temp)
+			count += popcount.PopCount(uint64(temp))
 		}
 	}
-	fmt.Printf("%b\n", result)
-	count := popcount.PopCount(result)
-
 	fmt.Printf("%x\n%x\n%t\n%T\n", c1, c2, c1 == c2, c1)
 	fmt.Printf("%d\n", count)
 	// Output:

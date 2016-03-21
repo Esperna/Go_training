@@ -11,10 +11,9 @@ import "fmt"
 func main() {
 	//!+array
 	a := [...]int{0, 1, 2, 3, 4, 5}
-	//a := [5]int{0, 1, 2, 3, 4, 5}
 	var p *[6]int = &a
 	fmt.Println(*p)
-	reverse(&a)
+	reverse(p)
 	fmt.Println(*p) // "[5 4 3 2 1 0]"
 	//!-array
 }

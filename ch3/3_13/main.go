@@ -4,15 +4,18 @@ import "fmt"
 
 func main() {
 	const (
-		KB int64 = 1000
-		GB int64 = 1000 * KB
-		TB int64 = 1000 * GB
-		PB int64 = 1000 * TB
-		EB int64 = 1000 * PB
-		ZB int64 = 1000 * EB
-		YB int64 = 1000 * ZB
+		_          = iota
+		KB float64 = 1 << (10 * iota)
+		MB
+		GB
+		TB
+		PB
+		EB
+		ZB
+		YB
 	)
 	fmt.Println(KB)
+	fmt.Println(MB)
 	fmt.Println(GB)
 	fmt.Println(TB)
 	fmt.Println(PB)

@@ -19,17 +19,15 @@ import (
 	"time"
 )
 
-var width, height = 1440, 750               // canvas size in pixels
+var width, height = 800, 600                // canvas size in pixels
 var xyrange = 30                            // axis ranges (-xyrange..+xyrange)
 var xyscale = width / 2 / xyrange           // pixels per x or y unit
 var zscale = float64(height) * float64(0.4) // pixels per z unit
 var color = "grey"
 
 const (
-	width_default  = 1440
-	height_default = 750
-	cells          = 100         // number of grid cells
-	angle          = math.Pi / 6 // angle of x, y axes (=30ﾂｰ)
+	cells = 100         // number of grid cells
+	angle = math.Pi / 6 // angle of x, y axes (=30ﾂｰ)
 )
 
 var sin30, cos30 = math.Sin(angle), math.Cos(angle) // sin(30ﾂｰ), cos(30ﾂｰ)
@@ -65,7 +63,7 @@ func drawSVG(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "<svg xmlns='http://www.w3.org/2000/svg' "+
 		"style='stroke: %s; fill: white; stroke-width: 0.7' "+
 		"viewBox='0 0 %d %d' "+
-		"width='%d' height='%d'>", color, width_default, height_default, width, height)
+		"x='720' y='375' width='%d' height='%d'>", color, width, height, width, height)
 	for i := 0; i < cells; i++ {
 		for j := 0; j < cells; j++ {
 			ax, ay := corner(i+1, j)

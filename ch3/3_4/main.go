@@ -13,20 +13,23 @@ import (
 	"math"
 	"math/rand"
 	"net/http"
-	"time"
 	"os"
 	"strconv"
 	"strings"
+	"time"
 )
 
-var width,height  = 600,320		            // canvas size in pixels
-var	xyrange       = 30                // axis ranges (-xyrange..+xyrange)
-var	xyscale = width / 2 / xyrange // pixels per x or y unit
-var	zscale 		  = float64(height) * float64(0.4)        // pixels per z unit
+var width, height = 1440, 750               // canvas size in pixels
+var xyrange = 30                            // axis ranges (-xyrange..+xyrange)
+var xyscale = width / 2 / xyrange           // pixels per x or y unit
+var zscale = float64(height) * float64(0.4) // pixels per z unit
 var color = "grey"
+
 const (
-	cells         = 100                 // number of grid cells
-	angle         = math.Pi / 6         // angle of x, y axes (=30ﾂｰ)
+	width_default  = 1440
+	height_default = 750
+	cells          = 100         // number of grid cells
+	angle          = math.Pi / 6 // angle of x, y axes (=30ﾂｰ)
 )
 
 var sin30, cos30 = math.Sin(angle), math.Cos(angle) // sin(30ﾂｰ), cos(30ﾂｰ)
@@ -39,12 +42,13 @@ func main() {
 			for k, v := range r.Form {
 				if k == "height" {
 					height, _ = strconv.Atoi(strings.Join(v, ""))
-				}else if k == "width" {
+				} else if k == "width" {
 					width, _ = strconv.Atoi(strings.Join(v, ""))
-				}else if k == "color"{
+				} else if k == "color" {
 					color = v[0]
 				}
 			}
+			w.Header().Set("Content-Type", "image/svg+xml")
 			drawSVG(w, r)
 		}
 		http.HandleFunc("/", handler)
@@ -60,7 +64,8 @@ func drawSVG(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "image/svg+xml")
 	fmt.Fprintf(w, "<svg xmlns='http://www.w3.org/2000/svg' "+
 		"style='stroke: %s; fill: white; stroke-width: 0.7' "+
-		"width='%d' height='%d'>",color, width, height)
+		"viewBox='0 0 %d %d' "+
+		"width='%d' height='%d'>", color, width_default, height_default, width, height)
 	for i := 0; i < cells; i++ {
 		for j := 0; j < cells; j++ {
 			ax, ay := corner(i+1, j)
@@ -85,6 +90,7 @@ func corner(i, j int) (float64, float64) {
 	// Project (x,y,z) isometrically onto 2-D SVG canvas (sx,sy).
 	sx := float64(width/2) + float64((x-y))*cos30*float64(xyscale)
 	sy := float64(height/2) + float64((x+y))*sin30*float64(xyscale) - z*zscale
+
 	return sx, sy
 }
 

@@ -16,19 +16,27 @@ import (
 
 func main() {
 	start := time.Now()
+	Echo1()
+	secs := time.Since(start).Seconds()
+	fmt.Println(secs)
+
+	start = time.Now()
+	Echo2()
+	secs = time.Since(start).Seconds()
+	fmt.Println(secs)
+}
+
+func Echo1() {
 	var s, sep string
 	for i := 1; i < len(os.Args); i++ {
 		s += sep + os.Args[i]
 		sep = " "
 	}
 	fmt.Println(s)
-	secs := time.Since(start).Seconds()
-	fmt.Println(secs)
+}
 
-	start = time.Now()
+func Echo2() {
 	fmt.Println(strings.Join(os.Args[1:], " "))
-	secs = time.Since(start).Seconds()
-	fmt.Println(secs)
 }
 
 //!-

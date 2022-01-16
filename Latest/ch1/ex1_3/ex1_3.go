@@ -38,5 +38,3 @@ func Echo1() {
 func Echo2() {
 	fmt.Println(strings.Join(os.Args[1:], " "))
 }
-
-//!-

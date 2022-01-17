@@ -9,13 +9,14 @@ package main
 
 import (
 	"fmt"
-	//	"io/ioutil"
 	"io"
 	"net/http"
 	"os"
+	"time"
 )
 
 func main() {
+	start := time.Now()
 	for _, url := range os.Args[1:] {
 		resp, err := http.Get(url)
 		if err != nil {
@@ -29,6 +30,8 @@ func main() {
 			os.Exit(1)
 		}
 	}
+	secs := time.Since(start).Seconds()
+	fmt.Println(secs)
 }
 
 //!-

@@ -1,0 +1,16 @@
+yoheikato@katouyouheinoMacBook-Air ch1 % ./fetchall https://golang.org http://gopl.io https://godoc.org
+0.83s    57815  https://golang.org
+1.25s     4154  http://gopl.io
+2.50s    17338  https://godoc.org
+2.50s elapsed
+yoheikato@katouyouheinoMacBook-Air ch1 % ./fetchall https://golang.org http://gopl.io https://godoc.org
+0.60s    17338  https://godoc.org
+0.70s    57815  https://golang.org
+1.32s     4154  http://gopl.io
+1.32s elapsed
+
+0.40s     4381  https://www.muji.com/
+0.70s    57815  https://golang.org
+1.06s   420774  https://www.lifehacker.jp/
+1.26s    26667  https://www.nintendo.co.jp/
+1.26s elapsed

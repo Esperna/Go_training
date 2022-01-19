@@ -1,0 +1,9 @@
+bc
+abc
+ab
+aaa
+c
+xxx
+abcde
+
+bcde

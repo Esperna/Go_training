@@ -18,16 +18,28 @@ import (
 	"math/rand"
 	"net/http"
 	"sync"
+	"time"
 )
 
 var mu sync.Mutex
 var count int
 
-var palette = []color.Color{color.White, color.Black}
+var palette = []color.Color{color.Black,
+	color.RGBA{0xff, 0x00, 0x00, 0xff}, //Red
+	color.RGBA{0x00, 0x80, 0x00, 0xff}, //Green
+	color.RGBA{0x00, 0xff, 0x00, 0xff}, //Lime
+	color.RGBA{0xff, 0xff, 0x00, 0xff}, //Yellow
+	color.RGBA{0x00, 0x00, 0xff, 0xff}, //Blue
+}
 
 const (
-	whiteIndex = 0 // first color in palette
-	blackIndex = 1 // next color in palette
+	BlackIndex           = 0 // first color in palette: Background color
+	RedIndex             = 1
+	GreenIndex           = 2
+	LimeIndex            = 3
+	YellowIndex          = 4
+	BlueIndex            = 5
+	NumOfForegroundColor = 5
 )
 
 func main() {
@@ -65,14 +77,15 @@ func lissajous(out io.Writer) {
 	freq := rand.Float64() * 3.0 // relative frequency of y oscillator
 	anim := gif.GIF{LoopCount: nframes}
 	phase := 0.0 // phase difference
+	rand.Seed(time.Now().Unix())
 	for i := 0; i < nframes; i++ {
 		rect := image.Rect(0, 0, 2*size+1, 2*size+1)
 		img := image.NewPaletted(rect, palette)
+		var colorIndex uint8 = uint8((rand.Intn(NumOfForegroundColor)%NumOfForegroundColor + 1))
 		for t := 0.0; t < cycles*2*math.Pi; t += res {
 			x := math.Sin(t)
 			y := math.Sin(t*freq + phase)
-			img.SetColorIndex(size+int(x*size+0.5), size+int(y*size+0.5),
-				blackIndex)
+			img.SetColorIndex(size+int(x*size+0.5), size+int(y*size+0.5), colorIndex)
 		}
 		phase += 0.1
 		anim.Delay = append(anim.Delay, delay)

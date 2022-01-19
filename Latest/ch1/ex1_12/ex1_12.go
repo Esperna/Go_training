@@ -47,6 +47,9 @@ const (
 func main() {
 	handler := func(w http.ResponseWriter, r *http.Request) {
 		var cycles int = 5
+		if err := r.ParseForm(); err != nil {
+			log.Print(err)
+		}
 		for k, v := range r.Form {
 			if k == "cycles" {
 				cycles, _ = strconv.Atoi(strings.Join(v, ""))

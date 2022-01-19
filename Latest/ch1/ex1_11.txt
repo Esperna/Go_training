@@ -1,0 +1,54 @@
+yoheikato@katouyouheinoMacBook-Air ch1 % ./ex1_11 Google.com Youtube.com Baidu.com Tmall.com Taobao.com Qq.com Facebook.com 360.cn Amazon.com Sohu.com Yahoo.com Weibo.com Zhihu.com Jd.com Wikipedia.org Sogou.com Sina.com.cn 163.com Live.com Netflix.com So.com Instagram.com Zoom.us Reddit.com Soso.com Tianya.cn Microsoft.com Google.com.hk Office.com Canva.com Bing.com Alipay.com Csdn.net Vk.com Myshopify.com Panda.tv Twitter.com Yahoo.co.jp Zhanqi.tv Naver.com Bilibili.com Bongacams.com Microsoftonline.com 1688.com Amazon.in Linkedin.com Force.com Chaturbate.com Ebay.com Twitch.tv
+
+Get "http://Microsoftonline.com": dial tcp: lookup Microsoftonline.com: no such host
+0.25s    15202  http://Google.com
+0.27s     8950  http://Myshopify.com
+0.30s    85769  http://Bing.com
+0.30s        0  http://Instagram.com
+0.31s    15704  http://Google.com.hk
+0.31s    12264  http://Canva.com
+0.31s    37064  http://Live.com
+0.34s    40913  http://Yahoo.co.jp
+0.41s   113382  http://Twitch.tv
+0.48s   248928  http://Naver.com
+0.52s   120129  http://Office.com
+0.54s    87838  http://Twitter.com
+0.57s   208511  http://Microsoft.com
+0.61s     5816  http://Soso.com
+0.63s   158040  http://Panda.tv
+0.68s       81  http://Baidu.com
+0.70s    20592  http://Jd.com
+0.70s   127769  http://Linkedin.com
+0.75s   246726  http://Chaturbate.com
+0.80s   149054  http://1688.com
+0.88s   238758  http://Sohu.com
+0.96s   679790  http://Youtube.com
+0.98s    79455  http://Wikipedia.org
+1.06s   415823  http://Bongacams.com
+1.07s   166490  http://Ebay.com
+1.13s    63251  http://Zhihu.com
+1.25s    98980  http://Weibo.com
+1.33s   133954  http://Force.com
+1.35s   103977  http://Zoom.us
+1.36s    84278  http://Facebook.com
+1.38s   535068  http://Sina.com.cn
+1.39s   635466  http://Yahoo.com
+1.59s    15029  http://Sogou.com
+1.81s   133940  http://Qq.com
+2.01s     7027  http://Amazon.in
+2.06s   470071  http://Amazon.com
+2.08s    10376  http://Taobao.com
+2.21s   432351  http://Netflix.com
+2.45s        0  http://Csdn.net
+2.46s   789944  http://Reddit.com
+2.60s     3530  http://Bilibili.com
+2.83s   146609  http://Zhanqi.tv
+3.06s    79241  http://Vk.com
+4.66s     7624  http://Tianya.cn
+5.20s    24879  http://Alipay.com
+5.28s   145432  http://So.com
+6.58s    24257  http://Tmall.com
+16.51s    81209  http://360.cn
+Get "http://163.com": dial tcp 123.58.180.8:80: i/o timeout
+30.02s elapsed
+yoheikato@katouyouheinoMacBook-Air ch1 % 

@@ -8,11 +8,11 @@
 package main
 
 import (
-	"ex2_1/tempconv"
 	"fmt"
 	"os"
 	"strconv"
-	//	"gopl.io/ch2/tempconv"
+
+	"github.com/Esper0328/Go_training/ch2/ex2_1/tempconv"
 )
 
 func main() {

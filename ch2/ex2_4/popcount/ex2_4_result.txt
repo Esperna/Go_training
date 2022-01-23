@@ -1,0 +1,12 @@
+goos: darwin
+goarch: amd64
+pkg: ch2/ex2_4/popcount
+cpu: Intel(R) Core(TM) i5-8210Y CPU @ 1.60GHz
+BenchmarkPopCount-4             	1000000000	         0.2964 ns/op
+BenchmarkPopCountByShift-4      	56164473	        20.14 ns/op
+BenchmarkPopCountByLoop-4       	183666448	         6.747 ns/op
+BenchmarkBitCount-4             	1000000000	         0.2965 ns/op
+BenchmarkPopCountByClearing-4   	84879207	        13.05 ns/op
+BenchmarkPopCountByShifting-4   	55750132	        20.25 ns/op
+PASS
+ok  	ch2/ex2_4/popcount	6.108s

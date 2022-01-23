@@ -24,18 +24,7 @@ func main() {
 				fmt.Fprintf(os.Stderr, "cf: %v\n", err)
 				os.Exit(1)
 			}
-			f := tempconv.Fahrenheit(t)
-			c := tempconv.Celsius(t)
-			fmt.Printf("%s = %s, %s = %s \n",
-				f, tempconv.FToC(f), c, tempconv.CToF(c))
-			ft := lengthconv.Feet(t)
-			m := lengthconv.Meter(t)
-			fmt.Printf("%s = %s, %s = %s \n",
-				ft, lengthconv.FtToM(ft), m, lengthconv.MToFt(m))
-			lb := weightconv.Pound(t)
-			kg := weightconv.Kilogram(t)
-			fmt.Printf("%s = %s, %s = %s \n",
-				lb, weightconv.LbToKg(lb), kg, weightconv.KgToLb(kg))
+			dispConvertResult(t)
 		}
 	} else {
 		var i int
@@ -46,19 +35,20 @@ func main() {
 			fmt.Fprintf(os.Stderr, "cf: %v\n", err)
 			os.Exit(1)
 		}
-		f := tempconv.Fahrenheit(t)
-		c := tempconv.Celsius(t)
-		fmt.Printf("%s = %s, %s = %s \n",
-			f, tempconv.FToC(f), c, tempconv.CToF(c))
-		ft := lengthconv.Feet(t)
-		m := lengthconv.Meter(t)
-		fmt.Printf("%s = %s, %s = %s \n",
-			ft, lengthconv.FtToM(ft), m, lengthconv.MToFt(m))
-		lb := weightconv.Pound(t)
-		kg := weightconv.Kilogram(t)
-		fmt.Printf("%s = %s, %s = %s \n",
-			lb, weightconv.LbToKg(lb), kg, weightconv.KgToLb(kg))
+		dispConvertResult(t)
 	}
+}
+
+func dispConvertResult(t float64) {
+	f := tempconv.Fahrenheit(t)
+	c := tempconv.Celsius(t)
+	fmt.Printf("%s = %s, %s = %s \n", f, tempconv.FToC(f), c, tempconv.CToF(c))
+	ft := lengthconv.Feet(t)
+	m := lengthconv.Meter(t)
+	fmt.Printf("%s = %s, %s = %s \n", ft, lengthconv.FtToM(ft), m, lengthconv.MToFt(m))
+	lb := weightconv.Pound(t)
+	kg := weightconv.Kilogram(t)
+	fmt.Printf("%s = %s, %s = %s \n", lb, weightconv.LbToKg(lb), kg, weightconv.KgToLb(kg))
 }
 
 //!-

@@ -17,24 +17,26 @@ import (
 )
 
 func main() {
-	for _, arg := range os.Args[1:] {
-		t, err := strconv.ParseFloat(arg, 64)
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "cf: %v\n", err)
-			os.Exit(1)
+	if len(os.Args) > 1 {
+		for _, arg := range os.Args[1:] {
+			t, err := strconv.ParseFloat(arg, 64)
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "cf: %v\n", err)
+				os.Exit(1)
+			}
+			f := tempconv.Fahrenheit(t)
+			c := tempconv.Celsius(t)
+			fmt.Printf("%s = %s, %s = %s \n",
+				f, tempconv.FToC(f), c, tempconv.CToF(c))
+			ft := lengthconv.Feet(t)
+			m := lengthconv.Meter(t)
+			fmt.Printf("%s = %s, %s = %s \n",
+				ft, lengthconv.FtToM(ft), m, lengthconv.MToFt(m))
+			lb := weightconv.Pound(t)
+			kg := weightconv.Kilogram(t)
+			fmt.Printf("%s = %s, %s = %s \n",
+				lb, weightconv.LbToKg(lb), kg, weightconv.KgToLb(kg))
 		}
-		f := tempconv.Fahrenheit(t)
-		c := tempconv.Celsius(t)
-		fmt.Printf("%s = %s, %s = %s \n",
-			f, tempconv.FToC(f), c, tempconv.CToF(c))
-		ft := lengthconv.Feet(t)
-		m := lengthconv.Meter(t)
-		fmt.Printf("%s = %s, %s = %s \n",
-			ft, lengthconv.FtToM(ft), m, lengthconv.MToFt(m))
-		lb := weightconv.Pound(t)
-		kg := weightconv.Kilogram(t)
-		fmt.Printf("%s = %s, %s = %s \n",
-			lb, weightconv.LbToKg(lb), kg, weightconv.KgToLb(kg))
 	}
 }
 

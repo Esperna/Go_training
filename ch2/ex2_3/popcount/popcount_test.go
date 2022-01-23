@@ -6,6 +6,7 @@ package popcount_test
 import (
 	"ch2/ex2_3/popcount"
 	"testing"
+	//	"gopl.io/ch2/popcount"
 )
 
 // -- Alternative implementations --
@@ -46,13 +47,6 @@ func BenchmarkPopCount(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		popcount.PopCount(0x1234567890ABCDEF)
 	}
-}
-
-func BenchmarkPopCountByShift(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		popcount.PopCountByShift(0x1234567890ABCDEF)
-	}
-
 }
 
 func BenchmarkPopCountByLoop(b *testing.B) {

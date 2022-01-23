@@ -8,11 +8,11 @@
 package main
 
 import (
+	"ch2/ex2_2/lengthconv"
+	"ch2/ex2_2/tempconv"
 	"fmt"
 	"os"
 	"strconv"
-
-	"github.com/Esper0328/Go_training/ch2/ex2_1/tempconv"
 )
 
 func main() {
@@ -24,9 +24,12 @@ func main() {
 		}
 		f := tempconv.Fahrenheit(t)
 		c := tempconv.Celsius(t)
-		k := tempconv.Kelvin(t)
-		fmt.Printf("%s = %s, %s = %s, %s = %s, %s = %s\n",
-			f, tempconv.FToC(f), c, tempconv.CToF(c), k, tempconv.KToC(k), c, tempconv.CToK(c))
+		fmt.Printf("%s = %s, %s = %s \n",
+			f, tempconv.FToC(f), c, tempconv.CToF(c))
+		ft := lengthconv.Feet(t)
+		m := lengthconv.Meter(t)
+		fmt.Printf("%s = %s, %s = %s \n",
+			ft, lengthconv.FtToM(ft), m, lengthconv.MToFt(m))
 	}
 }
 

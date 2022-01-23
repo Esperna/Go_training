@@ -10,6 +10,7 @@ package main
 import (
 	"ch2/ex2_2/lengthconv"
 	"ch2/ex2_2/tempconv"
+	"ch2/ex2_2/weightconv"
 	"fmt"
 	"os"
 	"strconv"
@@ -30,6 +31,10 @@ func main() {
 		m := lengthconv.Meter(t)
 		fmt.Printf("%s = %s, %s = %s \n",
 			ft, lengthconv.FtToM(ft), m, lengthconv.MToFt(m))
+		lb := weightconv.Pound(t)
+		kg := weightconv.Kilogram(t)
+		fmt.Printf("%s = %s, %s = %s \n",
+			lb, weightconv.LbToKg(lb), kg, weightconv.KgToLb(kg))
 	}
 }
 

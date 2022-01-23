@@ -4,7 +4,7 @@
 package popcount_test
 
 import (
-	"ch2/ex2_3/popcount"
+	"ch2/ex2_4/popcount"
 	"testing"
 )
 

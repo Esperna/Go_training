@@ -29,12 +29,15 @@ func main() {
 		"width='%d' height='%d'>", width, height)
 	for i := 0; i < cells; i++ {
 		for j := 0; j < cells; j++ {
-			ax, ay := corner(i+1, j)
-			bx, by := corner(i, j)
-			cx, cy := corner(i, j+1)
-			dx, dy := corner(i+1, j+1)
-			fmt.Printf("<polygon points='%g,%g %g,%g %g,%g %g,%g'/>\n",
-				ax, ay, bx, by, cx, cy, dx, dy)
+			if isValidCorner(i+1, j) && isValidCorner(i, j) && isValidCorner(i, j+1) && isValidCorner(i+1, j+1) {
+				ax, ay := corner(i+1, j)
+				bx, by := corner(i, j)
+				cx, cy := corner(i, j+1)
+				dx, dy := corner(i+1, j+1)
+				fmt.Printf("<polygon points='%g,%g %g,%g %g,%g %g,%g'/>\n",
+					ax, ay, bx, by, cx, cy, dx, dy)
+			}
+
 		}
 	}
 	fmt.Println("</svg>")
@@ -57,6 +60,13 @@ func corner(i, j int) (float64, float64) {
 func f(x, y float64) float64 {
 	r := math.Hypot(x, y) // distance from (0,0)
 	return math.Sin(r) / r
+}
+
+func isValidCorner(i, j int) bool {
+	x := xyrange * (float64(i)/cells - 0.5)
+	y := xyrange * (float64(j)/cells - 0.5)
+
+	return !math.IsNaN(f(x, y))
 }
 
 //!-

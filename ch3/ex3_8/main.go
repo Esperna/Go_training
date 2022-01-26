@@ -23,8 +23,36 @@ const (
 func main() {
 
 	img := image.NewRGBA(image.Rect(0, 0, width, height))
-	drawFractalComplex128(img)
+	//drawFractalComplex64(img)
+	//drawFractalComplex128(img)
+	//drawFractalBigFloat(img)
+	drawFractal(img)
 	png.Encode(os.Stdout, img) // NOTE: ignoring errors
+}
+
+func drawFractal(img *image.RGBA) {
+	for py := 0; py < height; py++ {
+		y := float64(py)/height*(ymax-ymin) + ymin
+		for px := 0; px < width; px++ {
+			x := float64(px)/width*(xmax-xmin) + xmin
+			z := complex(x, y)
+			// Image point (px, py) represents complex value z.
+			//img.Set(px, py, sqrt(z))
+			img.Set(px, py, acos(z))
+		}
+	}
+}
+
+func drawFractalComplex64(img *image.RGBA) {
+	for py := 0; py < height; py++ {
+		y := float32(py)/height*(ymax-ymin) + ymin
+		for px := 0; px < width; px++ {
+			x := float32(px)/width*(xmax-xmin) + xmin
+			z := complex(x, y)
+			// Image point (px, py) represents complex value z.
+			img.Set(px, py, mandelbrotComplex64(z))
+		}
+	}
 }
 
 func drawFractalComplex128(img *image.RGBA) {
@@ -34,12 +62,38 @@ func drawFractalComplex128(img *image.RGBA) {
 			x := float64(px)/width*(xmax-xmin) + xmin
 			z := complex(x, y)
 			// Image point (px, py) represents complex value z.
-			img.Set(px, py, mandelbrot(z))
+			img.Set(px, py, mandelbrotComplex128(z))
 		}
 	}
 }
 
-func mandelbrot(z complex128) color.Color {
+func drawFractalBigFloat(img *image.RGBA) {
+	for py := 0; py < height; py++ {
+		y := float64(py)/height*(ymax-ymin) + ymin
+		for px := 0; px < width; px++ {
+			x := float64(px)/width*(xmax-xmin) + xmin
+			// Image point (px, py) represents complex value z.
+			img.Set(px, py, mandelbrotBigFloatComplex128(x, y))
+		}
+	}
+}
+
+func mandelbrotComplex64(z complex64) color.Color {
+	const iterations = 200
+	const contrast = 15
+
+	var v complex64
+	for n := uint8(0); n < iterations; n++ {
+		v = v*v + z
+		if cmplx.Abs(complex128(v)) > 2 {
+			//			return color.RGBA{255 - contrast*n, 230 - contrast*n, 200 - contrast*n, 255}
+			return color.YCbCr{255 - contrast*n, 230 - contrast*n, 200 - contrast*n}
+		}
+	}
+	return color.YCbCr{255, 255, 255}
+}
+
+func mandelbrotComplex128(z complex128) color.Color {
 	const iterations = 200
 	const contrast = 15
 
@@ -51,6 +105,25 @@ func mandelbrot(z complex128) color.Color {
 			return color.YCbCr{255 - contrast*n, 230 - contrast*n, 200 - contrast*n}
 		}
 	}
+	return color.YCbCr{255, 255, 255}
+}
+
+func mandelbrotBigFloatComplex128(x, y float64) color.Color {
+	// pending because cannot implement
+	/*	const iterations = 200
+		const contrast = 15
+
+		var u, v float64
+		for n := uint8(0); n < iterations; n++ {
+			realV := u*u - v*v + x
+			imagV := 2*u*v + y
+			normV := big.Sqrt(big.NewFloat(realV*realV + imagV*imagV))
+			if normV > 2.0 {
+				//			return color.RGBA{255 - contrast*n, 230 - contrast*n, 200 - contrast*n, 255}
+				return color.YCbCr{255 - contrast*n, 230 - contrast*n, 200 - contrast*n}
+			}
+		}
+	*/
 	return color.YCbCr{255, 255, 255}
 }
 

@@ -21,7 +21,6 @@ func main() {
 
 func colorGradation(z complex128) color.Color {
 	gradPercentage := 1.0 - math.Log(cmplx.Abs(z))/math.Log(cmplx.Abs(complex(width, height)))
-	//	fmt.Println(gradPercentage)
 	return color.RGBA{50, 100, uint8(255 * gradPercentage), 255}
 }
 

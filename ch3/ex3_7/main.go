@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"image"
 	"image/color"
 	"image/png"
@@ -20,21 +21,18 @@ func main() {
 	for {
 		z0 = buf
 		z1 = z0 - (cmplx.Pow(z0, 4)-1)/(4*cmplx.Pow(z0, 3))
-		//fmt.Println(z1)
 		buf = z1
 		count++
 		img.Set(int(real(z1)), int(imag(z1)), colorGradation(z1))
-		//fmt.Printf("%d\t%d\n", int(real(z1)), int(imag(z1)))
 		if cmplx.Abs(z1-z0) < 0.001 {
 			break
 		}
 	}
-	//fmt.Println(count)
 	png.Encode(os.Stdout, img)
 }
 
 func colorGradation(z complex128) color.Color {
 	gradPercentage := 1.0 - cmplx.Abs(z)/cmplx.Abs(complex(width, height))
-	//return color.RGBA{255 - contrast*n, 230 - contrast*n, 200 - contrast*n, 255}
-	return color.Gray{uint8(255 * gradPercentage)}
+	fmt.Println(gradPercentage)
+	return color.RGBA{50, 100, uint8(255 * gradPercentage), 255}
 }

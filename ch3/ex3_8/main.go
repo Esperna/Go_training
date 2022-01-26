@@ -37,8 +37,6 @@ func drawFractal(img *image.RGBA) {
 		for px := 0; px < width; px++ {
 			x := float64(px)/width*(xmax-xmin) + xmin
 			z := complex(x, y)
-			// Image point (px, py) represents complex value z.
-			//img.Set(px, py, sqrt(z))
 			img.Set(px, py, acos(z))
 		}
 	}
@@ -50,7 +48,6 @@ func drawFractalComplex64(img *image.RGBA) {
 		for px := 0; px < width; px++ {
 			x := float32(px)/width*(xmax-xmin) + xmin
 			z := complex(x, y)
-			// Image point (px, py) represents complex value z.
 			img.Set(px, py, mandelbrotComplex64(z))
 		}
 	}
@@ -62,7 +59,6 @@ func drawFractalComplex128(img *image.RGBA) {
 		for px := 0; px < width; px++ {
 			x := float64(px)/width*(xmax-xmin) + xmin
 			z := complex(x, y)
-			// Image point (px, py) represents complex value z.
 			img.Set(px, py, mandelbrotComplex128(z))
 		}
 	}
@@ -73,7 +69,6 @@ func drawFractalBigFloat(img *image.RGBA) {
 		y := big.NewFloat(float64(py)/height*(ymax-ymin) + ymin)
 		for px := 0; px < width; px++ {
 			x := big.NewFloat(float64(px)/width*(xmax-xmin) + xmin)
-			// Image point (px, py) represents complex value z.
 			img.Set(px, py, mandelbrotBigFloatComplex128(x, y))
 		}
 	}
@@ -82,12 +77,10 @@ func drawFractalBigFloat(img *image.RGBA) {
 func mandelbrotComplex64(z complex64) color.Color {
 	const iterations = 200
 	const contrast = 15
-
 	var v complex64
 	for n := uint8(0); n < iterations; n++ {
 		v = v*v + z
 		if cmplx.Abs(complex128(v)) > 2 {
-			//			return color.RGBA{255 - contrast*n, 230 - contrast*n, 200 - contrast*n, 255}
 			return color.YCbCr{255 - contrast*n, 230 - contrast*n, 200 - contrast*n}
 		}
 	}
@@ -97,12 +90,10 @@ func mandelbrotComplex64(z complex64) color.Color {
 func mandelbrotComplex128(z complex128) color.Color {
 	const iterations = 200
 	const contrast = 15
-
 	var v complex128
 	for n := uint8(0); n < iterations; n++ {
 		v = v*v + z
 		if cmplx.Abs(v) > 2 {
-			//			return color.RGBA{255 - contrast*n, 230 - contrast*n, 200 - contrast*n, 255}
 			return color.YCbCr{255 - contrast*n, 230 - contrast*n, 200 - contrast*n}
 		}
 	}
@@ -112,7 +103,6 @@ func mandelbrotComplex128(z complex128) color.Color {
 func mandelbrotBigFloatComplex128(x, y *big.Float) color.Color {
 	const iterations = 200
 	const contrast = 15
-
 	var u = big.NewFloat(0)
 	var v = big.NewFloat(0)
 	for n := uint8(0); n < iterations; n++ {
@@ -122,7 +112,6 @@ func mandelbrotBigFloatComplex128(x, y *big.Float) color.Color {
 		u = realV
 		v = imagV
 		if normV.Cmp(big.NewFloat(2)) > 0 {
-			//			return color.RGBA{255 - contrast*n, 230 - contrast*n, 200 - contrast*n, 255}
 			return color.YCbCr{255 - contrast*n, 230 - contrast*n, 200 - contrast*n}
 		}
 	}

@@ -11,6 +11,7 @@ import (
 	"image"
 	"image/color"
 	"image/png"
+	"math/big"
 	"math/cmplx"
 	"os"
 )
@@ -25,8 +26,8 @@ func main() {
 	img := image.NewRGBA(image.Rect(0, 0, width, height))
 	//drawFractalComplex64(img)
 	//drawFractalComplex128(img)
-	//drawFractalBigFloat(img)
-	drawFractal(img)
+	drawFractalBigFloat(img)
+	//drawFractal(img)
 	png.Encode(os.Stdout, img) // NOTE: ignoring errors
 }
 
@@ -69,9 +70,9 @@ func drawFractalComplex128(img *image.RGBA) {
 
 func drawFractalBigFloat(img *image.RGBA) {
 	for py := 0; py < height; py++ {
-		y := float64(py)/height*(ymax-ymin) + ymin
+		y := big.NewFloat(float64(py)/height*(ymax-ymin) + ymin)
 		for px := 0; px < width; px++ {
-			x := float64(px)/width*(xmax-xmin) + xmin
+			x := big.NewFloat(float64(px)/width*(xmax-xmin) + xmin)
 			// Image point (px, py) represents complex value z.
 			img.Set(px, py, mandelbrotBigFloatComplex128(x, y))
 		}
@@ -108,22 +109,23 @@ func mandelbrotComplex128(z complex128) color.Color {
 	return color.YCbCr{255, 255, 255}
 }
 
-func mandelbrotBigFloatComplex128(x, y float64) color.Color {
-	// pending because cannot implement
-	/*	const iterations = 200
-		const contrast = 15
+func mandelbrotBigFloatComplex128(x, y *big.Float) color.Color {
+	const iterations = 200
+	const contrast = 15
 
-		var u, v float64
-		for n := uint8(0); n < iterations; n++ {
-			realV := u*u - v*v + x
-			imagV := 2*u*v + y
-			normV := big.Sqrt(big.NewFloat(realV*realV + imagV*imagV))
-			if normV > 2.0 {
-				//			return color.RGBA{255 - contrast*n, 230 - contrast*n, 200 - contrast*n, 255}
-				return color.YCbCr{255 - contrast*n, 230 - contrast*n, 200 - contrast*n}
-			}
+	var u = big.NewFloat(0)
+	var v = big.NewFloat(0)
+	for n := uint8(0); n < iterations; n++ {
+		realV := new(big.Float).Add(new(big.Float).Sub(new(big.Float).Mul(u, u), new(big.Float).Mul(v, v)), x)
+		imagV := new(big.Float).Add(new(big.Float).Mul(big.NewFloat(2), new(big.Float).Mul(u, v)), y)
+		normV := new(big.Float).Sqrt(new(big.Float).Add(new(big.Float).Mul(realV, realV), new(big.Float).Mul(imagV, imagV)))
+		u = realV
+		v = imagV
+		if normV.Cmp(big.NewFloat(2)) > 0 {
+			//			return color.RGBA{255 - contrast*n, 230 - contrast*n, 200 - contrast*n, 255}
+			return color.YCbCr{255 - contrast*n, 230 - contrast*n, 200 - contrast*n}
 		}
-	*/
+	}
 	return color.YCbCr{255, 255, 255}
 }
 

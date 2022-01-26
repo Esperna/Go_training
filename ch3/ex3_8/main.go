@@ -23,11 +23,11 @@ const (
 func main() {
 
 	img := image.NewRGBA(image.Rect(0, 0, width, height))
-	drawFractalComplex64(img)
+	drawFractalComplex128(img)
 	png.Encode(os.Stdout, img) // NOTE: ignoring errors
 }
 
-func drawFractalComplex64(img *image.RGBA) {
+func drawFractalComplex128(img *image.RGBA) {
 	for py := 0; py < height; py++ {
 		y := float64(py)/height*(ymax-ymin) + ymin
 		for px := 0; px < width; px++ {

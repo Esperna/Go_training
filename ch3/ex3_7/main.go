@@ -16,6 +16,10 @@ const (
 func main() {
 	img := image.NewRGBA(image.Rect(-width, -height, width, height))
 	drawSolution(img, complex(width, height))
+	drawSolution(img, complex(-width, height))
+	drawSolution(img, complex(width, -height))
+	drawSolution(img, complex(-width, -height))
+
 	png.Encode(os.Stdout, img)
 }
 
@@ -38,4 +42,6 @@ func drawSolution(img *image.RGBA, startPoint complex128) {
 			break
 		}
 	}
+	img.Set(int(real(z1)), int(imag(z1)), color.White)
+	//	fmt.Println(z1)
 }

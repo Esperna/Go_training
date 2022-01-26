@@ -24,14 +24,14 @@ const (
 func main() {
 
 	img := image.NewRGBA(image.Rect(0, 0, width, height))
-	//drawFractalComplex64(img)
-	//drawFractalComplex128(img)
-	drawFractalBigFloat(img)
-	//drawFractal(img)
+	//DrawFractalComplex64(img)
+	//DrawFractalComplex128(img)
+	DrawFractalBigFloat(img)
+	//DrawFractal(img)
 	png.Encode(os.Stdout, img) // NOTE: ignoring errors
 }
 
-func drawFractal(img *image.RGBA) {
+func DrawFractal(img *image.RGBA) {
 	for py := 0; py < height; py++ {
 		y := float64(py)/height*(ymax-ymin) + ymin
 		for px := 0; px < width; px++ {
@@ -42,7 +42,7 @@ func drawFractal(img *image.RGBA) {
 	}
 }
 
-func drawFractalComplex64(img *image.RGBA) {
+func DrawFractalComplex64(img *image.RGBA) {
 	for py := 0; py < height; py++ {
 		y := float32(py)/height*(ymax-ymin) + ymin
 		for px := 0; px < width; px++ {
@@ -53,7 +53,7 @@ func drawFractalComplex64(img *image.RGBA) {
 	}
 }
 
-func drawFractalComplex128(img *image.RGBA) {
+func DrawFractalComplex128(img *image.RGBA) {
 	for py := 0; py < height; py++ {
 		y := float64(py)/height*(ymax-ymin) + ymin
 		for px := 0; px < width; px++ {
@@ -64,7 +64,7 @@ func drawFractalComplex128(img *image.RGBA) {
 	}
 }
 
-func drawFractalBigFloat(img *image.RGBA) {
+func DrawFractalBigFloat(img *image.RGBA) {
 	for py := 0; py < height; py++ {
 		y := big.NewFloat(float64(py)/height*(ymax-ymin) + ymin)
 		for px := 0; px < width; px++ {

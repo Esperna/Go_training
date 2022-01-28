@@ -9,32 +9,46 @@ package main
 
 import (
 	"fmt"
-	"os"
 	"strings"
 	"time"
 )
 
 func main() {
+	array := [...]string{"abc", "def", "hij", "klm", "nop", "qrs", "tuv", "wxy", "zab", "cde", "fgh", "ijk", "lmn", "opq", "rst", "uvw", "xyz"}
 	start := time.Now()
-	Echo1()
+	Echo1(array[:])
 	secs := time.Since(start).Seconds()
 	fmt.Println(secs)
 
 	start = time.Now()
-	Echo2()
+	Echo2(array[:])
+	secs = time.Since(start).Seconds()
+	fmt.Println(secs)
+
+	start = time.Now()
+	Echo2(array[:])
 	secs = time.Since(start).Seconds()
 	fmt.Println(secs)
 }
 
-func Echo1() {
+func Echo1(args []string) {
 	var s, sep string
-	for i := 1; i < len(os.Args); i++ {
-		s += sep + os.Args[i]
+	for i := 0; i < len(args); i++ {
+		s += sep + args[i]
 		sep = " "
 	}
 	fmt.Println(s)
 }
 
-func Echo2() {
-	fmt.Println(strings.Join(os.Args[1:], " "))
+func Echo2(args []string) {
+	fmt.Println(strings.Join(args, " "))
+}
+
+func Echo3(args []string) {
+	var s, sep string
+	for _, arg := range args[:] {
+		s += sep + arg
+		sep = " "
+	}
+	fmt.Println(s)
 }

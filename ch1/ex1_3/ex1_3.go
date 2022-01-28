@@ -9,6 +9,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"strings"
 	"time"
 )
@@ -37,11 +38,11 @@ func Echo1(args []string) {
 		s += sep + args[i]
 		sep = " "
 	}
-	fmt.Println(s)
+	os.WriteFile("out.txt", []byte(s), os.ModePerm)
 }
 
 func Echo2(args []string) {
-	fmt.Println(strings.Join(args, " "))
+	os.WriteFile("out.txt", []byte(strings.Join(args, " ")), os.ModePerm)
 }
 
 func Echo3(args []string) {
@@ -50,5 +51,5 @@ func Echo3(args []string) {
 		s += sep + arg
 		sep = " "
 	}
-	fmt.Println(s)
+	os.WriteFile("out.txt", []byte(s), os.ModePerm)
 }

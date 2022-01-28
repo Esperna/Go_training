@@ -7,9 +7,7 @@
 package main
 
 import (
-	"bytes"
 	"fmt"
-	"io"
 	"log"
 	"math"
 	"net/http"
@@ -34,12 +32,10 @@ func main() {
 //!+handler
 // handler echoes the HTTP request.
 func handler(w http.ResponseWriter, r *http.Request) {
-	var buf bytes.Buffer
 	w.Header().Set("Content-Type", "image/svg+xml")
-	fmt.Fprintf(&buf, "<svg xmlns='http://www.w3.org/2000/svg' "+
+	fmt.Fprintf(w, "<svg xmlns='http://www.w3.org/2000/svg' "+
 		"style='stroke: grey; fill: white; stroke-width: 0.7' "+
 		"width='%d' height='%d'>", width, height)
-	io.WriteString(w, buf.String())
 	for i := 0; i < cells; i++ {
 		for j := 0; j < cells; j++ {
 			if isValidCorner(i+1, j) && isValidCorner(i, j) && isValidCorner(i, j+1) && isValidCorner(i+1, j+1) {
@@ -53,15 +49,13 @@ func handler(w http.ResponseWriter, r *http.Request) {
 				} else {
 					color = "#0000ff"
 				}
-				var buf2 bytes.Buffer
-				fmt.Fprintf(&buf2, "<polygon points='%g,%g %g,%g %g,%g %g,%g' fill=\"%s\"/>\n",
+				//var buf2 bytes.Buffer
+				fmt.Fprintf(w, "<polygon points='%g,%g %g,%g %g,%g %g,%g' fill=\"%s\"/>\n",
 					ax, ay, bx, by, cx, cy, dx, dy, color)
-				io.WriteString(w, buf2.String())
 			}
-
 		}
 	}
-	io.WriteString(w, "</svg>\n")
+	fmt.Fprintf(w, "</svg>\n")
 }
 
 func corner(i, j int) (float64, float64) {

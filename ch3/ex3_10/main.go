@@ -34,19 +34,15 @@ func comma(s string) string {
 	var buf bytes.Buffer
 	n := len(s)
 	i := n % 3
-	//	sum := s[:i]
 	buf.WriteString(s[:i])
 	for n >= 3 {
 		if i > 0 {
-			//	sum += ","
 			buf.WriteString(",")
 		}
-		//		sum += s[i : i+3]
 		buf.WriteString(s[i : i+3])
 		i += 3
 		n -= 3
 	}
-	//return sum
 	return buf.String()
 }
 

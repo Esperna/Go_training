@@ -8,7 +8,6 @@
 package main
 
 import (
-	"fmt"
 	"image"
 	"image/color"
 	"image/gif"
@@ -59,12 +58,6 @@ func main() {
 	}
 	http.HandleFunc("/", handler)
 	log.Fatal(http.ListenAndServe("localhost:8000", nil))
-}
-
-// handler echoes the Path component of the requested URL.
-
-func handler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "%s %s %s\n", r.Method, r.URL, r.Proto)
 }
 
 func lissajous(out io.Writer, cycles int) {

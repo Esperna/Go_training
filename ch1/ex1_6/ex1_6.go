@@ -13,39 +13,38 @@ import (
 	"image/color"
 	"image/gif"
 	"io"
+	"log"
 	"math"
 	"math/rand"
+	"net/http"
 	"os"
+	"time"
 )
 
 //!-main
 // Packages not needed by version in book.
-import (
-	"log"
-	"net/http"
-	"time"
-)
 
 //!+main
 
-//var palette = []color.Color{color.White, color.Black}
-var palette = []color.Color{color.Black,
-	color.RGBA{0xff, 0x00, 0x00, 0xff}, //Red
-	color.RGBA{0x00, 0x80, 0x00, 0xff}, //Green
-	color.RGBA{0x00, 0xff, 0x00, 0xff}, //Lime
-	color.RGBA{0xff, 0xff, 0x00, 0xff}, //Yellow
-	color.RGBA{0x00, 0x00, 0xff, 0xff}, //Blue
-}
-
 const (
-	BlackIndex           = 0 // first color in palette: Background color
-	RedIndex             = 1
-	GreenIndex           = 2
-	LimeIndex            = 3
-	YellowIndex          = 4
-	BlueIndex            = 5
-	NumOfForegroundColor = 5
+	BlackIndex = iota
+	RedIndex
+	GreenIndex
+	LimeIndex
+	YellowIndex
+	BlueIndex
+	NumOfForegroundColor = BlueIndex
 )
+
+//var palette = []color.Color{color.White, color.Black}
+var palette = []color.Color{
+	BlackIndex:  color.Black,
+	RedIndex:    color.RGBA{0xff, 0x00, 0x00, 0xff}, //Red
+	GreenIndex:  color.RGBA{0x00, 0x80, 0x00, 0xff}, //Green
+	LimeIndex:   color.RGBA{0x00, 0xff, 0x00, 0xff}, //Lime
+	YellowIndex: color.RGBA{0xff, 0xff, 0x00, 0xff}, //Yellow
+	BlueIndex:   color.RGBA{0x00, 0x00, 0xff, 0xff}, //Blue
+}
 
 func main() {
 	//!-main
@@ -95,5 +94,3 @@ func lissajous(out io.Writer) {
 	}
 	gif.EncodeAll(out, &anim) // NOTE: ignoring encoding errors
 }
-
-//!-main

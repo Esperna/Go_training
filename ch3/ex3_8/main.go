@@ -22,11 +22,11 @@ const (
 )
 
 func main() {
-
 	img := image.NewRGBA(image.Rect(0, 0, width, height))
 	//DrawFractalComplex64(img)
 	//DrawFractalComplex128(img)
-	DrawFractalBigFloat(img)
+	//DrawFractalBigFloat(img)
+	DrawFractalBigRat(img)
 	//DrawFractal(img)
 	png.Encode(os.Stdout, img) // NOTE: ignoring errors
 }
@@ -70,6 +70,16 @@ func DrawFractalBigFloat(img *image.RGBA) {
 		for px := 0; px < width; px++ {
 			x := big.NewFloat(float64(px)/width*(xmax-xmin) + xmin)
 			img.Set(px, py, mandelbrotBigFloatComplex128(x, y))
+		}
+	}
+}
+
+func DrawFractalBigRat(img *image.RGBA) {
+	for py := 0; py < height; py++ {
+		y := new(big.Rat).Add(new(big.Rat).Mul(big.NewRat(int64(py), height), new(big.Rat).Sub(big.NewRat(ymax, 1), big.NewRat(ymin, 1))), big.NewRat(ymin, 1))
+		for px := 0; px < width; px++ {
+			x := new(big.Rat).Add(new(big.Rat).Mul(big.NewRat(int64(px), width), new(big.Rat).Sub(big.NewRat(xmax, 1), big.NewRat(xmin, 1))), big.NewRat(xmin, 1))
+			img.Set(px, py, mandelbrotBigRatComplex128(x, y))
 		}
 	}
 }
@@ -118,6 +128,24 @@ func mandelbrotBigFloatComplex128(x, y *big.Float) color.Color {
 	return color.YCbCr{255, 255, 255}
 }
 
+func mandelbrotBigRatComplex128(x, y *big.Rat) color.Color {
+	const iterations = 200
+	const contrast = 15
+	var u = big.NewRat(0, 1)
+	var v = big.NewRat(0, 1)
+	for n := uint8(0); n < iterations; n++ {
+		realV := new(big.Rat).Add(new(big.Rat).Sub(new(big.Rat).Mul(u, u), new(big.Rat).Mul(v, v)), x)
+		imagV := new(big.Rat).Add(new(big.Rat).Mul(big.NewRat(2, 1), new(big.Rat).Mul(u, v)), y)
+		normV := new(big.Rat).Add(new(big.Rat).Mul(realV, realV), new(big.Rat).Mul(imagV, imagV))
+		u = realV
+		v = imagV
+		if normV.Cmp(big.NewRat(4, 1)) > 0 {
+			return color.YCbCr{255 - contrast*n, 230 - contrast*n, 200 - contrast*n}
+		}
+	}
+	return color.YCbCr{255, 255, 255}
+}
+
 //!-
 
 // Some other interesting functions:
@@ -152,3 +180,5 @@ func newton(z complex128) color.Color {
 	}
 	return color.Black
 }
+
+//!-

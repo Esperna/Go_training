@@ -17,7 +17,6 @@ import (
 	"math/cmplx"
 	"net/http"
 	"strconv"
-	"strings"
 	"sync"
 )
 
@@ -39,9 +38,9 @@ func main() {
 		}
 		for k, v := range r.Form {
 			if k == "x" {
-				x, _ = strconv.Atoi(strings.Join(v, ""))
+				x, _ = strconv.Atoi(v[0])
 			} else if k == "y" {
-				y, _ = strconv.Atoi(strings.Join(v, ""))
+				y, _ = strconv.Atoi(v[0])
 			} else if k == "scale" {
 				scale, _ = strconv.ParseFloat(v[0], 64)
 			}
@@ -56,10 +55,10 @@ func main() {
 func fractal(out io.Writer, x_init, y_init int, scale float64) {
 	img := image.NewRGBA(image.Rect(0, 0, width, height))
 	for py := 0; py < height; py++ {
-		y := float64(y_init) + float64(py)/height*(ymax-ymin) + ymin
+		y := float64(py)/height*(ymax-ymin) + ymin
 		for px := 0; px < width; px++ {
-			x := float64(x_init) + float64(px)/width*(xmax-xmin) + xmin
-			z := complex(x/scale, y/scale)
+			x := float64(px)/width*(xmax-xmin) + xmin
+			z := complex(float64(x_init)+x/scale, float64(y_init)+y/scale)
 			img.Set(px, py, mandelbrot(z))
 		}
 	}

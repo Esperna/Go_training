@@ -1,7 +1,7 @@
 #!/bin/zsh
 
 mkdir $1
-go build ./dispCurrentFolder
+go build ./dispCurrentFolder.go
 var=$(pwd | xargs -I@ ./dispCurrentFolder @)
 cd $1
 cp ~/template/main.go ./

@@ -37,7 +37,7 @@ func comma(s string) string {
 	k := 0
 	n := len(s)
 	if s[i] == '+' || s[i] == '-' {
-		buf.WriteString(string(s[i]))
+		buf.WriteString(s[i:i])
 		i++
 		j = i
 	}

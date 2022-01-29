@@ -5,15 +5,15 @@ echo "Expected:"
 echo 1
 echo 1.2
 echo 123
-echo 1234
-echo 12345
-echo 12345.
-echo 123456
-echo 123456.789
-echo 1234567
-echo 1234567.8
-echo 1234567.89
-echo +1234567.89
+echo 1,234
+echo 12,345
+echo 12,345.
+echo 123,456
+echo 123,456.789
+echo 1,234,567
+echo 1,234,567.8
+echo 1,234,567.89
+echo +1,234,567.89
 echo -123.456789
 
 echo "Actual:"

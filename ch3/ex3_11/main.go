@@ -36,20 +36,27 @@ func comma(s string) string {
 	j := 0
 	k := 0
 	n := len(s)
+	hasDecimal := false
 	if s[i] == '+' || s[i] == '-' {
-		buf.WriteString(s[i:i])
+		buf.WriteString(s[i : i+1])
+		//		fmt.Printf("%s\n", s[i:i+1])
 		i++
 		j = i
+		//		fmt.Printf("j = %d\n", j)
 	}
 	for i < len(s) {
 		if s[i] == '.' {
 			k = i
+			hasDecimal = true
 			break
 		}
 		i++
 	}
-	n = k - j
+	if k > j {
+		n = k - j
+	}
 	i = n%3 + j
+	//fmt.Printf("n = %d, i = %d, j = %d\n", n, i, j)
 	if j < i {
 		buf.WriteString(s[j:i])
 	}
@@ -57,11 +64,20 @@ func comma(s string) string {
 		if i != j {
 			buf.WriteString(",")
 		}
-		buf.WriteString(s[i : i+3])
+		//		fmt.Printf("%d:%d\n", i, i+3)
+		if i+3 < len(s) {
+			buf.WriteString(s[i : i+3])
+		} else {
+			buf.WriteString(s[i:len(s)])
+		}
+
 		i += 3
 		n -= 3
 	}
-	buf.WriteString(s[k:])
+	//	fmt.Printf("k = %d\n", k)
+	if hasDecimal {
+		buf.WriteString(s[k:])
+	}
 	return buf.String()
 }
 

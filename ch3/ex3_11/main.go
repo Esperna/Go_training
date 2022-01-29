@@ -38,7 +38,10 @@ func comma(s string) string {
 	k := 0
 	n := len(s)
 	hasDecimal := false
-	if s[i] == '+' || s[i] == '-' {
+	if s[i] == '.' {
+		buf.WriteString(s[i:])
+		return buf.String()
+	} else if s[i] == '+' || s[i] == '-' {
 		buf.WriteString(s[i : i+1])
 		i++
 		j = i

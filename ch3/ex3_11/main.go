@@ -32,6 +32,7 @@ func main() {
 // comma inserts commas in a non-negative decimal integer string.
 func comma(s string) string {
 	var buf bytes.Buffer
+	const seprateNum = 3
 	i := 0
 	j := 0
 	k := 0
@@ -39,10 +40,8 @@ func comma(s string) string {
 	hasDecimal := false
 	if s[i] == '+' || s[i] == '-' {
 		buf.WriteString(s[i : i+1])
-		//		fmt.Printf("%s\n", s[i:i+1])
 		i++
 		j = i
-		//		fmt.Printf("j = %d\n", j)
 	}
 	for i < len(s) {
 		if s[i] == '.' {
@@ -55,26 +54,23 @@ func comma(s string) string {
 	if k > j {
 		n = k - j
 	}
-	i = n%3 + j
-	//fmt.Printf("n = %d, i = %d, j = %d\n", n, i, j)
+	i = n%seprateNum + j
 	if j < i {
 		buf.WriteString(s[j:i])
 	}
-	for n >= 3 {
+	for n >= seprateNum {
 		if i != j {
 			buf.WriteString(",")
 		}
-		//		fmt.Printf("%d:%d\n", i, i+3)
-		if i+3 < len(s) {
-			buf.WriteString(s[i : i+3])
+		if i+seprateNum < len(s) {
+			buf.WriteString(s[i : i+seprateNum])
 		} else {
 			buf.WriteString(s[i:len(s)])
 		}
 
-		i += 3
-		n -= 3
+		i += seprateNum
+		n -= seprateNum
 	}
-	//	fmt.Printf("k = %d\n", k)
 	if hasDecimal {
 		buf.WriteString(s[k:])
 	}

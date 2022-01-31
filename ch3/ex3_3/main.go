@@ -35,7 +35,7 @@ func main() {
 				cx, cy := corner(i, j+1)
 				dx, dy := corner(i+1, j+1)
 				var color string
-				if isLocalMax(i, j) {
+				if isLocalMax(i, j) || (i == 0 && j == 0) {
 					color = "#ff0000"
 				} else if isLocalMin(i, j) {
 					color = "#0000ff"
@@ -86,18 +86,19 @@ func isHeightEnough(i, j int) bool {
 	return false
 }
 
-//f(x,y) - f(x-1,y-1)
+//f(x,y) - f(x-cos,y-sin)
 func isLocalMax(i, j int) bool {
-	x0 := xyrange * (float64(i-1)/cells - 0.5)
-	y0 := xyrange * (float64(j-1)/cells - 0.5)
 	x1 := xyrange * (float64(i)/cells - 0.5)
 	y1 := xyrange * (float64(j)/cells - 0.5)
-	x2 := xyrange * (float64(i+1)/cells - 0.5)
-	y2 := xyrange * (float64(j+1)/cells - 0.5)
+	cos := x1 / math.Sqrt(x1*x1+y1*y1)
+	sin := y1 / math.Sqrt(x1*x1+y1*y1)
+	x0 := xyrange * ((float64(i)-cos)/cells - 0.5)
+	y0 := xyrange * ((float64(j)-sin)/cells - 0.5)
+	x2 := xyrange * ((float64(i)+cos)/cells - 0.5)
+	y2 := xyrange * ((float64(j)+sin)/cells - 0.5)
 
 	a := f(x1, y1) - f(x0, y0)
 	b := f(x2, y2) - f(x1, y1)
-	c := f(x1, y1) - f(x0, y1)
 
 	if (a*b <= 0) && (a >= 0) {
 		return true
@@ -106,12 +107,14 @@ func isLocalMax(i, j int) bool {
 }
 
 func isLocalMin(i, j int) bool {
-	x0 := xyrange * (float64(i-1)/cells - 0.5)
-	y0 := xyrange * (float64(j-1)/cells - 0.5)
 	x1 := xyrange * (float64(i)/cells - 0.5)
 	y1 := xyrange * (float64(j)/cells - 0.5)
-	x2 := xyrange * (float64(i+1)/cells - 0.5)
-	y2 := xyrange * (float64(j+1)/cells - 0.5)
+	cos := x1 / math.Sqrt(x1*x1+y1*y1)
+	sin := y1 / math.Sqrt(x1*x1+y1*y1)
+	x0 := xyrange * ((float64(i)-cos)/cells - 0.5)
+	y0 := xyrange * ((float64(j)-sin)/cells - 0.5)
+	x2 := xyrange * ((float64(i)+cos)/cells - 0.5)
+	y2 := xyrange * ((float64(j)+sin)/cells - 0.5)
 
 	a := f(x1, y1) - f(x0, y0)
 	b := f(x2, y2) - f(x1, y1)

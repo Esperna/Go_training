@@ -24,28 +24,51 @@ const (
 var sin30, cos30 = math.Sin(angle), math.Cos(angle) // sin(30°), cos(30°)
 
 func main() {
+	var colorValueR uint8 = 0xff
+	var colorValueG uint8 = 0xff
+	var colorValueB uint8 = 0xff
+	prevLocalMaxI := 0
+	prevLocalMaxJ := 0
 	fmt.Printf("<svg xmlns='http://www.w3.org/2000/svg' "+
 		"style='stroke: grey; fill: white; stroke-width: 0.7' "+
 		"width='%d' height='%d'>", width, height)
 	for i := 0; i < cells; i++ {
 		for j := 0; j < cells; j++ {
-			if isValidCorner(i+1, j) && isValidCorner(i, j) && isValidCorner(i, j+1) && isValidCorner(i+1, j+1) {
-				ax, ay := corner(i+1, j)
-				bx, by := corner(i, j)
-				cx, cy := corner(i, j+1)
-				dx, dy := corner(i+1, j+1)
-				var color string
-				if isLocalMax(i, j) || (i == 0 && j == 0) {
+			ax, ay := corner(i+1, j)
+			bx, by := corner(i, j)
+			cx, cy := corner(i, j+1)
+			dx, dy := corner(i+1, j+1)
+			var color string
+			if i == 0 && j == 0 {
+				color = "#ff0000"
+				fmt.Printf("<polygon points='%g,%g %g,%g %g,%g %g,%g' fill=\"%s\"/>\n",
+					ax, ay, bx, by, cx, cy, dx, dy, color)
+				prevLocalMaxI = i
+				prevLocalMaxJ = j
+			} else if isValidCorner(i+1, j) && isValidCorner(i, j) && isValidCorner(i, j+1) && isValidCorner(i+1, j+1) {
+				if isLocalMax(i, j) {
 					color = "#ff0000"
+					prevLocalMaxI = i
+					prevLocalMaxJ = j
 				} else if isLocalMin(i, j) {
 					color = "#0000ff"
 				} else {
-					color = "#000000"
+					x := xyrange * (float64(i)/cells - 0.5)
+					y := xyrange * (float64(j)/cells - 0.5)
+					prevLocalMaxX := xyrange * (float64(prevLocalMaxI)/cells - 0.5)
+					prevLocalMaxY := xyrange * (float64(prevLocalMaxJ)/cells - 0.5)
+					colorValueR = uint8(f(x, y) / f(prevLocalMaxX, prevLocalMaxY) * 0xFF)
+					colorValueB = uint8(0xFF * (1 - f(x, y)/f(prevLocalMaxX, prevLocalMaxY)))
+					hexStrColorValR := fmt.Sprintf("%x", colorValueR)
+					hexStrColorValG := fmt.Sprintf("%x", colorValueG)
+					hexStrColorValB := fmt.Sprintf("%x", colorValueB)
+					fmt.Println(hexStrColorValR, hexStrColorValG, hexStrColorValB)
+					color = "#" + hexStrColorValR + hexStrColorValG + hexStrColorValB
+					color = "#00ff00"
 				}
 				fmt.Printf("<polygon points='%g,%g %g,%g %g,%g %g,%g' fill=\"%s\"/>\n",
 					ax, ay, bx, by, cx, cy, dx, dy, color)
 			}
-
 		}
 	}
 	fmt.Println("</svg>")

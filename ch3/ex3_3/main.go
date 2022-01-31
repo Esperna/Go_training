@@ -35,10 +35,12 @@ func main() {
 				cx, cy := corner(i, j+1)
 				dx, dy := corner(i+1, j+1)
 				var color string
-				if isHeightEnough(i, j) {
+				if isLocalMax(i, j) {
 					color = "#ff0000"
-				} else {
+				} else if isLocalMin(i, j) {
 					color = "#0000ff"
+				} else {
+					color = "#000000"
 				}
 				fmt.Printf("<polygon points='%g,%g %g,%g %g,%g %g,%g' fill=\"%s\"/>\n",
 					ax, ay, bx, by, cx, cy, dx, dy, color)
@@ -79,6 +81,41 @@ func isHeightEnough(i, j int) bool {
 	x := xyrange * (float64(i)/cells - 0.5)
 	y := xyrange * (float64(j)/cells - 0.5)
 	if f(x, y) > .003 {
+		return true
+	}
+	return false
+}
+
+//f(x,y) - f(x-1,y-1)
+func isLocalMax(i, j int) bool {
+	x0 := xyrange * (float64(i-1)/cells - 0.5)
+	y0 := xyrange * (float64(j-1)/cells - 0.5)
+	x1 := xyrange * (float64(i)/cells - 0.5)
+	y1 := xyrange * (float64(j)/cells - 0.5)
+	x2 := xyrange * (float64(i+1)/cells - 0.5)
+	y2 := xyrange * (float64(j+1)/cells - 0.5)
+
+	a := f(x1, y1) - f(x0, y0)
+	b := f(x2, y2) - f(x1, y1)
+	c := f(x1, y1) - f(x0, y1)
+
+	if (a*b <= 0) && (a >= 0) {
+		return true
+	}
+	return false
+}
+
+func isLocalMin(i, j int) bool {
+	x0 := xyrange * (float64(i-1)/cells - 0.5)
+	y0 := xyrange * (float64(j-1)/cells - 0.5)
+	x1 := xyrange * (float64(i)/cells - 0.5)
+	y1 := xyrange * (float64(j)/cells - 0.5)
+	x2 := xyrange * (float64(i+1)/cells - 0.5)
+	y2 := xyrange * (float64(j+1)/cells - 0.5)
+
+	a := f(x1, y1) - f(x0, y0)
+	b := f(x2, y2) - f(x1, y1)
+	if (a*b <= 0) && (b > 0) {
 		return true
 	}
 	return false

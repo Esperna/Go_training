@@ -20,10 +20,9 @@ func main() {
 
 func deleteDup(s []byte) []byte {
 	for i := 0; i < len(s); i++ {
-		t := s[i]
-		for j := i + 1; j < len(s); j++ {
-			if s[j] == t {
-				s = remove(s, j)
+		if i+1 < len(s) {
+			if s[i+1] == s[i] {
+				s = remove(s, i)
 				s = deleteDup(s)
 			}
 		}

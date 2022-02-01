@@ -11,3 +11,5 @@ echo "./main engineer"
 ./main engineer
 echo "./main a b c"
 ./main a b c
+echo "./main aabbcccaa"
+./main aabbcccaa

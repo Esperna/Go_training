@@ -24,11 +24,7 @@ const (
 var sin30, cos30 = math.Sin(angle), math.Cos(angle) // sin(30°), cos(30°)
 
 func main() {
-	//findLocalMinMax()
-	var colorValueR uint8 = 0x7f
-	//var colorValueG uint8 = 0x00
-	var colorValueB uint8 = 0x7f
-	var isPrevLocalMax bool
+	maxZ, minZ := findMinMax()
 	fmt.Printf("<svg xmlns='http://www.w3.org/2000/svg' "+
 		"style='stroke: grey; fill: white; stroke-width: 0.7' "+
 		"width='%d' height='%d'>", width, height)
@@ -42,29 +38,31 @@ func main() {
 			if isValidCorner(i+1, j) && isValidCorner(i, j) && isValidCorner(i, j+1) && isValidCorner(i+1, j+1) {
 				if isLocalMax(i, j) {
 					color = "#ff0000"
-					isPrevLocalMax = true
 				} else if isLocalMin(i, j) {
 					color = "#0000ff"
-					isPrevLocalMax = false
 				} else {
-					if isPrevLocalMax {
-						if colorValueR > 0x10+5 {
-							colorValueR -= 5
-						}
-						if colorValueB < 0xff-5 {
-							colorValueB += 5
-						}
+					x := xyrange * (float64(i)/cells - 0.5)
+					y := xyrange * (float64(j)/cells - 0.5)
+					r := float64((f(x, y) - minZ) / (maxZ - minZ))
+					var colorValueR, colorValueG, colorValueB uint8
+					colorValueR = uint8(255.0 * r)
+					colorValueB = uint8(255.0 * (1.0 - r))
+					var hexStrColorValR, hexStrColorValG, hexStrColorValB string
+					if colorValueR < 0x10 {
+						hexStrColorValR = fmt.Sprintf("0%x", colorValueR)
 					} else {
-						if colorValueB > 0x10+5 {
-							colorValueB -= 5
-						}
-						if colorValueR < 0xff-5 {
-							colorValueR += 5
-						}
+						hexStrColorValR = fmt.Sprintf("%x", colorValueR)
 					}
-					hexStrColorValR := fmt.Sprintf("%x", colorValueR)
-					hexStrColorValG := "00"
-					hexStrColorValB := fmt.Sprintf("%x", colorValueB)
+					if colorValueG < 0x10 {
+						hexStrColorValG = fmt.Sprintf("0%x", colorValueG)
+					} else {
+						hexStrColorValG = fmt.Sprintf("%x", colorValueG)
+					}
+					if colorValueB < 0x10 {
+						hexStrColorValB = fmt.Sprintf("0%x", colorValueB)
+					} else {
+						hexStrColorValB = fmt.Sprintf("%x", colorValueB)
+					}
 					//					fmt.Println(hexStrColorValR, hexStrColorValG, hexStrColorValB)
 					color = "#" + hexStrColorValR + hexStrColorValG + hexStrColorValB
 				}
@@ -85,18 +83,35 @@ type Point struct {
 	isLocalMax bool
 }
 
+func findMinMax() (float64, float64) {
+	max := -math.MaxFloat64
+	min := math.MaxFloat64
+	for i := 0; i < cells; i++ {
+		for j := 0; j < cells; j++ {
+			x := xyrange * (float64(i)/cells - 0.5)
+			y := xyrange * (float64(j)/cells - 0.5)
+			if isValidCorner(i+1, j) && isValidCorner(i, j) && isValidCorner(i, j+1) && isValidCorner(i+1, j+1) {
+				z := f(x, y)
+				if z > max {
+					max = z
+				}
+				if z < min {
+					min = z
+				}
+			}
+		}
+	}
+	//fmt.Printf("Max\t%g\tMin\t%g", max, min)
+	return max, min
+}
+
 func findLocalMinMax() {
-	//	localMaxQ := make([]Point, 0)
-	//	localMinQ := make([]Point, 0)
 	localQ := make([]Point, 0)
 
 	for i := 0; i < cells; i++ {
 		for j := 0; j < cells; j++ {
 			x := xyrange * (float64(i)/cells - 0.5)
 			y := xyrange * (float64(j)/cells - 0.5)
-			//			if i == 0 && j == 0 {
-			//				localQ = append(localQ, Point{x, y, f(x, y), true})
-			//			} else if isValidCorner(i+1, j) && isValidCorner(i, j) && isValidCorner(i, j+1) && isValidCorner(i+1, j+1) {
 			if isValidCorner(i+1, j) && isValidCorner(i, j) && isValidCorner(i, j+1) && isValidCorner(i+1, j+1) {
 				if isLocalMax(i, j) {
 					localQ = append(localQ, Point{x, y, f(x, y), true})
@@ -108,16 +123,7 @@ func findLocalMinMax() {
 			}
 		}
 	}
-	//	fmt.Printf("Number Of local max:\t%d\n", len(localMaxQ))
-	//	fmt.Printf("Number Of local min:\t%d\n", len(localMinQ))
 	fmt.Printf("Number Of local:\t%d\n", len(localQ))
-	/*	for _, v := range localMaxQ {
-			fmt.Printf("local max\t%v\n", v)
-		}
-		for _, v := range localMinQ {
-			fmt.Printf("local min\t%v\n", v)
-		}
-	*/
 	for _, v := range localQ {
 		fmt.Printf("local \t%v\n", v)
 	}

@@ -24,11 +24,11 @@ const (
 var sin30, cos30 = math.Sin(angle), math.Cos(angle) // sin(30°), cos(30°)
 
 func main() {
-	var colorValueR uint8 = 0xff
-	var colorValueG uint8 = 0xff
-	var colorValueB uint8 = 0xff
-	prevLocalMaxI := 0
-	prevLocalMaxJ := 0
+	//findLocalMinMax()
+	var colorValueR uint8 = 0x7f
+	//var colorValueG uint8 = 0x00
+	var colorValueB uint8 = 0x7f
+	var isPrevLocalMax bool
 	fmt.Printf("<svg xmlns='http://www.w3.org/2000/svg' "+
 		"style='stroke: grey; fill: white; stroke-width: 0.7' "+
 		"width='%d' height='%d'>", width, height)
@@ -39,39 +39,89 @@ func main() {
 			cx, cy := corner(i, j+1)
 			dx, dy := corner(i+1, j+1)
 			var color string
-			if i == 0 && j == 0 {
-				color = "#ff0000"
-				fmt.Printf("<polygon points='%g,%g %g,%g %g,%g %g,%g' fill=\"%s\"/>\n",
-					ax, ay, bx, by, cx, cy, dx, dy, color)
-				prevLocalMaxI = i
-				prevLocalMaxJ = j
-			} else if isValidCorner(i+1, j) && isValidCorner(i, j) && isValidCorner(i, j+1) && isValidCorner(i+1, j+1) {
+			if isValidCorner(i+1, j) && isValidCorner(i, j) && isValidCorner(i, j+1) && isValidCorner(i+1, j+1) {
 				if isLocalMax(i, j) {
 					color = "#ff0000"
-					prevLocalMaxI = i
-					prevLocalMaxJ = j
+					isPrevLocalMax = true
 				} else if isLocalMin(i, j) {
 					color = "#0000ff"
+					isPrevLocalMax = false
 				} else {
-					x := xyrange * (float64(i)/cells - 0.5)
-					y := xyrange * (float64(j)/cells - 0.5)
-					prevLocalMaxX := xyrange * (float64(prevLocalMaxI)/cells - 0.5)
-					prevLocalMaxY := xyrange * (float64(prevLocalMaxJ)/cells - 0.5)
-					colorValueR = uint8(f(x, y) / f(prevLocalMaxX, prevLocalMaxY) * 0xFF)
-					colorValueB = uint8(0xFF * (1 - f(x, y)/f(prevLocalMaxX, prevLocalMaxY)))
+					if isPrevLocalMax {
+						if colorValueR > 0x10+5 {
+							colorValueR -= 5
+						}
+						if colorValueB < 0xff-5 {
+							colorValueB += 5
+						}
+					} else {
+						if colorValueB > 0x10+5 {
+							colorValueB -= 5
+						}
+						if colorValueR < 0xff-5 {
+							colorValueR += 5
+						}
+					}
 					hexStrColorValR := fmt.Sprintf("%x", colorValueR)
-					hexStrColorValG := fmt.Sprintf("%x", colorValueG)
+					hexStrColorValG := "00"
 					hexStrColorValB := fmt.Sprintf("%x", colorValueB)
-					fmt.Println(hexStrColorValR, hexStrColorValG, hexStrColorValB)
+					//					fmt.Println(hexStrColorValR, hexStrColorValG, hexStrColorValB)
 					color = "#" + hexStrColorValR + hexStrColorValG + hexStrColorValB
-					color = "#00ff00"
 				}
 				fmt.Printf("<polygon points='%g,%g %g,%g %g,%g %g,%g' fill=\"%s\"/>\n",
 					ax, ay, bx, by, cx, cy, dx, dy, color)
 			}
 		}
+
 	}
 	fmt.Println("</svg>")
+
+}
+
+type Point struct {
+	x          float64
+	y          float64
+	z          float64
+	isLocalMax bool
+}
+
+func findLocalMinMax() {
+	//	localMaxQ := make([]Point, 0)
+	//	localMinQ := make([]Point, 0)
+	localQ := make([]Point, 0)
+
+	for i := 0; i < cells; i++ {
+		for j := 0; j < cells; j++ {
+			x := xyrange * (float64(i)/cells - 0.5)
+			y := xyrange * (float64(j)/cells - 0.5)
+			//			if i == 0 && j == 0 {
+			//				localQ = append(localQ, Point{x, y, f(x, y), true})
+			//			} else if isValidCorner(i+1, j) && isValidCorner(i, j) && isValidCorner(i, j+1) && isValidCorner(i+1, j+1) {
+			if isValidCorner(i+1, j) && isValidCorner(i, j) && isValidCorner(i, j+1) && isValidCorner(i+1, j+1) {
+				if isLocalMax(i, j) {
+					localQ = append(localQ, Point{x, y, f(x, y), true})
+				} else if isLocalMin(i, j) {
+					localQ = append(localQ, Point{x, y, f(x, y), false})
+				} else {
+
+				}
+			}
+		}
+	}
+	//	fmt.Printf("Number Of local max:\t%d\n", len(localMaxQ))
+	//	fmt.Printf("Number Of local min:\t%d\n", len(localMinQ))
+	fmt.Printf("Number Of local:\t%d\n", len(localQ))
+	/*	for _, v := range localMaxQ {
+			fmt.Printf("local max\t%v\n", v)
+		}
+		for _, v := range localMinQ {
+			fmt.Printf("local min\t%v\n", v)
+		}
+	*/
+	for _, v := range localQ {
+		fmt.Printf("local \t%v\n", v)
+	}
+
 }
 
 func corner(i, j int) (float64, float64) {
@@ -122,6 +172,8 @@ func isLocalMax(i, j int) bool {
 
 	a := f(x1, y1) - f(x0, y0)
 	b := f(x2, y2) - f(x1, y1)
+	//a := f(x1, y1) - f(x1, y0)
+	//b := f(x2, y2) - f(x2, y1)
 
 	if (a*b <= 0) && (a >= 0) {
 		return true
@@ -141,6 +193,9 @@ func isLocalMin(i, j int) bool {
 
 	a := f(x1, y1) - f(x0, y0)
 	b := f(x2, y2) - f(x1, y1)
+	//a := f(x1, y1) - f(x1, y0)
+	//b := f(x2, y2) - f(x2, y1)
+
 	if (a*b <= 0) && (b > 0) {
 		return true
 	}

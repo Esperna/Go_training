@@ -38,5 +38,10 @@ func main() {
 }
 
 func rotate(s []int, i int) []int {
-	return append(s[i:len(s)], s[0:i]...)
+	length := len(s)
+	if i < length {
+		return append(s[i:length], s[0:i]...)
+	} else {
+		return rotate(s, i-length)
+	}
 }

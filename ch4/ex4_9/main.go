@@ -16,6 +16,7 @@ import (
 func main() {
 	seen := make(map[string]bool) // a set of strings
 	input := bufio.NewScanner(os.Stdin)
+	input.Split(bufio.ScanWords)
 	for input.Scan() {
 		line := input.Text()
 		if !seen[line] {

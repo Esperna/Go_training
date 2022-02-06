@@ -11,18 +11,53 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"time"
 
 	"ch4/ex4_10/github"
 )
 
 //!+
 func main() {
+	var lessThanOneMonth []github.Issue
+	var lessThanOneYear []github.Issue
+	var MoreThanOrEqualToOneYear []github.Issue
+	now := time.Now()
+	oneMonthAgo := now.AddDate(0, -1, 0)
+	oneYearAgo := now.AddDate(-1, 0, 0)
+
 	result, err := github.SearchIssues(os.Args[1:])
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	fmt.Printf("%d issues:\n", result.TotalCount)
 	for _, item := range result.Items {
+		fmt.Printf("#%-5d %9.9s %.55s %v \n",
+			item.Number, item.User.Login, item.Title, item.CreatedAt)
+		if item.CreatedAt.After(oneMonthAgo) {
+			lessThanOneMonth = append(lessThanOneMonth, *item)
+		}
+		if item.CreatedAt.After(oneYearAgo) {
+			lessThanOneYear = append(lessThanOneYear, *item)
+		} else {
+			MoreThanOrEqualToOneYear = append(MoreThanOrEqualToOneYear, *item)
+		}
+	}
+
+	fmt.Println("Before 1 month")
+	for _, item := range lessThanOneMonth {
+		fmt.Printf("#%-5d %9.9s %.55s %v \n",
+			item.Number, item.User.Login, item.Title, item.CreatedAt)
+	}
+
+	fmt.Println("Before 1 year")
+	for _, item := range lessThanOneYear {
+		fmt.Printf("#%-5d %9.9s %.55s %v \n",
+			item.Number, item.User.Login, item.Title, item.CreatedAt)
+	}
+
+	fmt.Println("After 1 year")
+	for _, item := range MoreThanOrEqualToOneYear {
 		fmt.Printf("#%-5d %9.9s %.55s %v \n",
 			item.Number, item.User.Login, item.Title, item.CreatedAt)
 	}

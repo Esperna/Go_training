@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"strings"
 )
 
 type Comic struct {
@@ -24,19 +25,31 @@ type Comic struct {
 }
 
 func main() {
-	end := 600
-	for i := 1; i < end; i++ {
-		resp, err := http.Get("https://xkcd.com/" + strconv.Itoa(i) + "/info.0.json")
-		if err != nil {
-			fmt.Printf("%v\n", err)
-			os.Exit(1)
+	length := len(os.Args)
+	if length == 2 {
+		end := 600
+		for i := 1; i < end; i++ {
+			if i == 404 {
+				continue
+			}
+			resp, err := http.Get("https://xkcd.com/" + strconv.Itoa(i) + "/info.0.json")
+			if err != nil {
+				fmt.Printf("%v\n", err)
+				os.Exit(1)
+			}
+			b, err := ioutil.ReadAll(resp.Body)
+			var comic Comic
+			if err := json.Unmarshal(b, &comic); err != nil {
+				fmt.Printf("%v\n", err)
+				os.Exit(1)
+			}
+			if strings.Contains(comic.Transcript, os.Args[1]) {
+				url := "https://xkcd.com/" + strconv.Itoa(i)
+				fmt.Printf("%s/\t%s\n%s\n", comic.Title, url, comic.Transcript)
+			}
 		}
-		b, err := ioutil.ReadAll(resp.Body)
-		var comic Comic
-		if err := json.Unmarshal(b, &comic); err != nil {
-			fmt.Printf("%v\n", err)
-			os.Exit(1)
-		}
-		fmt.Printf("%d\t%s/%s\t%s\n", comic.Num, comic.Month, comic.Year, comic.Title)
+	} else {
+		fmt.Println("Invalid number of Argument. \"./main \"search word\"\" is expected")
 	}
+
 }

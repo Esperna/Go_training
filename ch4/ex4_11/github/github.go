@@ -12,7 +12,7 @@ import "encoding/json"
 
 const IssuesURL = "https://api.github.com/repos/Esper0328/Go_training/issues"
 
-type IssuesReadResult struct {
+type Issue struct {
 	Url                   string
 	RepositoryUrl         string `json:"repository_url"`
 	LabelsUrl             string `json:"labels_url"`

@@ -18,13 +18,13 @@ func ReadIssues() {
 		fmt.Printf("%v\n", err)
 		return
 	}
-	var results []IssuesReadResult
-	if err := json.NewDecoder(resp.Body).Decode(&results); err != nil {
+	var issues []Issue
+	if err := json.NewDecoder(resp.Body).Decode(&issues); err != nil {
 		fmt.Printf("%v\n", err)
 		resp.Body.Close()
 		return
 	}
-	for _, result := range results {
+	for _, result := range issues {
 		fmt.Printf("#%d\t%s\t%s\t%s\t%s\n", result.Number, result.Title,
 			result.User.Login, result.State, result.Body)
 	}

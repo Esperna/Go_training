@@ -9,8 +9,13 @@ import (
 
 func main() {
 	length := len(os.Args)
-	if length < 1 || length > 7 {
-		fmt.Println("Invalid Number of Argument. ./issue -option(-c,-r,-u, or -d) GitHubID Token Title Body Labels is expected")
+	if length < 2 || length > 8 {
+		fmt.Println("Invalid Number of Argument.")
+		fmt.Println("One of followings is expected")
+		fmt.Println("./issue -c GitHubID Token Title Body Labels")
+		fmt.Println("./issue -r")
+		fmt.Println("./issue -u IssueNo GitHubID Token Title Body Labels")
+		fmt.Println("./issue -d IssueNo GitHubID Token Title Body Labels")
 		os.Exit(1)
 	} else {
 		if os.Args[1] == "-c" {
@@ -22,15 +27,34 @@ func main() {
 				fmt.Printf("%s\n", json_str)
 				github.CreateIssue(os.Args[2], os.Args[3], json_str)
 				github.ReadIssues()
+			} else {
+				fmt.Println("Invalid Number of Argument.")
+				fmt.Println("./issue -c GitHubID Token Title Body Labels")
+				os.Exit(1)
 			}
 		} else if os.Args[1] == "-r" {
 			github.ReadIssues()
 		} else if os.Args[1] == "-u" {
-			fmt.Printf("TBD\n")
+			if length == 8 {
+				json_str := "{" + strconv.Quote("title") + ":" + strconv.Quote(os.Args[5])
+				json_str += "," + strconv.Quote("body") + ":" + strconv.Quote(os.Args[6])
+				json_str += "," + strconv.Quote("labels") + ":" + "[" + strconv.Quote(os.Args[7]) + "]"
+				json_str += "}"
+				fmt.Printf("%s\n", json_str)
+				//github.CreateIssue(os.Args[2], os.Args[3], json_str)
+				github.ReadIssues()
+			} else {
+				fmt.Println("Invalid Number of Argument.")
+				fmt.Println("./issue -u IssueNo GitHubID Token Title Body Labels")
+			}
 		} else if os.Args[1] == "-d" {
 			fmt.Printf("TBD\n")
 		} else {
-			fmt.Println("Invalid Option. ./issue -option(-c,-r,-u, or -d) GitHubID Token Title Body Labels is expected")
+			fmt.Println("Invalid Option.")
+			fmt.Println("./issue -c GitHubID Token Title Body Labels")
+			fmt.Println("./issue -r")
+			fmt.Println("./issue -u IssueNo GitHubID Token Title Body Labels")
+			fmt.Println("./issue -d IssueNo GitHubID Token Title Body Labels")
 			os.Exit(1)
 		}
 	}

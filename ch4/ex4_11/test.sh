@@ -3,7 +3,7 @@
 go build ./issue.go
 echo "Input->Expected:"
 echo "./issue                   -> Invalid Number of Argument"
-echo "./issue 1 2 3 4 5 6 8     -> Invalid Number of Argument"
+echo "./issue 1 2 3 4 5 6 8 9   -> Invalid Number of Argument"
 echo "./issue -c GitHubID Token Title Body Labels Hoge -> Invalid Number of Argument"
 echo "./issue -u IssueNo GitHubID Token Title Body Labels Hoge -> Invalid Number of Argument"
 echo "./issue -d IssueNo GitHubID Token Hoge                   -> Invalid Number of Argument"
@@ -14,8 +14,8 @@ echo "Actual:"
 echo "./issue                   -> Invalid Number of Argument"
 ./issue     
 echo ""
-echo "./issue 1 2 3 4 5 6 8     -> Invalid Number of Argument"
-./issue 1 2 3 4 5 6 8
+echo "./issue 1 2 3 4 5 6 8 9   -> Invalid Number of Argument"
+./issue 1 2 3 4 5 6 8 9
 echo ""
 echo "./issue -c GitHubID Token Title Body Labels Hoge -> Invalid Number of Argument"
 ./issue -c GitHubID Token Title Body Labels Hoge

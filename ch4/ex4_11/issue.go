@@ -26,7 +26,6 @@ func main() {
 				json_str += "}"
 				fmt.Printf("%s\n", json_str)
 				github.CreateIssue(os.Args[2], os.Args[3], json_str)
-				github.ReadIssues()
 			} else {
 				fmt.Println("Invalid Number of Argument.")
 				fmt.Println("./issue -c GitHubID Token Title Body Labels")
@@ -41,8 +40,7 @@ func main() {
 				json_str += "," + strconv.Quote("labels") + ":" + "[" + strconv.Quote(os.Args[7]) + "]"
 				json_str += "}"
 				fmt.Printf("%s\n", json_str)
-				//github.CreateIssue(os.Args[2], os.Args[3], json_str)
-				github.ReadIssues()
+				github.UpdateIssue(os.Args[2], os.Args[3], os.Args[4], json_str)
 			} else {
 				fmt.Println("Invalid Number of Argument.")
 				fmt.Println("./issue -u IssueNo GitHubID Token Title Body Labels")

@@ -32,16 +32,17 @@ func issue(w http.ResponseWriter, r *http.Request) {
 		log.Print(err)
 	}
 	var q []string
-	for k, v := range r.Form {
-		fmt.Fprintf(w, "Form[%q] = %q\n", k, v)
+	for _, v := range r.Form {
 		q = v
+	}
+	if len(q) == 0 {
+		return
 	}
 	result, err := github.SearchIssues(q)
 	if err != nil {
 		log.Fatal(err)
 	}
 	fmt.Fprintf(w, "%d issues:\n", result.TotalCount)
-
 	fmt.Fprintln(w, "\n<Bug List>")
 	milestones := make(map[string]string)
 	userNames := make(map[string]string)

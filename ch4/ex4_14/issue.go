@@ -19,11 +19,16 @@ import (
 //!+
 func main() {
 	http.HandleFunc("/", handler)
+	http.HandleFunc("/issue", issue)
 	log.Fatal(http.ListenAndServe("localhost:8000", nil))
 
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "URL.Path = %q\n", r.URL.Path)
+}
+
+func issue(w http.ResponseWriter, r *http.Request) {
 	result, err := github.SearchIssues(os.Args[1:])
 	if err != nil {
 		log.Fatal(err)
@@ -51,5 +56,10 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	for k, v := range userNames {
 		fmt.Fprintf(w, "%s\t%s\n", k, v)
 	}
-
+	if err := r.ParseForm(); err != nil {
+		log.Print(err)
+	}
+	for k, v := range r.Form {
+		fmt.Fprintf(w, "Form[%q] = %q\n", k, v)
+	}
 }

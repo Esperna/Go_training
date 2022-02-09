@@ -10,6 +10,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 
 	"ch4/ex4_14/github"
@@ -17,6 +18,12 @@ import (
 
 //!+
 func main() {
+	http.HandleFunc("/", handler)
+	log.Fatal(http.ListenAndServe("localhost:8000", nil))
+
+}
+
+func handler(w http.ResponseWriter, r *http.Request) {
 	result, err := github.SearchIssues(os.Args[1:])
 	if err != nil {
 		log.Fatal(err)

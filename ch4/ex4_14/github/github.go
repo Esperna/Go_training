@@ -16,15 +16,21 @@ type IssuesSearchResult struct {
 }
 
 type Issue struct {
-	Number int
-	Title  string
-	User   *User
-	Body   string // in Markdown format
+	Number    int
+	Title     string
+	User      *User
+	Body      string // in Markdown format
+	Milestone *Milestone
 }
 
 type User struct {
 	Login   string
 	HTMLURL string `json:"html_url"`
+}
+
+type Milestone struct {
+	Title       string
+	Description string
 }
 
 //!-

@@ -11,7 +11,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 
 	"ch4/ex4_14/github"
 )
@@ -29,7 +28,15 @@ func handler(w http.ResponseWriter, r *http.Request) {
 }
 
 func issue(w http.ResponseWriter, r *http.Request) {
-	result, err := github.SearchIssues(os.Args[1:])
+	if err := r.ParseForm(); err != nil {
+		log.Print(err)
+	}
+	var q []string
+	for k, v := range r.Form {
+		fmt.Fprintf(w, "Form[%q] = %q\n", k, v)
+		q = v
+	}
+	result, err := github.SearchIssues(q)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -55,11 +62,5 @@ func issue(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "\n<User List>")
 	for k, v := range userNames {
 		fmt.Fprintf(w, "%s\t%s\n", k, v)
-	}
-	if err := r.ParseForm(); err != nil {
-		log.Print(err)
-	}
-	for k, v := range r.Form {
-		fmt.Fprintf(w, "Form[%q] = %q\n", k, v)
 	}
 }

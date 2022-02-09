@@ -23,7 +23,7 @@ func main() {
 	}
 	fmt.Printf("%d issues:\n", result.TotalCount)
 
-	fmt.Println("\n<Milestone List>")
+	fmt.Println("\n<Bug List>")
 	milestones := make(map[string]string)
 	for _, item := range result.Items {
 		fmt.Printf("#%-5d %9.9s %.55s\n",

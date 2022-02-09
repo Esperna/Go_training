@@ -25,17 +25,26 @@ func main() {
 
 	fmt.Println("\n<Bug List>")
 	milestones := make(map[string]string)
+	userNames := make(map[string]string)
 	for _, item := range result.Items {
 		fmt.Printf("#%-5d %9.9s %.55s\n",
 			item.Number, item.User.Login, item.Title)
 		if item.Milestone != nil {
 			milestones[item.Milestone.Title] = item.Milestone.Description
 		}
+		if item.User != nil {
+			userNames[item.User.Login] = item.User.HTMLURL
+		}
 	}
 	fmt.Println("\n<Milestone List>")
 	for k, v := range milestones {
 		fmt.Printf("%s\t%s\n", k, v)
 	}
+	fmt.Println("\n<User List>")
+	for k, v := range userNames {
+		fmt.Printf("%s\t%s\n", k, v)
+	}
+
 }
 
 //!-

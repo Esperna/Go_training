@@ -11,12 +11,7 @@ func main() {
 	length := len(os.Args)
 	if length < 2 || length > 8 {
 		fmt.Println("Invalid Number of Argument.")
-		fmt.Println("One of followings is expected")
-		fmt.Println("./issue -c GitHubID Token Title Body Labels")
-		fmt.Println("./issue -r")
-		fmt.Println("./issue -u IssueNo GitHubID Token Title Body Labels")
-		fmt.Println("./issue -uc IssueNo GitHubID BodyOfComment")
-		fmt.Println("./issue -d IssueNo GitHubID Token")
+		displayHowToUse()
 		os.Exit(1)
 	}
 	if os.Args[1] == "-c" {
@@ -68,12 +63,15 @@ func main() {
 		}
 	} else {
 		fmt.Println("Invalid Option.")
-		fmt.Println("./issue -c GitHubID Token Title Body Labels")
-		fmt.Println("./issue -r")
-		fmt.Println("./issue -u IssueNo GitHubID Token Title Body Labels")
-		fmt.Println("./issue -uc IssueNo GitHubID BodyOfComment")
-		fmt.Println("./issue -d IssueNo GitHubID Token")
+		displayHowToUse()
 		os.Exit(1)
 	}
+}
 
+func displayHowToUse() {
+	fmt.Println("./issue -c GitHubID Token Title Body Labels")
+	fmt.Println("./issue -r")
+	fmt.Println("./issue -u IssueNo GitHubID Token Title Body Labels")
+	fmt.Println("./issue -uc IssueNo GitHubID BodyOfComment")
+	fmt.Println("./issue -d IssueNo GitHubID Token")
 }

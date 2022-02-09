@@ -28,13 +28,13 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Printf("%d issues:\n", result.TotalCount)
+	fmt.Fprintf(w, "%d issues:\n", result.TotalCount)
 
-	fmt.Println("\n<Bug List>")
+	fmt.Fprintln(w, "\n<Bug List>")
 	milestones := make(map[string]string)
 	userNames := make(map[string]string)
 	for _, item := range result.Items {
-		fmt.Printf("#%-5d %9.9s %.55s\n",
+		fmt.Fprintf(w, "#%-5d %9.9s %.55s\n",
 			item.Number, item.User.Login, item.Title)
 		if item.Milestone != nil {
 			milestones[item.Milestone.Title] = item.Milestone.Description
@@ -43,13 +43,13 @@ func handler(w http.ResponseWriter, r *http.Request) {
 			userNames[item.User.Login] = item.User.HTMLURL
 		}
 	}
-	fmt.Println("\n<Milestone List>")
+	fmt.Fprintln(w, "\n<Milestone List>")
 	for k, v := range milestones {
-		fmt.Printf("%s\t%s\n", k, v)
+		fmt.Fprintf(w, "%s\t%s\n", k, v)
 	}
-	fmt.Println("\n<User List>")
+	fmt.Fprintln(w, "\n<User List>")
 	for k, v := range userNames {
-		fmt.Printf("%s\t%s\n", k, v)
+		fmt.Fprintf(w, "%s\t%s\n", k, v)
 	}
 
 }

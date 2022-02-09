@@ -47,7 +47,7 @@ func main() {
 			json_str := "{" + strconv.Quote("body") + ":" + strconv.Quote(os.Args[5])
 			json_str += "}"
 			fmt.Printf("%s\n", json_str)
-			//github.UpdateIssue(os.Args[2], os.Args[3], os.Args[4], json_str)
+			github.CommentIssue(os.Args[2], os.Args[3], os.Args[4], json_str)
 		} else {
 			fmt.Println("Invalid Number of Argument.")
 			fmt.Println("./issue -uc IssueNo GitHubID BodyOfComment")

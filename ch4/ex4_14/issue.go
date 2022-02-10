@@ -34,7 +34,22 @@ var issueList = template.Must(template.New("issuelist").Parse(`
 </tr>
 {{end}}
 </table>
+`))
+
+var milestoneList = template.Must(template.New("milestonelist").Parse(`
 <h1>Milestones</h1>
+<table>
+<tr>
+	<th>Title</th>
+	<th>Description</th>
+</tr>
+{{range.Items}}
+<tr>
+	<td>{{.Milestone.Title}}</td>
+	<td>{{.Milestone.Description}}</td>
+</tr>
+{{end}}
+</table>
 <h1>Users</h1>
 `))
 
@@ -61,19 +76,19 @@ func issue(w http.ResponseWriter, r *http.Request) {
 	if len(q) == 0 {
 		return
 	}
-	result, err := github.SearchIssues(q)
+	issueResult, err := github.SearchIssues(q)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	//	fmt.Fprintf(w, "%d issues:\n", result.TotalCount)
 	//	fmt.Fprintln(w, "\n<Bug List>")
-	if err := issueList.Execute(w, result); err != nil {
+	if err := issueList.Execute(w, issueResult); err != nil {
 		log.Fatal(err)
 	}
 	milestones := make(map[string]string)
 	userNames := make(map[string]string)
-	for _, item := range result.Items {
+	for _, item := range issueResult.Items {
 		//		fmt.Fprintf(w, "#%-5d %9.9s %.55s\n",
 		//			item.Number, item.User.Login, item.Title)
 		if item.Milestone != nil {
@@ -83,6 +98,11 @@ func issue(w http.ResponseWriter, r *http.Request) {
 			userNames[item.User.Login] = item.User.HTMLURL
 		}
 	}
+	/*
+		if err := milestoneList.Execute(w, milestones); err != nil {
+			log.Fatal(err)
+		}
+	*/
 	/*
 		fmt.Fprintln(w, "\n<Milestone List>")
 		for k, v := range milestones {

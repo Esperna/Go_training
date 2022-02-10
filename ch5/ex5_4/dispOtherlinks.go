@@ -26,22 +26,36 @@ func main() {
 func visit(stack []string, n *html.Node) {
 	if n.Type == html.ElementNode {
 		stack = append(stack, n.Data) // push tag
-		if n.Data == "img" || n.Data == "script" {
-			for _, item := range n.Attr {
-				if item.Key == "src" {
-					fmt.Println(item.Val)
+		if n.Data == "a" {
+			for _, a := range n.Attr {
+				if a.Key == "href" {
+					fmt.Println(a.Val)
+				}
+			}
+		}
+		if n.Data == "img" {
+			for _, img := range n.Attr {
+				if img.Key == "src" {
+					fmt.Println(img.Val)
+				}
+			}
+		}
+		if n.Data == "script" {
+			for _, script := range n.Attr {
+				if script.Key == "src" {
+					fmt.Println(script.Val)
 				}
 			}
 		}
 		if n.Data == "link" {
 			isStylesheetLink := false
-			for _, item := range n.Attr {
-				if item.Key == "rel" && item.Val == "stylesheet" {
+			for _, link := range n.Attr {
+				if link.Key == "rel" && link.Val == "stylesheet" {
 					isStylesheetLink = true
 				}
 				if isStylesheetLink {
-					if item.Key == "href" {
-						fmt.Println(item.Val)
+					if link.Key == "href" {
+						fmt.Println(link.Val)
 					}
 				}
 			}

@@ -20,16 +20,23 @@ func main() {
 		fmt.Fprintf(os.Stderr, "outline: %v\n", err)
 		os.Exit(1)
 	}
-	outline(nil, doc)
+	visit(nil, doc)
 }
 
-func outline(stack []string, n *html.Node) {
+func visit(stack []string, n *html.Node) {
 	if n.Type == html.ElementNode {
 		stack = append(stack, n.Data) // push tag
-		fmt.Println(stack)
+		//		fmt.Println(stack)
+		if n.Data == "a" {
+			for _, a := range n.Attr {
+				if a.Key == "href" {
+					fmt.Println(a.Val)
+				}
+			}
+		}
 	}
 	for c := n.FirstChild; c != nil; c = c.NextSibling {
-		outline(stack, c)
+		visit(stack, c)
 	}
 }
 

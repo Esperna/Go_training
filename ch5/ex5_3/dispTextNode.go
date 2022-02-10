@@ -26,10 +26,11 @@ func main() {
 func dispTextNode(stack []string, n *html.Node) {
 	if n.Type == html.ElementNode {
 		stack = append(stack, n.Data) // push tag
-		fmt.Println(stack)
 	}
-	if n.Type == html.TextNode {
-		fmt.Println(n.Data)
+	if !(n.Data == "style" || n.Data == "script") {
+		if n.Type == html.TextNode {
+			fmt.Printf("%s", n.Data)
+		}
 	}
 	for c := n.FirstChild; c != nil; c = c.NextSibling {
 		dispTextNode(stack, c)

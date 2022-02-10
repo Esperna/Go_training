@@ -27,7 +27,7 @@ func visit(stack []string, n *html.Node) {
 	if n.Type == html.ElementNode {
 		stack = append(stack, n.Data) // push tag
 		//		fmt.Println(stack)
-		if n.Data == "img" {
+		if n.Data == "img" || n.Data == "script" {
 			for _, a := range n.Attr {
 				if a.Key == "src" {
 					fmt.Println(a.Val)

@@ -32,22 +32,19 @@ func visit(stack []string, n *html.Node) {
 					fmt.Println(a.Val)
 				}
 			}
-		}
-		if n.Data == "img" {
+		} else if n.Data == "img" {
 			for _, img := range n.Attr {
 				if img.Key == "src" {
 					fmt.Println(img.Val)
 				}
 			}
-		}
-		if n.Data == "script" {
+		} else if n.Data == "script" {
 			for _, script := range n.Attr {
 				if script.Key == "src" {
 					fmt.Println(script.Val)
 				}
 			}
-		}
-		if n.Data == "link" {
+		} else if n.Data == "link" {
 			isStylesheetLink := false
 			for _, link := range n.Attr {
 				if link.Key == "rel" && link.Val == "stylesheet" {

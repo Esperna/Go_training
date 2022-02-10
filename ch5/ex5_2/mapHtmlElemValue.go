@@ -20,17 +20,23 @@ func main() {
 		fmt.Fprintf(os.Stderr, "outline: %v\n", err)
 		os.Exit(1)
 	}
-	outline(nil, doc)
+	htmlElementNum := make(map[string]int)
+	htmlElementNum = mapHtmlElementNum(nil, doc, htmlElementNum)
+	for k, v := range htmlElementNum {
+		fmt.Printf("%s\t%d\n", k, v)
+	}
 }
 
-func outline(stack []string, n *html.Node) {
+func mapHtmlElementNum(stack []string, n *html.Node, num map[string]int) map[string]int {
 	if n.Type == html.ElementNode {
+		num[n.Data]++
 		stack = append(stack, n.Data) // push tag
 		fmt.Println(stack)
 	}
 	for c := n.FirstChild; c != nil; c = c.NextSibling {
-		outline(stack, c)
+		num = mapHtmlElementNum(stack, c, num)
 	}
+	return num
 }
 
 //!-

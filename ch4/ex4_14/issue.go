@@ -34,6 +34,8 @@ var issueList = template.Must(template.New("issuelist").Parse(`
 </tr>
 {{end}}
 </table>
+<h1>Milestones</h1>
+<h1>Users</h1>
 `))
 
 //!+

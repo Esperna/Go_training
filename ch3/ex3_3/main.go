@@ -36,36 +36,30 @@ func main() {
 			dx, dy := corner(i+1, j+1)
 			var color string
 			if isValidCorner(i+1, j) && isValidCorner(i, j) && isValidCorner(i, j+1) && isValidCorner(i+1, j+1) {
-				if isLocalMax(i, j) {
-					color = "#ff0000"
-				} else if isLocalMin(i, j) {
-					color = "#0000ff"
+				x := xyrange * (float64(i)/cells - 0.5)
+				y := xyrange * (float64(j)/cells - 0.5)
+				r := float64((f(x, y) - minZ) / (maxZ - minZ))
+				var colorValueR, colorValueG, colorValueB uint8
+				colorValueR = uint8(255.0 * r)
+				colorValueB = uint8(255.0 * (1.0 - r))
+				var hexStrColorValR, hexStrColorValG, hexStrColorValB string
+				if colorValueR < 0x10 {
+					hexStrColorValR = fmt.Sprintf("0%x", colorValueR)
 				} else {
-					x := xyrange * (float64(i)/cells - 0.5)
-					y := xyrange * (float64(j)/cells - 0.5)
-					r := float64((f(x, y) - minZ) / (maxZ - minZ))
-					var colorValueR, colorValueG, colorValueB uint8
-					colorValueR = uint8(255.0 * r)
-					colorValueB = uint8(255.0 * (1.0 - r))
-					var hexStrColorValR, hexStrColorValG, hexStrColorValB string
-					if colorValueR < 0x10 {
-						hexStrColorValR = fmt.Sprintf("0%x", colorValueR)
-					} else {
-						hexStrColorValR = fmt.Sprintf("%x", colorValueR)
-					}
-					if colorValueG < 0x10 {
-						hexStrColorValG = fmt.Sprintf("0%x", colorValueG)
-					} else {
-						hexStrColorValG = fmt.Sprintf("%x", colorValueG)
-					}
-					if colorValueB < 0x10 {
-						hexStrColorValB = fmt.Sprintf("0%x", colorValueB)
-					} else {
-						hexStrColorValB = fmt.Sprintf("%x", colorValueB)
-					}
-					//					fmt.Println(hexStrColorValR, hexStrColorValG, hexStrColorValB)
-					color = "#" + hexStrColorValR + hexStrColorValG + hexStrColorValB
+					hexStrColorValR = fmt.Sprintf("%x", colorValueR)
 				}
+				if colorValueG < 0x10 {
+					hexStrColorValG = fmt.Sprintf("0%x", colorValueG)
+				} else {
+					hexStrColorValG = fmt.Sprintf("%x", colorValueG)
+				}
+				if colorValueB < 0x10 {
+					hexStrColorValB = fmt.Sprintf("0%x", colorValueB)
+				} else {
+					hexStrColorValB = fmt.Sprintf("%x", colorValueB)
+				}
+				//					fmt.Println(hexStrColorValR, hexStrColorValG, hexStrColorValB)
+				color = "#" + hexStrColorValR + hexStrColorValG + hexStrColorValB
 				fmt.Printf("<polygon points='%g,%g %g,%g %g,%g %g,%g' fill=\"%s\"/>\n",
 					ax, ay, bx, by, cx, cy, dx, dy, color)
 			}

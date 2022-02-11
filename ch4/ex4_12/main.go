@@ -11,17 +11,17 @@ import (
 )
 
 type Comic struct {
-	Month      string
-	Num        int
-	Link       string
-	Year       string
-	News       string
-	SafeTitle  string `json:safe_title`
+	//	Month      string
+	//	Num        int
+	//	Link       string
+	//	Year       string
+	//	News       string
+	//	SafeTitle  string `json:safe_title`
 	Transcript string
-	Alt        string
-	Img        string
-	Title      string
-	Day        string
+	//	Alt        string
+	//	Img        string
+	Title string
+	//	Day        string
 }
 
 func main() {

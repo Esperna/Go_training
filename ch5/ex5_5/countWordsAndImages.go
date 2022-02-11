@@ -1,7 +1,10 @@
 package main
 
 import (
+	"bufio"
+	"bytes"
 	"fmt"
+	"io"
 	"net/http"
 	"os"
 
@@ -25,24 +28,45 @@ func CountWordsAndImages(url string) (words, images int, err error) {
 		return
 	}
 	words, images = countWordsAndImages(doc)
-	return
+	return words, images, err
 }
 
 func countWordsAndImages(n *html.Node) (words, images int) {
-	dispTextNode(nil, n)
-	return
+	wordfreq := make(map[string]int)
+	wordfreq = wordfreqTextNode(nil, n, wordfreq)
+	for k, v := range wordfreq {
+		fmt.Printf("%s\n", k)
+		words += v
+	}
+	return words, images
 }
 
-func dispTextNode(stack []string, n *html.Node) {
+func wordfreqTextNode(stack []string, n *html.Node, seen map[string]int) map[string]int {
 	if n.Type == html.ElementNode {
 		stack = append(stack, n.Data) // push tag
 	}
 	if !(n.Data == "style" || n.Data == "script") {
 		if n.Type == html.TextNode {
-			fmt.Printf("%s", n.Data)
+			//fmt.Printf("%s", n.Data)
+			seen = wordfreq(bytes.NewBufferString(n.Data), seen)
 		}
 	}
 	for c := n.FirstChild; c != nil; c = c.NextSibling {
-		dispTextNode(stack, c)
+		seen = wordfreqTextNode(stack, c, seen)
 	}
+	return seen
+}
+
+func wordfreq(r io.Reader, seen map[string]int) map[string]int {
+	input := bufio.NewScanner(r)
+	input.Split(bufio.ScanWords)
+	for input.Scan() {
+		line := input.Text()
+		seen[line]++
+	}
+	if err := input.Err(); err != nil {
+		fmt.Fprintf(os.Stderr, "dedup: %v\n", err)
+		os.Exit(1)
+	}
+	return seen
 }

@@ -9,12 +9,13 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"io"
 	"os"
 )
 
 //!+
 func main() {
-	seen := wordfreq()
+	seen := wordfreq(os.Stdin)
 	var names []string
 	for w, _ := range seen {
 		names = append(names, w)
@@ -24,9 +25,9 @@ func main() {
 	}
 }
 
-func wordfreq() map[string]int {
+func wordfreq(r io.Reader) map[string]int {
 	seen := make(map[string]int) // a set of strings
-	input := bufio.NewScanner(os.Stdin)
+	input := bufio.NewScanner(r)
 	input.Split(bufio.ScanWords)
 	for input.Scan() {
 		line := input.Text()

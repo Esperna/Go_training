@@ -15,10 +15,20 @@ type IssuesSearchResult struct {
 	Items      []*Issue
 }
 
+type UsersSearchResult struct {
+	Items []*User
+}
+
+type MilestonesSearchResult struct {
+	Items []*Milestone
+}
+
 type Issue struct {
+	HTMLURL   string `json:"html_url"`
 	Number    int
 	Title     string
 	User      *User
+	State     string
 	Body      string // in Markdown format
 	Milestone *Milestone
 }

@@ -43,21 +43,9 @@ func main() {
 				colorValueR = uint8(255.0 * r)
 				colorValueB = uint8(255.0 * (1.0 - r))
 				var hexStrColorValR, hexStrColorValG, hexStrColorValB string
-				if colorValueR < 0x10 {
-					hexStrColorValR = fmt.Sprintf("0%x", colorValueR)
-				} else {
-					hexStrColorValR = fmt.Sprintf("%x", colorValueR)
-				}
-				if colorValueG < 0x10 {
-					hexStrColorValG = fmt.Sprintf("0%x", colorValueG)
-				} else {
-					hexStrColorValG = fmt.Sprintf("%x", colorValueG)
-				}
-				if colorValueB < 0x10 {
-					hexStrColorValB = fmt.Sprintf("0%x", colorValueB)
-				} else {
-					hexStrColorValB = fmt.Sprintf("%x", colorValueB)
-				}
+				hexStrColorValR = colorValToHexStr(colorValueR)
+				hexStrColorValG = colorValToHexStr(colorValueG)
+				hexStrColorValB = colorValToHexStr(colorValueB)
 				//					fmt.Println(hexStrColorValR, hexStrColorValG, hexStrColorValB)
 				color = "#" + hexStrColorValR + hexStrColorValG + hexStrColorValB
 				fmt.Printf("<polygon points='%g,%g %g,%g %g,%g %g,%g' fill=\"%s\"/>\n",
@@ -67,7 +55,15 @@ func main() {
 
 	}
 	fmt.Println("</svg>")
+}
 
+func colorValToHexStr(colorVal uint8) string {
+	if colorVal < 0x10 {
+		hexStr = fmt.Sprintf("0%x", colorVal)
+	} else {
+		hexStr = fmt.Sprintf("%x", colorVal)
+	}
+	return hexStr
 }
 
 type Point struct {

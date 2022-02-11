@@ -34,7 +34,7 @@ func CountWordsAndImages(url string) (words, images int, err error) {
 func countWordsAndImages(n *html.Node) (words, images int) {
 	wordfreq := make(map[string]int)
 	imagefreq := 0
-	wordfreq, imagefreq = wordAndImageFreqTextNode(nil, n, wordfreq, imagefreq)
+	wordfreq, imagefreq = wordAndImageFreq(nil, n, wordfreq, imagefreq)
 	for _, v := range wordfreq {
 		//fmt.Printf("%s\n", k)
 		words += v
@@ -43,7 +43,7 @@ func countWordsAndImages(n *html.Node) (words, images int) {
 	return words, images
 }
 
-func wordAndImageFreqTextNode(stack []string, n *html.Node, seen map[string]int, images int) (map[string]int, int) {
+func wordAndImageFreq(stack []string, n *html.Node, seen map[string]int, images int) (map[string]int, int) {
 	if n.Type == html.ElementNode {
 		stack = append(stack, n.Data) // push tag
 	}
@@ -62,7 +62,7 @@ func wordAndImageFreqTextNode(stack []string, n *html.Node, seen map[string]int,
 		}
 	}
 	for c := n.FirstChild; c != nil; c = c.NextSibling {
-		seen, images = wordAndImageFreqTextNode(stack, c, seen, images)
+		seen, images = wordAndImageFreq(stack, c, seen, images)
 	}
 	return seen, images
 }

@@ -29,5 +29,20 @@ func CountWordsAndImages(url string) (words, images int, err error) {
 }
 
 func countWordsAndImages(n *html.Node) (words, images int) {
+	dispTextNode(nil, n)
 	return
+}
+
+func dispTextNode(stack []string, n *html.Node) {
+	if n.Type == html.ElementNode {
+		stack = append(stack, n.Data) // push tag
+	}
+	if !(n.Data == "style" || n.Data == "script") {
+		if n.Type == html.TextNode {
+			fmt.Printf("%s", n.Data)
+		}
+	}
+	for c := n.FirstChild; c != nil; c = c.NextSibling {
+		dispTextNode(stack, c)
+	}
 }

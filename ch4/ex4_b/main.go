@@ -1,7 +1,10 @@
 package main
 
-import "fmt"
+import (
+	"ch4/ex4_b/word"
+)
 
 func main() {
-	fmt.Println("vim-go")
+	//word.PrintSliceMacthUnefficient()
+	word.PrintSliceMacthEfficient()
 }

@@ -7,18 +7,17 @@ import (
 
 func main() {
 	length := len(os.Args)
-	if length == 2 {
-		s := os.Args[1]
-		b := []byte(s)
+	if length >= 2 {
+		s := os.Args[1:]
 		fmt.Println(s)
-		b = deleteDup(b)
-		fmt.Println(string(b))
+		s = deleteDup(s)
+		fmt.Println(s)
 	} else {
 		fmt.Println("Invalid Number of Argument")
 	}
 }
 
-func deleteDup(s []byte) []byte {
+func deleteDup(s []string) []string {
 	for i := 0; i < len(s); i++ {
 		if i+1 < len(s) {
 			if s[i+1] == s[i] {
@@ -30,7 +29,7 @@ func deleteDup(s []byte) []byte {
 	return s
 }
 
-func remove(slice []byte, i int) []byte {
+func remove(slice []string, i int) []string {
 	copy(slice[i:], slice[i+1:])
 	return slice[:len(slice)-1]
 }

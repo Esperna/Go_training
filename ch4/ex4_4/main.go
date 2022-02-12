@@ -35,13 +35,45 @@ func main() {
 	} else {
 		fmt.Println("Invalid Number of Argument. More than 3(value1 value2 -r rotateValue) is expected.")
 	}
+
 }
 
-func rotate(s []int, i int) []int {
-	length := len(s)
-	if i < length {
-		return append(s[i:length], s[0:i]...)
-	} else {
-		return rotate(s, i-length)
+func rotate(s []int, k int) []int {
+	n := len(s)
+	l := gcd(k, n)
+	m := n / l
+	for i := 0; i < l; i++ {
+		var buf1, buf2 int
+		for j := 0; j < m; j++ {
+			if j == 0 {
+				buf1 = s[(i+k*(j+1))%n]
+				s[(i+k*(j+1))%n] = s[(i+k*j)%n]
+			} else {
+				buf2 = s[(i+k*(j+1))%n]
+				s[(i+k*(j+1))%n] = buf1
+				buf1 = buf2
+			}
+		}
+	}
+	return s
+}
+
+func gcd(a, b int) int {
+	if a > b {
+		temp := a
+		a = b
+		b = temp
+	}
+	for {
+		c := b % a
+		if c == 0 {
+			return a
+		}
+		if a > c {
+			b = a
+			a = c
+		} else {
+			b = c
+		}
 	}
 }

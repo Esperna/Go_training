@@ -9,3 +9,5 @@ echo "./main abcdef"
 ./main abcdef
 echo "/main αβγ"
 ./main αβγ
+echo "./main こんにちはHello" 
+./main こんにちはHello

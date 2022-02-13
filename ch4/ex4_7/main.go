@@ -21,8 +21,7 @@ func reverse(b []byte) []byte {
 	for i := 0; i < len(b); i++ {
 		if b[i]>>7 == 0 {
 			isASCII = true
-		}
-		if b[i]>>5 == 0b110 {
+		} else if b[i]>>5 == 0b110 {
 			is2Byte = true
 		} else if b[i]>>5 == 0b111 {
 			is3Byte = true
@@ -44,12 +43,42 @@ func reverse(b []byte) []byte {
 			b[i+2], b[j] = b[j], b[i+2]
 		}
 	} else {
-		//gave up byte slice handling
-		r := []rune(string(b))
-		for i, j := 0, len(r)-1; i < j; i, j = i+1, j-1 {
-			r[i], r[j] = r[j], r[i]
+		for i := 0; i < len(b); {
+			if b[i]>>7 == 0 {
+				b = append(b[:i+1], b[i:]...)
+				b = append(b[:i+1], b[i:]...)
+				i += 3
+			} else if b[i]>>5 == 0b110 {
+				b = append(b[:i+2], b[i+1:]...)
+				i += 3
+			} else if b[i]>>5 == 0b111 {
+				i += 3
+			}
 		}
-		return []byte(string(r))
+		for i, j := 0, len(b)-1; i < j; i, j = i+3, j-3 {
+			b[i], b[j-2] = b[j-2], b[i]
+			b[i+1], b[j-1] = b[j-1], b[i+1]
+			b[i+2], b[j] = b[j], b[i+2]
+		}
+		for i := 0; i < len(b); {
+			if b[i]>>7 == 0 {
+				b = remove(b, i+2)
+				b = remove(b, i+1)
+				i++
+			} else if b[i]>>5 == 0b110 {
+				b = remove(b, i+2)
+				i++
+			} else if b[i]>>5 == 0b111 {
+				i += 3
+			} else {
+				i++
+			}
+		}
 	}
 	return b
+}
+
+func remove(b []byte, i int) []byte {
+	copy(b[i:], b[i+1:])
+	return b[:len(b)-1]
 }

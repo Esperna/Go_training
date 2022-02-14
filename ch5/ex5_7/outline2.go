@@ -73,7 +73,7 @@ func startElement(n *html.Node) {
 		for _, a := range n.Attr {
 			str = fmt.Sprintf("%s %s=\"%s\"", str, a.Key, a.Val)
 		}
-		if n.FirstChild == nil && n.Data == "img" {
+		if n.FirstChild == nil && (n.Data == "img" || n.Data == "meta" || n.Data == "link" || n.Data == "path") {
 			fmt.Printf("%*s<%s", depth*2, "", str)
 		} else {
 			fmt.Printf("%*s<%s>\n", depth*2, "", str)
@@ -89,7 +89,7 @@ func endElement(n *html.Node) {
 		fmt.Printf("-->\n")
 	} else if n.Type == html.ElementNode {
 		depth--
-		if n.FirstChild == nil && n.Data == "img" {
+		if n.FirstChild == nil && (n.Data == "img" || n.Data == "meta" || n.Data == "link" || n.Data == "path") {
 			fmt.Printf("/>\n")
 		} else {
 			fmt.Printf("%*s</%s>\n", depth*2, "", n.Data)

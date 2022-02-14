@@ -65,7 +65,11 @@ var depth int
 
 func startElement(n *html.Node) {
 	if n.Type == html.ElementNode {
-		fmt.Printf("%*s<%s>\n", depth*2, "", n.Data)
+		str := n.Data
+		for _, a := range n.Attr {
+			str = fmt.Sprintf("%s %s=\"%s\"", str, a.Key, a.Val)
+		}
+		fmt.Printf("%*s<%s>\n", depth*2, "", str)
 		depth++
 	}
 }

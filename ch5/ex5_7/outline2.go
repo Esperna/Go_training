@@ -10,6 +10,8 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"strings"
+	"unicode"
 
 	"golang.org/x/net/html"
 )
@@ -71,6 +73,8 @@ func startElement(n *html.Node) {
 		}
 		fmt.Printf("%*s<%s>\n", depth*2, "", str)
 		depth++
+	} else if n.Type == html.TextNode && !isAllSpace(n.Data) {
+		fmt.Printf("%*s%s\n", depth*2, "", strings.TrimSpace(n.Data))
 	}
 }
 
@@ -82,3 +86,13 @@ func endElement(n *html.Node) {
 }
 
 //!-startend
+
+func isAllSpace(s string) bool {
+	r := []rune(s)
+	for _, v := range r {
+		if !unicode.IsSpace(v) {
+			return false
+		}
+	}
+	return true
+}

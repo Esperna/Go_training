@@ -73,7 +73,11 @@ func startElement(n *html.Node) {
 		for _, a := range n.Attr {
 			str = fmt.Sprintf("%s %s=\"%s\"", str, a.Key, a.Val)
 		}
-		fmt.Printf("%*s<%s>\n", depth*2, "", str)
+		if n.FirstChild == nil && n.Data == "img" {
+			fmt.Printf("%*s<%s", depth*2, "", str)
+		} else {
+			fmt.Printf("%*s<%s>\n", depth*2, "", str)
+		}
 		depth++
 	} else if n.Type == html.TextNode && !isAllSpace(n.Data) {
 		fmt.Printf("%*s%s\n", depth*2, "", strings.TrimSpace(n.Data))
@@ -85,7 +89,11 @@ func endElement(n *html.Node) {
 		fmt.Printf("-->\n")
 	} else if n.Type == html.ElementNode {
 		depth--
-		fmt.Printf("%*s</%s>\n", depth*2, "", n.Data)
+		if n.FirstChild == nil && n.Data == "img" {
+			fmt.Printf("/>\n")
+		} else {
+			fmt.Printf("%*s</%s>\n", depth*2, "", n.Data)
+		}
 	}
 }
 

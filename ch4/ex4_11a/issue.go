@@ -12,7 +12,7 @@ import (
 
 func main() {
 	length := len(os.Args)
-	if !(length == 3 || length == 4) {
+	if !(length == 2 || length == 3 || length == 4) {
 		fmt.Fprint(os.Stderr, fmt.Sprintf("invalid number of args. \n"))
 		displayHowToUse()
 		os.Exit(1)
@@ -29,13 +29,18 @@ func main() {
 		os.Exit(1)
 	}
 
-	GitHubID := os.Getenv("GITHUB_ID")
-	Token := os.Getenv("GITHUB_TOKEN")
+	gitHubID := os.Getenv("GITHUB_ID")
+	token := os.Getenv("GITHUB_TOKEN")
 
 	if os.Args[1] == "-c" {
-
+		jsonStr, err := inputFromEditor(os.Args[2])
+		if err != nil {
+			fmt.Fprint(os.Stderr, "input from editor failed")
+			os.Exit(1)
+		}
+		github.CreateIssue(gitHubID, token, jsonStr)
 	} else if os.Args[1] == "-r" {
-
+		github.ReadIssues()
 	} else if os.Args[1] == "-u" {
 		jsonStr, err := inputFromEditor(os.Args[3])
 		if err != nil {
@@ -43,10 +48,18 @@ func main() {
 			os.Exit(1)
 		}
 		issueNo := os.Args[2]
-		github.UpdateIssue(issueNo, GitHubID, Token, jsonStr)
-
+		github.UpdateIssue(issueNo, gitHubID, token, jsonStr)
+	} else if os.Args[1] == "-uc" {
+		jsonStr, err := inputFromEditor(os.Args[3])
+		if err != nil {
+			fmt.Fprint(os.Stderr, "input from editor failed")
+			os.Exit(1)
+		}
+		issueNo := os.Args[2]
+		github.CommentIssue(issueNo, gitHubID, token, jsonStr)
 	} else if os.Args[1] == "-d" {
-
+		issueNo := os.Args[2]
+		github.CloseIssue(issueNo, gitHubID, token)
 	}
 }
 
@@ -71,5 +84,6 @@ func displayHowToUse() {
 	fmt.Println("./issue -c editor")
 	fmt.Println("./issue -r")
 	fmt.Println("./issue -u IssueNo editor")
+	fmt.Println("./issue -uc IssueNo editor")
 	fmt.Println("./issue -d IssueNo")
 }

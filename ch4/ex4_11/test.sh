@@ -1,47 +1,24 @@
 #!/bin/zsh
 
+#1. read current issue list
+#2. create new issue(title and body shall be set from vim)
+#3. update issue(issueNo from shell arg and body shall be set from vim) 
+#4. comment issue(issueNo(same as #3) from shell arg and body shall be set from vim)
+#5. delete issue(issueNo shall be set)
+
 go build ./issue.go
-echo "Input->Expected:"
-echo "./issue                   -> Invalid Number of Argument"
-echo "./issue 1 2 3 4 5 6 8 9   -> Invalid Number of Argument"
-echo "./issue -c GitHubID Token Title Body Labels Hoge -> Invalid Number of Argument"
-echo "./issue -u IssueNo GitHubID Token Title Body Labels Hoge  -> Invalid Number of Argument"
-echo "./issue -uc IssueNo GitHubID Token Body Hoge              -> Invalid Number of Argument"
-echo "./issue -d IssueNo GitHubID Token Hoge                    -> Invalid Number of Argument"
-echo "./issue -f IssueNo GitHubID Token Title Body Labels       -> Invalid Option"
-echo "./issue -r                                                -> Successful Reading Issue info"
+echo "./issue -r"
+./issue -r
 echo ""
-
-echo "Actual:"
-
-echo "./issue                   -> Invalid Number of Argument"
-./issue     
+echo "./issue -c vim"
+./issue -c vim
 echo ""
-
-echo "./issue 1 2 3 4 5 6 8 9   -> Invalid Number of Argument"
-./issue 1 2 3 4 5 6 8 9
+echo "./issue -u $1 vim"
+./issue -u $1 vim 
 echo ""
-
-echo "./issue -c GitHubID Token Title Body Labels Hoge -> Invalid Number of Argument"
-./issue -c GitHubID Token Title Body Labels Hoge
+echo "./issue -uc $1 vim"
+./issue -uc $1 vim 
 echo ""
-
-echo "./issue -u IssueNo GitHubID Token Title Body Labels Hoge -> Invalid Number of Argument"
-./issue -u IssueNo GitHubID Token Title Body Labels Hoge
-echo ""
-
-echo "./issue -uc IssueNo GitHubID Token Body Hoge              -> Invalid Number of Argument"
-./issue -uc IssueNo GitHubID Token Body Hoge
-echo ""
-
-echo "./issue -d IssueNo GitHubID Token Hoge -> Invalid Number of Argument"
-./issue -d IssueNo GitHubID Token Hoge
-echo ""
-
-echo "./issue -f IssueNo GitHubID Token Title Body Labels       -> Invalid Option"
-./issue -f IssueNo GitHubID Token Title Body Labels
-echo ""
-
-echo "./issue -r                                                -> Successful Reading Issue info"
-./issue -r 
+echo "./issue -d $2"
+./issue -d $2
 echo ""

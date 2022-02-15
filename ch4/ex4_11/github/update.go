@@ -15,7 +15,7 @@ import (
 func UpdateIssue(number string, id, token, param string) {
 	req, err := http.NewRequest("POST", IssuesURL+"/"+number, bytes.NewBuffer([]byte(param)))
 	if err != nil {
-		fmt.Printf("%v\n", err)
+		fmt.Printf("POST failed %v\n", err.Error())
 		return
 	}
 	req.Header.Set("Content-Type", "application/vnd.github.v3+json")
@@ -24,9 +24,8 @@ func UpdateIssue(number string, id, token, param string) {
 
 	client := new(http.Client)
 	resp, err := client.Do(req)
-
 	fmt.Printf("Status:%s\n", resp.Status)
-	fmt.Printf("Body\n%v\n", resp.Body)
+
 	resp.Body.Close()
 }
 

@@ -1,77 +1,89 @@
 package main
 
 import (
-	"ch4/ex4_11/github"
+	"ch4/ex4_11a/github"
 	"fmt"
+	"io/ioutil"
 	"os"
-	"strconv"
+	"os/exec"
+
+	"github.com/joho/godotenv"
 )
 
 func main() {
 	length := len(os.Args)
-	if length < 2 || length > 8 {
-		fmt.Println("Invalid Number of Argument.")
+	if !(length == 2 || length == 3 || length == 4) {
+		fmt.Fprint(os.Stderr, fmt.Sprintf("invalid number of args. \n"))
 		displayHowToUse()
 		os.Exit(1)
 	}
+	if !(os.Args[1] == "-c" || os.Args[1] == "-r" || os.Args[1] == "-u" || os.Args[1] == "-d" || os.Args[1] == "-uc") {
+		fmt.Fprint(os.Stderr, fmt.Sprintf("invalid option. \n"))
+		displayHowToUse()
+		os.Exit(1)
+	}
+
+	err := godotenv.Load("github.env")
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error loading .env file")
+		os.Exit(1)
+	}
+
+	gitHubID := os.Getenv("GITHUB_ID")
+	token := os.Getenv("GITHUB_TOKEN")
+
 	if os.Args[1] == "-c" {
-		if length == 7 {
-			json_str := "{" + strconv.Quote("title") + ":" + strconv.Quote(os.Args[4])
-			json_str += "," + strconv.Quote("body") + ":" + strconv.Quote(os.Args[5])
-			json_str += "," + strconv.Quote("labels") + ":" + "[" + strconv.Quote(os.Args[6]) + "]"
-			json_str += "}"
-			fmt.Printf("%s\n", json_str)
-			github.CreateIssue(os.Args[2], os.Args[3], json_str)
-		} else {
-			fmt.Println("Invalid Number of Argument.")
-			fmt.Println("./issue -c GitHubID Token Title Body Labels")
+		jsonStr, err := inputFromEditor(os.Args[2])
+		if err != nil {
+			fmt.Fprint(os.Stderr, "input from editor failed")
 			os.Exit(1)
 		}
+		github.CreateIssue(gitHubID, token, jsonStr)
 	} else if os.Args[1] == "-r" {
 		github.ReadIssues()
 	} else if os.Args[1] == "-u" {
-		if length == 8 {
-			json_str := "{" + strconv.Quote("title") + ":" + strconv.Quote(os.Args[5])
-			json_str += "," + strconv.Quote("body") + ":" + strconv.Quote(os.Args[6])
-			json_str += "," + strconv.Quote("labels") + ":" + "[" + strconv.Quote(os.Args[7]) + "]"
-			json_str += "}"
-			fmt.Printf("%s\n", json_str)
-			github.UpdateIssue(os.Args[2], os.Args[3], os.Args[4], json_str)
-		} else {
-			fmt.Println("Invalid Number of Argument.")
-			fmt.Println("./issue -u IssueNo GitHubID Token Title Body Labels")
+		jsonStr, err := inputFromEditor(os.Args[3])
+		if err != nil {
+			fmt.Fprint(os.Stderr, "input from editor failed")
 			os.Exit(1)
 		}
+		issueNo := os.Args[2]
+		github.UpdateIssue(issueNo, gitHubID, token, jsonStr)
 	} else if os.Args[1] == "-uc" {
-		if length == 6 {
-			json_str := "{" + strconv.Quote("body") + ":" + strconv.Quote(os.Args[5])
-			json_str += "}"
-			fmt.Printf("%s\n", json_str)
-			github.CommentIssue(os.Args[2], os.Args[3], os.Args[4], json_str)
-		} else {
-			fmt.Println("Invalid Number of Argument.")
-			fmt.Println("./issue -uc IssueNo GitHubID BodyOfComment")
+		jsonStr, err := inputFromEditor(os.Args[3])
+		if err != nil {
+			fmt.Fprint(os.Stderr, "input from editor failed")
 			os.Exit(1)
 		}
+		issueNo := os.Args[2]
+		github.CommentIssue(issueNo, gitHubID, token, jsonStr)
 	} else if os.Args[1] == "-d" {
-		if length == 5 {
-			github.CloseIssue(os.Args[2], os.Args[3], os.Args[4])
-		} else {
-			fmt.Println("Invalid Number of Argument.")
-			fmt.Println("./issue -d IssueNo GitHubID Token")
-			os.Exit(1)
-		}
-	} else {
-		fmt.Println("Invalid Option.")
-		displayHowToUse()
-		os.Exit(1)
+		issueNo := os.Args[2]
+		github.CloseIssue(issueNo, gitHubID, token)
 	}
 }
 
+func inputFromEditor(editor string) (string, error) {
+	cmd := exec.Command(editor, "tmp.txt")
+	cmd.Stdin = os.Stdin
+	cmd.Stdout = os.Stdout
+	err := cmd.Run()
+	if err != nil {
+		fmt.Fprint(os.Stderr, fmt.Sprintf("failed run command. %s\n", err.Error()))
+		return "", err
+	}
+	content, err := ioutil.ReadFile("tmp.txt")
+	if err != nil {
+		fmt.Fprint(os.Stderr, fmt.Sprintf("failed read content. %s\n", err.Error()))
+		return string(content), err
+	}
+	return string(content), nil
+}
+
 func displayHowToUse() {
-	fmt.Println("./issue -c GitHubID Token Title Body Labels")
+	fmt.Println("./issue -c editor")
 	fmt.Println("./issue -r")
-	fmt.Println("./issue -u IssueNo GitHubID Token Title Body Labels")
-	fmt.Println("./issue -uc IssueNo GitHubID BodyOfComment")
-	fmt.Println("./issue -d IssueNo GitHubID Token")
+	fmt.Println("./issue -u IssueNo editor")
+	fmt.Println("./issue -uc IssueNo editor")
+	fmt.Println("./issue -d IssueNo")
 }

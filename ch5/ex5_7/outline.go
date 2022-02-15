@@ -8,6 +8,7 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"net/http"
 	"os"
 	"strings"
@@ -15,6 +16,8 @@ import (
 
 	"golang.org/x/net/html"
 )
+
+var out io.Writer = os.Stdout
 
 func main() {
 	for _, url := range os.Args[1:] {

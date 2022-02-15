@@ -1,5 +1,5 @@
-module ch4/ex4_11a
+module ch4/ex4_11
 
 go 1.17
 
-require github.com/joho/godotenv v1.4.0 // indirect
+require github.com/joho/godotenv v1.4.0

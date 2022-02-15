@@ -1,7 +1,7 @@
 package main
 
 import (
-	"ch4/ex4_11a/github"
+	"ch4/ex4_11/github"
 	"fmt"
 	"io/ioutil"
 	"os"

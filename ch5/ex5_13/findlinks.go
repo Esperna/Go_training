@@ -44,6 +44,18 @@ func crawl(url string) []string {
 	if err != nil {
 		log.Print(err)
 	}
+	dirName := strings.Split(url, "https://")[1]
+	dirName = strings.Split(dirName, "/")[0]
+	if _, err = os.Stat(dirName); os.IsNotExist(err) {
+		err = os.Mkdir(dirName, 0644)
+		if err != nil {
+			log.Printf("making %s: %v", dirName, err)
+		}
+		err = os.Chmod(dirName, 0744)
+		if err != nil {
+			log.Printf("changing permmision of %s: %v", dirName, err)
+		}
+	}
 	for _, v := range list {
 		if strings.HasPrefix(v, url) {
 			resp, err := http.Get(v)
@@ -64,9 +76,7 @@ func crawl(url string) []string {
 			}
 			urlSplitDir := strings.Split(v, url)
 			slashSplitDir := strings.Split(strings.Join(urlSplitDir, ""), "/")
-			dirName := strings.Split(url, "https://")[1]
-			dirName = strings.Split(dirName, "/")[0]
-			dirPath := dirName
+			dirPath := dirName + "/"
 			for _, dir := range slashSplitDir {
 				if strings.HasSuffix(dir, ".html") {
 					break
@@ -76,6 +86,7 @@ func crawl(url string) []string {
 					dirPath += "/"
 				}
 				if _, err = os.Stat(dirPath); os.IsNotExist(err) {
+					fmt.Println(dirPath)
 					err = os.Mkdir(dirPath, 0644)
 					if err != nil {
 						log.Printf("making %s: %v", dirPath, err)

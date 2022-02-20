@@ -43,20 +43,28 @@ func main() {
 func topoSort(m map[string][]string) []string {
 	var order []string
 	seen := make(map[string]bool)
-	var visit func(item string)
+	var visitAll func(item string)
 
-	visit = func(item string) {
-		if !seen[item] {
-			seen[item] = true
-			for _, v := range m[item] {
-				visit(v)
-				order = append(order, item)
+	visitAll = func(item string) {
+		fmt.Printf("visit %v\n", item)
+		for _, v := range m[item] {
+			visitAll(v)
+			if !seen[v] {
+				seen[v] = true
+				order = append(order, v)
+				fmt.Printf("append %v\n", v)
+				break
 			}
 		}
-	}
+		if !seen[item] {
+			seen[item] = true
+			order = append(order, item)
+			fmt.Printf("append %v\n", item)
 
+		}
+	}
 	for k, _ := range m {
-		visit(k)
+		visitAll(k)
 	}
 	return order
 }

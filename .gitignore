@@ -28,3 +28,6 @@ dispCurrentFolder.go
 
 # Environment Variable file
 github.env
+
+# Mac specific file
+.DS_Store

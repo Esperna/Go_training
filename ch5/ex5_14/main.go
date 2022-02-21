@@ -40,9 +40,6 @@ func crawl(path string) []string {
 		if dir.IsDir() {
 			dirpath := path + dir.Name() + "/"
 			list = append(list, dirpath)
-			fmt.Printf("%s\n", dirpath)
-		} else {
-			fmt.Printf("%s%s\n", path, dir.Name())
 		}
 	}
 	return list

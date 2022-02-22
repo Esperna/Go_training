@@ -16,27 +16,34 @@ import (
 
 func main() {
 	for _, url := range os.Args[1:] {
-		outline(url)
+		resp, err := http.Get(url)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "http get failed: %v", err)
+			os.Exit(1)
+		}
+		defer resp.Body.Close()
+
+		doc, err := html.Parse(resp.Body)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "html parse failed: %v", err)
+			os.Exit(1)
+		}
+		images := ElementsByTagName(doc, "img")
+		headings := ElementsByTagName(doc, "h1", "h2", "h3", "h4")
+
+		for _, n := range images {
+			fmt.Printf("Data: %s\tNamespace: %s\tAttr: %v\n", n.Data, n.Namespace, n.Attr)
+		}
+		for _, n := range headings {
+			fmt.Printf("Data: %s\tNamespace: %s\tAttr: %v\n", n.Data, n.Namespace, n.Attr)
+		}
 	}
 }
 
-func outline(url string) error {
-	resp, err := http.Get(url)
-	if err != nil {
-		return err
-	}
-	defer resp.Body.Close()
-
-	doc, err := html.Parse(resp.Body)
-	if err != nil {
-		return err
-	}
-
-	//!+call
-	forEachNode(doc, startElement, endElement)
-	//!-call
-
-	return nil
+func ElementsByTagName(doc *html.Node, name ...string) []*html.Node {
+	var nodeList []*html.Node
+	nodeList = forEachNode(doc, startElement, endElement, name, nodeList)
+	return nodeList
 }
 
 //!+forEachNode
@@ -44,18 +51,21 @@ func outline(url string) error {
 // x in the tree rooted at n. Both functions are optional.
 // pre is called before the children are visited (preorder) and
 // post is called after (postorder).
-func forEachNode(n *html.Node, pre, post func(n *html.Node)) {
+func forEachNode(n *html.Node, pre, post func(n *html.Node, names []string) bool, names []string, nodeList []*html.Node) []*html.Node {
 	if pre != nil {
-		pre(n)
+		if pre(n, names) {
+			nodeList = append(nodeList, n)
+		}
 	}
 
 	for c := n.FirstChild; c != nil; c = c.NextSibling {
-		forEachNode(c, pre, post)
+		nodeList = forEachNode(c, pre, post, names, nodeList)
 	}
 
 	if post != nil {
-		post(n)
+		post(n, names)
 	}
+	return nodeList
 }
 
 //!-forEachNode
@@ -63,18 +73,25 @@ func forEachNode(n *html.Node, pre, post func(n *html.Node)) {
 //!+startend
 var depth int
 
-func startElement(n *html.Node) {
+func startElement(n *html.Node, names []string) bool {
 	if n.Type == html.ElementNode {
-		fmt.Printf("%*s<%s>\n", depth*2, "", n.Data)
+		//		fmt.Printf("%*s<%s>\n", depth*2, "", n.Data)
 		depth++
+		for _, name := range names {
+			if name == n.Data {
+				return true
+			}
+		}
 	}
+	return false
 }
 
-func endElement(n *html.Node) {
+func endElement(n *html.Node, names []string) bool {
 	if n.Type == html.ElementNode {
 		depth--
-		fmt.Printf("%*s</%s>\n", depth*2, "", n.Data)
+		//		fmt.Printf("%*s</%s>\n", depth*2, "", n.Data)
 	}
+	return false
 }
 
 //!-startend

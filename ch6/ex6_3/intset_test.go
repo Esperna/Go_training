@@ -159,3 +159,17 @@ func TestAddAll(t *testing.T) {
 		t.Errorf("x.String() != {1 2 3}, x.String() is %s", x.String())
 	}
 }
+
+func TestIntersectWith(t *testing.T) {
+	var x, y IntSet
+	x.Add(1)
+	x.Add(144)
+	x.Add(9)
+	y.Add(9)
+	y.Add(42)
+
+	x.IntersectWith(&y)
+	if x.String() != "{9}" {
+		t.Errorf("x.String() != {9}. x.String() is %s", x.String())
+	}
+}

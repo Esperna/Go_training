@@ -108,3 +108,6 @@ func (s *IntSet) AddAll(vals ...int) *IntSet {
 	}
 	return s
 }
+
+func (s *IntSet) IntersectWith(t *IntSet) {
+}

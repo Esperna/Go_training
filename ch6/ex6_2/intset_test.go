@@ -151,3 +151,11 @@ func TestCopy(t *testing.T) {
 		t.Errorf("y.String() != x.String(), y.String() is %s x.String() is %s", y.String(), x.String())
 	}
 }
+
+func TestAddAll(t *testing.T) {
+	var x IntSet
+	x.AddAll(1, 2, 3)
+	if x.String() != "{1 2 3}" {
+		t.Errorf("x.String() != {1 2 3}, x.String() is %s", x.String())
+	}
+}

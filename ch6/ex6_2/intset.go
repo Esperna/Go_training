@@ -101,3 +101,7 @@ func (s *IntSet) Copy() *IntSet {
 	copy(ret.words, s.words)
 	return &ret
 }
+
+func (s *IntSet) AddAll(...int) *IntSet {
+	return nil
+}

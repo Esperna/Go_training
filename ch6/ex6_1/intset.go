@@ -8,6 +8,7 @@ package intset
 
 import (
 	"bytes"
+	"ch6/ex6_1/popcount"
 	"fmt"
 )
 
@@ -71,3 +72,11 @@ func (s *IntSet) String() string {
 }
 
 //!-string
+
+func (s *IntSet) Len() int {
+	sum := 0
+	for _, word := range s.words {
+		sum += popcount.PopCount(word)
+	}
+	return sum
+}

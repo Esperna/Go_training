@@ -52,6 +52,23 @@ func TestExample_two(t *testing.T) {
 	// {[4398046511618 0 65536]}
 }
 
+func TestAdd(t *testing.T) {
+	var x IntSet
+	x.Add(1)
+	if x.String() != "{1}" {
+		t.Errorf("x.String() != {1}. x.String() is %s", x.String())
+	}
+	x.Add(144)
+	if x.String() != "{1 144}" {
+		t.Errorf("x.String() != {1 144}. x.String() is %s", x.String())
+	}
+	x.Add(9)
+	if x.String() != "{1 9 144}" {
+		t.Errorf("x.String() != {1 9 144}. x.String() is %s", x.String())
+	}
+
+}
+
 func TestLen(t *testing.T) {
 	var x IntSet
 	x.Add(1)

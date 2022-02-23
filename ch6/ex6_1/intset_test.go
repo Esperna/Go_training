@@ -138,3 +138,16 @@ func TestClear(t *testing.T) {
 		t.Errorf("x.String() != {}, x.String() is %s", x.String())
 	}
 }
+
+func TestCopy(t *testing.T) {
+	var x IntSet
+	x.Add(1)
+	x.Add(144)
+	x.Add(9)
+	x.Add(42)
+	var y *IntSet
+	y = x.Copy()
+	if y.String() != x.String() {
+		t.Errorf("y.String() != x.String(), y.String() is %s x.String() is %s", y.String(), x.String())
+	}
+}

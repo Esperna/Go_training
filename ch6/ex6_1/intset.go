@@ -94,3 +94,10 @@ func (s *IntSet) Clear() {
 		s.words[i] = 0
 	}
 }
+
+func (s *IntSet) Copy() *IntSet {
+	var ret IntSet
+	ret.words = make([]uint64, len(s.words))
+	copy(ret.words, s.words)
+	return &ret
+}

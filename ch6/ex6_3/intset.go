@@ -122,5 +122,9 @@ func (s *IntSet) IntersectWith(t *IntSet) {
 		for j := lengthT; j < lengthS; j++ {
 			s.words[j] = 0
 		}
+	} else {
+		for i, _ := range s.words {
+			s.words[i] &= t.words[i]
+		}
 	}
 }

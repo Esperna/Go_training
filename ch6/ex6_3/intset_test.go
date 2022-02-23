@@ -187,3 +187,16 @@ func TestIntersectWith(t *testing.T) {
 	}
 
 }
+func TestDifferenceWith(t *testing.T) {
+	var x, y IntSet
+	x.Add(1)
+	x.Add(144)
+	x.Add(9)
+	y.Add(9)
+	y.Add(42)
+
+	x.DifferenceWith(&y)
+	if x.String() != "{1 144}" {
+		t.Errorf("x.String() != {1 144}. x.String() is %s", x.String())
+	}
+}

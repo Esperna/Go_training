@@ -128,3 +128,5 @@ func (s *IntSet) IntersectWith(t *IntSet) {
 		}
 	}
 }
+func (s *IntSet) DifferenceWith(t *IntSet) {
+}

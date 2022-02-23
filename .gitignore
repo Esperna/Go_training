@@ -25,6 +25,7 @@ go.work
 
 # Local scriptfile
 dispCurrentFolder.go
+init.sh
 
 # Environment Variable file
 github.env

@@ -110,4 +110,17 @@ func (s *IntSet) AddAll(vals ...int) *IntSet {
 }
 
 func (s *IntSet) IntersectWith(t *IntSet) {
+	lengthS := len(s.words)
+	lengthT := len(t.words)
+
+	if lengthT < lengthS {
+		for i, word := range t.words {
+			if i < lengthT {
+				s.words[i] &= word
+			}
+		}
+		for j := lengthT; j < lengthS; j++ {
+			s.words[j] = 0
+		}
+	}
 }

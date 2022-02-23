@@ -121,4 +121,8 @@ func TestRemove(t *testing.T) {
 	if x.String() != "{1 42 144}" {
 		t.Errorf("x.String() != {1 42 144}, x.String() is %s", x.String())
 	}
+	x.Remove(9999)
+	if x.String() != "{1 42 144}" {
+		t.Errorf("x.String() != {1 42 144}, x.String() is %s", x.String())
+	}
 }

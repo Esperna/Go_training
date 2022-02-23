@@ -88,3 +88,6 @@ func (s *IntSet) Remove(x int) {
 	}
 	s.words[word] &= ^(1 << bit)
 }
+
+func (s *IntSet) Clear() {
+}

@@ -126,3 +126,15 @@ func TestRemove(t *testing.T) {
 		t.Errorf("x.String() != {1 42 144}, x.String() is %s", x.String())
 	}
 }
+
+func TestClear(t *testing.T) {
+	var x IntSet
+	x.Add(1)
+	x.Add(144)
+	x.Add(9)
+	x.Add(42)
+	x.Clear()
+	if x.String() != "{}" {
+		t.Errorf("x.String() != {}, x.String() is %s", x.String())
+	}
+}

@@ -80,3 +80,11 @@ func (s *IntSet) Len() int {
 	}
 	return sum
 }
+
+func (s *IntSet) Remove(x int) {
+	word, bit := x/64, uint(x%64)
+	if word >= len(s.words) {
+		return
+	}
+	s.words[word] &= ^(1 << bit)
+}

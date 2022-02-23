@@ -68,6 +68,20 @@ func TestAdd(t *testing.T) {
 	}
 }
 
+func TestHas(t *testing.T) {
+	var x IntSet
+	x.Add(1)
+	x.Add(144)
+	x.Add(9)
+	if !x.Has(9) {
+		t.Errorf("x.Has(9) != true. x.Has(9) is %t", x.Has(9))
+	}
+	if x.Has(123) {
+		t.Errorf("x.Has(123) != false. x.Has(123) is %t", x.Has(123))
+
+	}
+}
+
 func TestUnionWith(t *testing.T) {
 	var x, y IntSet
 	x.Add(1)

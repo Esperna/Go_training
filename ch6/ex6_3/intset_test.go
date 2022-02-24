@@ -226,4 +226,17 @@ func TestSymmetricDifference(t *testing.T) {
 		t.Errorf("x.String() != {1 42 144}. x.String() is %s", x.String())
 	}
 
+	var a, b IntSet
+	a.Add(1)
+	a.Add(144)
+	a.Add(9)
+	b.Add(9)
+	b.Add(42)
+	b.Add(144)
+	b.Add(256)
+	a.SymmetricDifference(&b)
+	if a.String() != "{1}" {
+		t.Errorf("a.String() != {1 42 256}. a.String() is %s", a.String())
+	}
+
 }

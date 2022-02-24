@@ -160,5 +160,8 @@ func (s *IntSet) SymmetricDifference(t *IntSet) {
 		for i, _ := range s.words {
 			s.words[i] ^= t.words[i]
 		}
+		for i := lengthS; i < lengthT; i++ {
+			s.words = append(s.words, t.words[i])
+		}
 	}
 }

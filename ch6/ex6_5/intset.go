@@ -8,28 +8,30 @@ package intset
 
 import (
 	"bytes"
-	"ch6/ex6_4/popcount"
+	"ch6/ex6_5/popcount"
 	"fmt"
 )
 
 //!+intset
 
+const uintBitNumber uint = 32 << (^uint(0) >> 63)
+
 // An IntSet is a set of small non-negative integers.
 // Its zero value represents the empty set.
 type IntSet struct {
-	words []uint64
+	words []uint
 }
 
 // Has reports whether the set contains the non-negative value x.
 func (s *IntSet) Has(x int) bool {
-	word, bit := x/64, uint(x%64)
-	return word < len(s.words) && s.words[word]&(1<<bit) != 0
+	word, bit := uint(x)/uintBitNumber, uint(x)%uintBitNumber
+	return int(word) < len(s.words) && s.words[word]&(1<<bit) != 0
 }
 
 // Add adds the non-negative value x to the set.
 func (s *IntSet) Add(x int) {
-	word, bit := x/64, uint(x%64)
-	for word >= len(s.words) {
+	word, bit := uint(x)/uintBitNumber, uint(x)%uintBitNumber
+	for int(word) >= len(s.words) {
 		s.words = append(s.words, 0)
 	}
 	s.words[word] |= 1 << bit
@@ -58,12 +60,12 @@ func (s *IntSet) String() string {
 		if word == 0 {
 			continue
 		}
-		for j := 0; j < 64; j++ {
+		for j := 0; j < int(uintBitNumber); j++ {
 			if word&(1<<uint(j)) != 0 {
 				if buf.Len() > len("{") {
 					buf.WriteByte(' ')
 				}
-				fmt.Fprintf(&buf, "%d", 64*i+j)
+				fmt.Fprintf(&buf, "%d", int(uintBitNumber)*i+j)
 			}
 		}
 	}
@@ -82,8 +84,8 @@ func (s *IntSet) Len() int {
 }
 
 func (s *IntSet) Remove(x int) {
-	word, bit := x/64, uint(x%64)
-	if word >= len(s.words) {
+	word, bit := uint(x)/uintBitNumber, uint(x)%uintBitNumber
+	if int(word) >= len(s.words) {
 		return
 	}
 	s.words[word] &= ^(1 << bit)
@@ -97,7 +99,7 @@ func (s *IntSet) Clear() {
 
 func (s *IntSet) Copy() *IntSet {
 	var ret IntSet
-	ret.words = make([]uint64, len(s.words))
+	ret.words = make([]uint, len(s.words))
 	copy(ret.words, s.words)
 	return &ret
 }
@@ -162,18 +164,18 @@ func (s *IntSet) SymmetricDifference(t *IntSet) {
 	}
 }
 
-func (s *IntSet) Elem() []uint64 {
-	var elem []uint64
-	var offset uint64
+func (s *IntSet) Elem() []uint {
+	var elem []uint
+	var offset uint
 	for _, word := range s.words {
-		for i := 0; i < 64; i++ {
-			mask := uint64(1)
+		for i := 0; i < int(uintBitNumber); i++ {
+			mask := uint(1)
 			if word&mask == 1 {
-				elem = append(elem, offset+uint64(i))
+				elem = append(elem, offset+uint(i))
 			}
 			word = word >> 1
 		}
-		offset += 64
+		offset += uintBitNumber
 	}
 	return elem
 }

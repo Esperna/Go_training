@@ -115,9 +115,7 @@ func (s *IntSet) IntersectWith(t *IntSet) {
 
 	if lengthT < lengthS {
 		for i, word := range t.words {
-			if i < lengthT {
-				s.words[i] &= word
-			}
+			s.words[i] &= word
 		}
 		for j := lengthT; j < lengthS; j++ {
 			s.words[j] = 0
@@ -134,10 +132,8 @@ func (s *IntSet) DifferenceWith(t *IntSet) {
 
 	if lengthT < lengthS {
 		for i, word := range t.words {
-			if i < lengthT {
-				mask := s.words[i] & word
-				s.words[i] &= ^mask
-			}
+			mask := s.words[i] & word
+			s.words[i] &= ^mask
 		}
 	} else {
 		for i, _ := range s.words {

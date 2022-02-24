@@ -235,7 +235,7 @@ func TestSymmetricDifference(t *testing.T) {
 	b.Add(144)
 	b.Add(256)
 	a.SymmetricDifference(&b)
-	if a.String() != "{1}" {
+	if a.String() != "{1 42 256}" {
 		t.Errorf("a.String() != {1 42 256}. a.String() is %s", a.String())
 	}
 

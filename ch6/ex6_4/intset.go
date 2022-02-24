@@ -126,6 +126,7 @@ func (s *IntSet) IntersectWith(t *IntSet) {
 		}
 	}
 }
+
 func (s *IntSet) DifferenceWith(t *IntSet) {
 	lengthS := len(s.words)
 	lengthT := len(t.words)
@@ -142,6 +143,7 @@ func (s *IntSet) DifferenceWith(t *IntSet) {
 		}
 	}
 }
+
 func (s *IntSet) SymmetricDifference(t *IntSet) {
 	lengthS := len(s.words)
 	lengthT := len(t.words)
@@ -158,4 +160,8 @@ func (s *IntSet) SymmetricDifference(t *IntSet) {
 			s.words = append(s.words, t.words[i])
 		}
 	}
+}
+
+func (s *IntSet) Elem() []int {
+	return nil
 }

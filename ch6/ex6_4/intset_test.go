@@ -213,6 +213,7 @@ func TestDifferenceWith(t *testing.T) {
 		t.Errorf("a.String() != {1}. a.String() is %s", a.String())
 	}
 }
+
 func TestSymmetricDifference(t *testing.T) {
 	var x, y IntSet
 	x.Add(1)
@@ -239,4 +240,15 @@ func TestSymmetricDifference(t *testing.T) {
 		t.Errorf("a.String() != {1 42 256}. a.String() is %s", a.String())
 	}
 
+}
+
+func TestElem(t *testing.T) {
+	var x IntSet
+	x.Add(1)
+	x.Add(144)
+	x.Add(9)
+
+	if len(x.Elem()) != 3 {
+		t.Errorf("len(x.Elem()) != 3. len(x.Elem()) is %d", len(x.Elem()))
+	}
 }

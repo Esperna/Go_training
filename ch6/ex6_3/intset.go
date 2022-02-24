@@ -152,9 +152,7 @@ func (s *IntSet) SymmetricDifference(t *IntSet) {
 
 	if lengthT < lengthS {
 		for i, word := range t.words {
-			if i < lengthT {
-				s.words[i] ^= word
-			}
+			s.words[i] ^= word
 		}
 	} else {
 		for i, _ := range s.words {

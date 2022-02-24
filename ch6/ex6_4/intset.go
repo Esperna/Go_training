@@ -164,14 +164,16 @@ func (s *IntSet) SymmetricDifference(t *IntSet) {
 
 func (s *IntSet) Elem() []uint64 {
 	var elem []uint64
+	var offset uint64
 	for _, word := range s.words {
 		for i := 0; i < 64; i++ {
 			mask := uint64(1)
 			if word&mask == 1 {
-				elem = append(elem, 1<<i)
+				elem = append(elem, offset+uint64(i))
 			}
 			word = word >> 1
 		}
+		offset += 64
 	}
 	return elem
 }

@@ -247,8 +247,13 @@ func TestElem(t *testing.T) {
 	x.Add(1)
 	x.Add(144)
 	x.Add(9)
-
 	if len(x.Elem()) != 3 {
 		t.Errorf("len(x.Elem()) != 3. len(x.Elem()) is %d", len(x.Elem()))
+	}
+	y := []uint64{1, 9, 144}
+	for i, _ := range x.Elem() {
+		if x.Elem()[i] != y[i] {
+			t.Errorf("x.Elem != {1, 9, 144}. x.Eleme[%d] is %d", i, x.Elem()[i])
+		}
 	}
 }

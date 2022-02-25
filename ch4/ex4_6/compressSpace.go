@@ -13,9 +13,6 @@ func main() {
 		os.Exit(1)
 	}
 	b := []byte(os.Args[1])
-	for i, r := range os.Args[1] {
-		fmt.Printf("%d\t%q\t%d\n", i, r, r)
-	}
 	b = compressUnicodeSpaces(b)
 	fmt.Println(string(b))
 }

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"unicode"
+	"unicode/utf8"
 )
 
 func main() {
@@ -19,18 +20,15 @@ func main() {
 
 func compressUnicodeSpaces(b []byte) []byte {
 	for i := 0; i < len(b); {
-		isASCII := (b[i] >> 7) == 0
-		is2Byte := (b[i] >> 5) == 0b110
-		is3Byte := (b[i] >> 5) == 0b111
-		if isASCII {
-			if unicode.IsSpace(rune(b[i])) {
+		r, size := utf8.DecodeRune(b[i:])
+		if size == 1 {
+			if unicode.IsSpace(r) {
 				b[i] = ' '
 			}
 			i++
-		} else if is2Byte {
+		} else if size == 2 {
 			if i+1 < len(b) {
-				r := []rune(string(b[i : i+2]))
-				if unicode.IsSpace(r[0]) {
+				if unicode.IsSpace(r) {
 					b = remove(b, i+1)
 					b[i] = ' '
 					i++
@@ -38,10 +36,9 @@ func compressUnicodeSpaces(b []byte) []byte {
 					i += 2
 				}
 			}
-		} else if is3Byte {
+		} else if size == 3 {
 			if i+2 < len(b) {
-				r := []rune(string(b[i : i+3]))
-				if unicode.IsSpace(r[0]) {
+				if unicode.IsSpace(r) {
 					b = remove(b, i+2)
 					b = remove(b, i+1)
 					b[i] = ' '

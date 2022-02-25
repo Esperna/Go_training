@@ -22,12 +22,19 @@ func compressUnicodeSpaces(b []byte) []byte {
 	for i := 0; i < len(b); {
 		r, size := utf8.DecodeRune(b[i:])
 		if size == 1 {
-			if unicode.IsSpace(r) {
-				b[i] = ' '
+			if i+size-1 < len(b) {
+				if unicode.IsSpace(r) {
+					for j := i + size - 1; j > i; j-- {
+						b = remove(b, j)
+					}
+					b[i] = ' '
+					i++
+				} else {
+					i += size
+				}
 			}
-			i += size
 		} else if size == 2 {
-			if i+1 < len(b) {
+			if i+size-1 < len(b) {
 				if unicode.IsSpace(r) {
 					for j := i + size - 1; j > i; j-- {
 						b = remove(b, j)
@@ -39,7 +46,7 @@ func compressUnicodeSpaces(b []byte) []byte {
 				}
 			}
 		} else if size == 3 {
-			if i+2 < len(b) {
+			if i+size-1 < len(b) {
 				if unicode.IsSpace(r) {
 					for j := i + size - 1; j > i; j-- {
 						b = remove(b, j)
@@ -51,7 +58,7 @@ func compressUnicodeSpaces(b []byte) []byte {
 				}
 			}
 		} else if size == 4 {
-			if i+3 < len(b) {
+			if i+size-1 < len(b) {
 				if unicode.IsSpace(r) {
 					for j := i + size - 1; j > i; j-- {
 						b = remove(b, j)

@@ -27,7 +27,7 @@ func compressUnicodeSpaces(b []byte) []byte {
 		is3Byte := (b[i] >> 5) == 0b111
 		if isASCII {
 			if unicode.IsSpace(rune(b[i])) {
-				b[i] = 0x20 //不要？
+				b[i] = ' '
 			}
 			i++
 		} else if is2Byte {
@@ -35,7 +35,7 @@ func compressUnicodeSpaces(b []byte) []byte {
 				r := []rune(string(b[i : i+2]))
 				if unicode.IsSpace(r[0]) {
 					b = remove(b, i+1)
-					b[i] = 0x20
+					b[i] = ' '
 					i++
 				} else {
 					i += 2
@@ -47,7 +47,7 @@ func compressUnicodeSpaces(b []byte) []byte {
 				if unicode.IsSpace(r[0]) {
 					b = remove(b, i+2)
 					b = remove(b, i+1)
-					b[i] = 0x20
+					b[i] = ' '
 					i++
 				} else {
 					i += 3

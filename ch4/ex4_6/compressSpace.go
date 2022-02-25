@@ -29,7 +29,9 @@ func compressUnicodeSpaces(b []byte) []byte {
 		} else if size == 2 {
 			if i+1 < len(b) {
 				if unicode.IsSpace(r) {
-					b = remove(b, i+1)
+					for j := i + size - 1; j > i; j-- {
+						b = remove(b, j)
+					}
 					b[i] = ' '
 					i++
 				} else {
@@ -39,8 +41,9 @@ func compressUnicodeSpaces(b []byte) []byte {
 		} else if size == 3 {
 			if i+2 < len(b) {
 				if unicode.IsSpace(r) {
-					b = remove(b, i+2)
-					b = remove(b, i+1)
+					for j := i + size - 1; j > i; j-- {
+						b = remove(b, j)
+					}
 					b[i] = ' '
 					i++
 				} else {
@@ -50,9 +53,9 @@ func compressUnicodeSpaces(b []byte) []byte {
 		} else if size == 4 {
 			if i+3 < len(b) {
 				if unicode.IsSpace(r) {
-					b = remove(b, i+3)
-					b = remove(b, i+2)
-					b = remove(b, i+1)
+					for j := i + size - 1; j > i; j-- {
+						b = remove(b, j)
+					}
 					b[i] = ' '
 					i++
 				} else {

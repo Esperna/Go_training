@@ -47,8 +47,20 @@ func compressUnicodeSpaces(b []byte) []byte {
 					i += size
 				}
 			}
+		} else if size == 4 {
+			if i+3 < len(b) {
+				if unicode.IsSpace(r) {
+					b = remove(b, i+3)
+					b = remove(b, i+2)
+					b = remove(b, i+1)
+					b[i] = ' '
+					i++
+				} else {
+					i += size
+				}
+			}
 		} else {
-			i++
+			i += size
 		}
 	}
 	b = deleteDupSpace(b)

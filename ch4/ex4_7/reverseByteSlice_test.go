@@ -17,7 +17,27 @@ func TestReverse(t *testing.T) {
 
 	for _, test := range tests {
 		b := []byte(test.input)
-		b = reverse(b)
+		reverse(b)
+		if string(b) != test.want {
+			t.Errorf("string(b) != %s. string(b) is %s", test.want, string(b))
+		}
+	}
+}
+
+func TestRotate(t *testing.T) {
+	var tests = []struct {
+		input     string
+		rotateNum int
+		want      string
+	}{
+		{"abc", 1, "bca"},
+		{"abc", 2, "cab"},
+		{"あbc", 3, "bcあ"},
+	}
+
+	for _, test := range tests {
+		b := []byte(test.input)
+		rotate(b, test.rotateNum)
 		if string(b) != test.want {
 			t.Errorf("string(b) != %s. string(b) is %s", test.want, string(b))
 		}

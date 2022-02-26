@@ -21,9 +21,10 @@ func main() {
 func compressUnicodeSpaces(b []byte) []byte {
 	for i := 0; i < len(b); {
 		r, size := utf8.DecodeRune(b[i:])
-		if size < 1 || size > 4 {
-			return nil
+		if r == utf8.RuneError && size == 1 {
+			panic(fmt.Sprintf("Invalid byte slice %q %d", r, size))
 		}
+
 		if i+size-1 < len(b) {
 			if unicode.IsSpace(r) {
 				for j := i + size - 1; j > i; j-- {

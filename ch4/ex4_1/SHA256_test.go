@@ -6,7 +6,6 @@ import (
 )
 
 func TestCountBitDiff(t *testing.T) {
-
 	var tests = []struct {
 		input1, input2 []byte
 		want           int

@@ -40,17 +40,18 @@ func main() {
 
 func rotate(s []int, k int) []int {
 	n := len(s)
-	l := gcd(k, n)
+	invK := n - k
+	l := gcd(invK, n)
 	m := n / l
 	for i := 0; i < l; i++ {
 		var buf1, buf2 int
 		for j := 0; j < m; j++ {
 			if j == 0 {
-				buf1 = s[(i+k*(j+1))%n]
-				s[(i+k*(j+1))%n] = s[(i+k*j)%n]
+				buf1 = s[(i+invK*(j+1))%n]
+				s[(i+invK*(j+1))%n] = s[(i+invK*j)%n]
 			} else {
-				buf2 = s[(i+k*(j+1))%n]
-				s[(i+k*(j+1))%n] = buf1
+				buf2 = s[(i+invK*(j+1))%n]
+				s[(i+invK*(j+1))%n] = buf1
 				buf1 = buf2
 			}
 		}

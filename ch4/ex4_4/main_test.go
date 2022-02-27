@@ -11,6 +11,7 @@ func TestLeftRotate(t *testing.T) {
 		{[]int{1, 2, 3}, 1, []int{2, 3, 1}},
 		{[]int{1, 2, 3, 4, 5, 6, 7, 8}, 5, []int{6, 7, 8, 1, 2, 3, 4, 5}},
 		{[]int{1, 2, 3}, 0, []int{1, 2, 3}},
+		{[]int{1, 2, 3}, -1, []int{3, 1, 2}},
 	}
 	for _, test := range tests {
 		outputs := rotate(test.inputs, test.rotNumber)

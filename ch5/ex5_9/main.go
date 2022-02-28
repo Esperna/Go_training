@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"regexp"
 	"strconv"
 	"strings"
 )
@@ -19,21 +20,18 @@ func main() {
 
 func Length(s string) string {
 	return strconv.Itoa(len(s))
+	//return strings.ToUpper(s)
 }
 
 func expand(s string, f func(string) string) string {
-	slices := strings.Split(s, "$")
-	var str string
-	for _, item := range slices {
-		str += f(item)
+	rep := regexp.MustCompile(`\$[A-Za-z]*`)
+	strSlices := rep.FindAllStringSubmatch(s, -1)
+	for _, strSlice := range strSlices {
+		str := strings.Join(strSlice, "")
+		str = strings.Replace(str, "$", "", 1)
+		s = strings.Replace(s, str, f(str), 1)
+		s = strings.Replace(s, "$", "", 1)
 	}
-	if HasPrefix(s, "$") {
-		return str[1:]
-	} else {
-		return slices[0] + str[1:]
-	}
-}
 
-func HasPrefix(s, prefix string) bool {
-	return len(s) >= len(prefix) && s[:len(prefix)] == prefix
+	return s
 }

@@ -98,3 +98,22 @@ func TestLineCounterValue(t *testing.T) {
 		}
 	}
 }
+
+func TestCountingWriter(t *testing.T) {
+	var c WordCounter
+	var tests = []struct {
+		input string
+		want  int
+	}{
+		{"", 0},
+		{"The Yellow Monkey", 3},
+		{"Red Hot Chili Peppers", 7},
+	}
+	for _, test := range tests {
+		c.Write([]byte(test.input))
+		_, pSize := CountingWriter(&c)
+		if *pSize != 0 {
+			t.Errorf("size != test.want. size:%d test.want:%d", pSize, test.want)
+		}
+	}
+}

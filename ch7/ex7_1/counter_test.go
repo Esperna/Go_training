@@ -42,7 +42,6 @@ func TestCounterWrite(t *testing.T) {
 			t.Errorf("length != test.want. length:%d test.want:%d", length, test.want)
 		}
 	}
-
 }
 
 func TestByteCounterValue(t *testing.T) {
@@ -57,8 +56,25 @@ func TestByteCounterValue(t *testing.T) {
 	var c ByteCounter
 	for _, test := range tests {
 		c.Write([]byte(test.input))
-
 		if c != ByteCounter(test.want) {
+			t.Errorf("count != test.want. count:%d test.want:%d", c, test.want)
+		}
+	}
+}
+
+func TestWordCounterValue(t *testing.T) {
+	var tests = []struct {
+		input string
+		want  int
+	}{
+		{"The Yellow Monkey", 3},
+		{"The Yellow Monkey", 6},
+		{"The Yellow Monkey", 9},
+	}
+	var c WordCounter
+	for _, test := range tests {
+		c.Write([]byte(test.input))
+		if c != WordCounter(test.want) {
 			t.Errorf("count != test.want. count:%d test.want:%d", c, test.want)
 		}
 	}

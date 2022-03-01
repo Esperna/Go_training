@@ -9,6 +9,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"io"
 	"os"
 	"strings"
 )
@@ -48,6 +49,12 @@ func countByFunc(p []byte, f bufio.SplitFunc) (count int) {
 		fmt.Fprintln(os.Stderr, "reading input:", err)
 	}
 	return
+}
+
+func CountingWriter(w io.Writer) (io.Writer, *int64) {
+	n, _ := w.Write([]byte(""))
+	m := int64(n)
+	return w, &m
 }
 
 func main() {

@@ -22,9 +22,15 @@ func (c *ByteCounter) Write(p []byte) (int, error) {
 type WordCounter int
 
 func (c *WordCounter) Write(p []byte) (int, error) {
-	advance, _, _ := bufio.ScanWords(p, false)
-	*c += WordCounter(advance - 1)
-	return int(*c), nil
+	s := string(p)
+	scanner := bufio.NewScanner(strings.NewReader(s))
+	scanner.Split(bufio.ScanWords)
+	count := 0
+	for scanner.Scan() {
+		count++
+	}
+	*c += WordCounter(count)
+	return count, nil
 }
 
 type LineCounter int
@@ -33,10 +39,12 @@ func (c *LineCounter) Write(p []byte) (int, error) {
 	s := string(p)
 	scanner := bufio.NewScanner(strings.NewReader(s))
 	scanner.Split(bufio.ScanLines)
+	count := 0
 	for scanner.Scan() {
-		(*c)++
+		count++
 	}
-	return int(*c), nil
+	*c += LineCounter(count)
+	return count, nil
 }
 
 func main() {

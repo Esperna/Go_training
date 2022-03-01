@@ -44,3 +44,22 @@ func TestCounterWrite(t *testing.T) {
 	}
 
 }
+
+func TestByteCounterValue(t *testing.T) {
+	var tests = []struct {
+		input string
+		want  int
+	}{
+		{"hello", 5},
+		{"hello", 10},
+		{"hello", 15},
+	}
+	var c ByteCounter
+	for _, test := range tests {
+		c.Write([]byte(test.input))
+
+		if c != ByteCounter(test.want) {
+			t.Errorf("count != test.want. count:%d test.want:%d", c, test.want)
+		}
+	}
+}

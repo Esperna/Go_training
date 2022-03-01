@@ -79,3 +79,22 @@ func TestWordCounterValue(t *testing.T) {
 		}
 	}
 }
+
+func TestLineCounterValue(t *testing.T) {
+	var tests = []struct {
+		input string
+		want  int
+	}{
+		{"This is a pen.\nThis is an apple.\nAh, apple pen.\n", 3},
+		{"This is a pen.\nThis is an apple.\nAh, apple pen.\n", 6},
+		{"This is a pen.\nThis is an apple.\nAh, apple pen.\n", 9},
+		{"This is a pen.\nThis is an apple.\nAh, apple pen.\n", 12},
+	}
+	var c LineCounter
+	for _, test := range tests {
+		c.Write([]byte(test.input))
+		if c != LineCounter(test.want) {
+			t.Errorf("count != test.want. count:%d test.want:%d", c, test.want)
+		}
+	}
+}

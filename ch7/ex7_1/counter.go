@@ -9,9 +9,8 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"strings"
 )
-
-//!+bytecounter
 
 type ByteCounter int
 
@@ -20,12 +19,23 @@ func (c *ByteCounter) Write(p []byte) (int, error) {
 	return len(p), nil
 }
 
-//!-bytecounter
 type WordCounter int
 
 func (c *WordCounter) Write(p []byte) (int, error) {
 	advance, _, _ := bufio.ScanWords(p, false)
 	*c += WordCounter(advance - 1)
+	return int(*c), nil
+}
+
+type LineCounter int
+
+func (c *LineCounter) Write(p []byte) (int, error) {
+	s := string(p)
+	scanner := bufio.NewScanner(strings.NewReader(s))
+	scanner.Split(bufio.ScanLines)
+	for scanner.Scan() {
+		(*c)++
+	}
 	return int(*c), nil
 }
 

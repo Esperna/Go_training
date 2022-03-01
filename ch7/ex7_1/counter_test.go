@@ -30,3 +30,17 @@ func TestWordCounterWrite(t *testing.T) {
 	}
 	fmt.Printf("TestWordCounterWrite result:%d\n", c)
 }
+
+func TestLineCounterWrite(t *testing.T) {
+	var c LineCounter
+	length, err := c.Write([]byte("This is a pen.\nThis ia an apple.\nAh, apple pen.\n"))
+	if err != nil {
+		t.Errorf("write failed. %s ", err)
+	}
+	if length != 3 {
+		t.Errorf("length != 3. length:%d", length)
+
+	}
+	fmt.Printf("TestLineCounterWrite result:%d\n", c)
+
+}

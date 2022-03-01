@@ -7,6 +7,7 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 )
 
@@ -23,7 +24,9 @@ func (c *ByteCounter) Write(p []byte) (int, error) {
 type WordCounter int
 
 func (c *WordCounter) Write(p []byte) (int, error) {
-	return 0, nil
+	advance, _, _ := bufio.ScanWords(p, false)
+	*c += WordCounter(advance - 1)
+	return int(*c), nil
 }
 
 func main() {

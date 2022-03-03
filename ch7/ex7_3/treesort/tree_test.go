@@ -11,6 +11,7 @@ func TestString(t *testing.T) {
 	}{
 		{[]int{1}, "{1}"},
 		{[]int{1, 2}, "{1 2}"},
+		{[]int{3, 2, 1}, "{1 2 3}"},
 	}
 	for _, test := range tests {
 		var root *tree

@@ -65,7 +65,6 @@ func (t *tree) treeToString() string {
 	if t.left != nil {
 		str = t.left.treeToString()
 		str += " "
-		panic("")
 	}
 	str = str + fmt.Sprintf("%d", t.value)
 	if t.right != nil {

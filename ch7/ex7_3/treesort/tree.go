@@ -59,10 +59,9 @@ func (t *tree) treeToString() string {
 		return ""
 	}
 	if t.left != nil {
-		str = t.left.treeToString()
-		str += " "
+		str += t.left.treeToString() + " "
 	}
-	str = str + fmt.Sprintf("%d", t.value)
+	str += fmt.Sprintf("%d", t.value)
 	if t.right != nil {
 		str += " " + t.right.treeToString()
 	}

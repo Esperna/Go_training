@@ -6,6 +6,8 @@
 // Package treesort provides insertion sort using an unbalanced binary tree.
 package treesort
 
+import "fmt"
+
 //!+
 type tree struct {
 	value       int
@@ -45,6 +47,31 @@ func add(t *tree, value int) *tree {
 		t.right = add(t.right, value)
 	}
 	return t
+}
+
+func (t *tree) String() string {
+	var str string
+	str += "{"
+	str += t.treeToString()
+	str += "}"
+	return str
+}
+
+func (t *tree) treeToString() string {
+	var str string
+	if t == nil {
+		return ""
+	}
+	if t.left != nil {
+		str = t.left.treeToString()
+		str += " "
+		panic("")
+	}
+	str = str + fmt.Sprintf("%d", t.value)
+	if t.right != nil {
+		str += " " + t.right.treeToString()
+	}
+	return str
 }
 
 //!-

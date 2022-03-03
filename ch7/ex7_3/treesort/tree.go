@@ -50,11 +50,7 @@ func add(t *tree, value int) *tree {
 }
 
 func (t *tree) String() string {
-	var str string
-	str += "{"
-	str += t.treeToString()
-	str += "}"
-	return str
+	return "{" + t.treeToString() + "}"
 }
 
 func (t *tree) treeToString() string {

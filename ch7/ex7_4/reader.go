@@ -13,13 +13,19 @@ type Reader struct {
 }
 
 func main() {
-	rd := NewReader("<html><title>under construction</title></html>")
+	rd := NewReader("<html><head><title>under construction</title></head><body></body></html>")
 	doc, err := html.Parse(rd)
 	if err != nil {
 		fmt.Errorf("html parse failed:%s", err)
 	}
-	fmt.Printf("First node type: %d\n", doc.Type)
+	dispNode(nil, doc)
+}
 
+func dispNode(stack []string, n *html.Node) {
+	fmt.Printf("Type: %v, DataAtom: %v, Data: %s, Namespace: %s, Attr: %v\n", n.Type, n.DataAtom, n.Data, n.Namespace, n.Attr)
+	for c := n.FirstChild; c != nil; c = c.NextSibling {
+		dispNode(stack, c)
+	}
 }
 
 func NewReader(s string) *Reader {

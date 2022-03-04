@@ -29,15 +29,15 @@ func NewReader(s string) *Reader {
 }
 
 func (r *Reader) Read(b []byte) (n int, err error) {
-	if r.i >= int64(len(r.s)) {
-		return 0, io.EOF
-	}
 	length := len(b)
 	if length == 0 {
 		return 0, nil
 	} else if length < 0 {
 		err = fmt.Errorf("invalid byte length")
 		return n, err
+	}
+	if r.i >= int64(len(r.s)) {
+		return 0, io.EOF
 	}
 
 	r.s = string(b)

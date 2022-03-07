@@ -13,9 +13,30 @@ func TestSum(t *testing.T) {
 		{10, []int{1, 2, 3, 4}},
 	}
 	for _, test := range tests {
-		actual := sum(test.given...)
+		actual, _ := sum(test.given...)
 		if actual != test.expected {
 			t.Errorf("(%v): expected %d, actual %d", test.given, test.expected, actual)
+		}
+	}
+}
+
+func TestSumInvalid(t *testing.T) {
+	var tests = []struct {
+		expected int
+		errStr   string
+		given    []int
+	}{
+		{0, "no arguments", []int{}},
+	}
+	for _, test := range tests {
+		_, err := sum(test.given...)
+		if err == nil {
+			t.Errorf("(%v): expected not nil, actual %v", test.given, err)
+		} else {
+			str := err.Error()
+			if str != test.errStr {
+				t.Errorf("(%v): expected %s, actual %s", test.given, test.errStr, str)
+			}
 		}
 	}
 }

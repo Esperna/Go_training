@@ -19,3 +19,20 @@ func TestSum(t *testing.T) {
 		}
 	}
 }
+
+func TestMax(t *testing.T) {
+	var tests = []struct {
+		expected int
+		given    []int
+	}{
+		{5, []int{5}},
+		{777, []int{1, 0, 777, 0}},
+	}
+	for _, test := range tests {
+		actual := max(test.given...)
+		if actual != test.expected {
+			t.Errorf("(%v): expected %d, actual %d", test.given, test.expected, actual)
+		}
+
+	}
+}

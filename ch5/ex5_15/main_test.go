@@ -61,6 +61,8 @@ func TestFuncAtLeast1Argument(t *testing.T) {
 	}{
 		{5, 5, []int{}, maxAtLeast1Arg},
 		{777, 1, []int{0, 777, 5}, maxAtLeast1Arg},
+		{5, 5, []int{}, minAtLeast1Arg},
+		{0, 1, []int{0, 777, 5}, minAtLeast1Arg},
 	}
 	for _, test := range tests {
 		actual := test.f(test.given1, test.given2...)

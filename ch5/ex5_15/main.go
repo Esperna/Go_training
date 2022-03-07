@@ -59,6 +59,16 @@ func maxAtLeast1Arg(val int, vals ...int) int {
 	return max
 }
 
+func minAtLeast1Arg(val int, vals ...int) int {
+	min := val
+	for _, val := range vals {
+		if val < min {
+			min = val
+		}
+	}
+	return min
+}
+
 //!-
 
 func main() {

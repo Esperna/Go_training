@@ -24,19 +24,17 @@ func sum(vals ...int) (total int, err error) {
 	return total, err
 }
 
-func max(vals ...int) int {
-	length := len(vals)
-	if length == 0 {
-		fmt.Fprintf(os.Stderr, "no vals:")
-		return 0
+func max(vals ...int) (max int, err error) {
+	if len(vals) == 0 {
+		return 0, fmt.Errorf("no arguments")
 	}
-	var max int = math.MinInt
+	max = math.MinInt
 	for _, val := range vals {
 		if max < val {
 			max = val
 		}
 	}
-	return max
+	return max, err
 }
 
 func min(vals ...int) int {

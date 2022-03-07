@@ -28,6 +28,7 @@ func TestInvalidArguments(t *testing.T) {
 		f        func(...int) (int, error)
 	}{
 		{0, "no arguments", []int{}, sum},
+		{0, "no arguments", []int{}, max},
 	}
 	for _, test := range tests {
 		_, err := test.f(test.given...)
@@ -51,7 +52,7 @@ func TestMax(t *testing.T) {
 		{777, []int{1, 0, 777, 5}},
 	}
 	for _, test := range tests {
-		actual := max(test.given...)
+		actual, _ := max(test.given...)
 		if actual != test.expected {
 			t.Errorf("(%v): expected %d, actual %d", test.given, test.expected, actual)
 		}

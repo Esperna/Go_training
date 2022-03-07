@@ -7,6 +7,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"net/http"
 	"os"
@@ -15,12 +16,10 @@ import (
 )
 
 func main() {
-	length := len(os.Args)
-	if length != 3 {
-		fmt.Fprintf(os.Stderr, "invalid number of args")
-		os.Exit(1)
-	}
-	resp, err := http.Get(os.Args[1])
+	url := flag.String("url", "", "URL")
+	id := flag.String("id", "", "html attribute key")
+	flag.Parse()
+	resp, err := http.Get(*url)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "html GET failed: %s", err)
 		os.Exit(1)
@@ -31,7 +30,7 @@ func main() {
 		fmt.Fprintf(os.Stderr, "html parse failed: %s", err)
 		os.Exit(1)
 	}
-	ElementByID(doc, os.Args[2])
+	ElementByID(doc, *id)
 }
 
 //!+forEachNode

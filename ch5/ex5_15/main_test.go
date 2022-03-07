@@ -20,30 +20,6 @@ func TestSum(t *testing.T) {
 	}
 }
 
-func TestInvalidArguments(t *testing.T) {
-	var tests = []struct {
-		expected int
-		errStr   string
-		given    []int
-		f        func(...int) (int, error)
-	}{
-		{0, "no arguments", []int{}, sum},
-		{0, "no arguments", []int{}, max},
-		{0, "no arguments", []int{}, min},
-	}
-	for _, test := range tests {
-		_, err := test.f(test.given...)
-		if err == nil {
-			t.Errorf("(%v): expected not nil, actual %v", test.given, err)
-		} else {
-			str := err.Error()
-			if str != test.errStr {
-				t.Errorf("(%v): expected %s, actual %s", test.given, test.errStr, str)
-			}
-		}
-	}
-}
-
 func TestMax(t *testing.T) {
 	var tests = []struct {
 		expected int
@@ -73,6 +49,30 @@ func TestMin(t *testing.T) {
 		actual, _ := min(test.given...)
 		if actual != test.expected {
 			t.Errorf("(%v): expected %d, actual %d", test.given, test.expected, actual)
+		}
+	}
+}
+
+func TestInvalidArguments(t *testing.T) {
+	var tests = []struct {
+		expected int
+		errStr   string
+		given    []int
+		f        func(...int) (int, error)
+	}{
+		{0, "no arguments", []int{}, sum},
+		{0, "no arguments", []int{}, max},
+		{0, "no arguments", []int{}, min},
+	}
+	for _, test := range tests {
+		_, err := test.f(test.given...)
+		if err == nil {
+			t.Errorf("(%v): expected not nil, actual %v", test.given, err)
+		} else {
+			str := err.Error()
+			if str != test.errStr {
+				t.Errorf("(%v): expected %s, actual %s", test.given, test.errStr, str)
+			}
 		}
 	}
 }

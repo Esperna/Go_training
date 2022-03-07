@@ -20,16 +20,17 @@ func TestSum(t *testing.T) {
 	}
 }
 
-func TestSumInvalid(t *testing.T) {
+func TestInvalidArguments(t *testing.T) {
 	var tests = []struct {
 		expected int
 		errStr   string
 		given    []int
+		f        func(...int) (int, error)
 	}{
-		{0, "no arguments", []int{}},
+		{0, "no arguments", []int{}, sum},
 	}
 	for _, test := range tests {
-		_, err := sum(test.given...)
+		_, err := test.f(test.given...)
 		if err == nil {
 			t.Errorf("(%v): expected not nil, actual %v", test.given, err)
 		} else {

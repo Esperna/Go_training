@@ -36,3 +36,18 @@ func TestMax(t *testing.T) {
 
 	}
 }
+
+func TestMin(t *testing.T) {
+	var tests = []struct {
+		expected int
+		given    []int
+	}{
+		{5, []int{5}},
+	}
+	for _, test := range tests {
+		actual := min(test.given...)
+		if actual != test.expected {
+			t.Errorf("(%v): expected %d, actual %d", test.given, test.expected, actual)
+		}
+	}
+}

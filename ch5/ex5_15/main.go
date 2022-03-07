@@ -12,15 +12,15 @@ import (
 )
 
 //!+
-func sum(vals ...int) (total int, err error) {
-	total = 0
+func sum(vals ...int) (int, error) {
 	if len(vals) == 0 {
 		return 0, fmt.Errorf("no arguments")
 	}
+	total := 0
 	for _, val := range vals {
 		total += val
 	}
-	return total, err
+	return total, nil
 }
 
 func max(vals ...int) (int, error) {

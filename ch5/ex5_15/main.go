@@ -36,17 +36,17 @@ func max(vals ...int) (int, error) {
 	return max, nil
 }
 
-func min(vals ...int) (min int, err error) {
+func min(vals ...int) (int, error) {
 	if len(vals) == 0 {
 		return 0, fmt.Errorf("no arguments")
 	}
-	min = math.MaxInt
+	min := math.MaxInt
 	for _, val := range vals {
 		if val < min {
 			min = val
 		}
 	}
-	return min, err
+	return min, nil
 }
 
 //!-

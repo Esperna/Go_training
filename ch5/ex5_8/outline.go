@@ -20,27 +20,18 @@ func main() {
 		fmt.Fprintf(os.Stderr, "invalid number of args")
 		os.Exit(1)
 	}
-	outline(os.Args[1], os.Args[2])
-
-}
-
-func outline(url string, id string) error {
-	resp, err := http.Get(url)
+	resp, err := http.Get(os.Args[1])
 	if err != nil {
-		return err
+		fmt.Fprintf(os.Stderr, "html GET failed: %s", err)
+		os.Exit(1)
 	}
 	defer resp.Body.Close()
-
 	doc, err := html.Parse(resp.Body)
 	if err != nil {
-		return err
+		fmt.Fprintf(os.Stderr, "html parse failed: %s", err)
+		os.Exit(1)
 	}
-
-	//!+call
-	forEachNode(doc, startElement, endElement, id)
-	//!-call
-
-	return nil
+	ElementByID(doc, os.Args[2])
 }
 
 //!+forEachNode
@@ -78,9 +69,10 @@ func startElement(n *html.Node, id string) bool {
 	if n.Type == html.ElementNode {
 		fmt.Printf("%*s<%s>\n", depth*2, "", n.Data)
 		depth++
-		node := ElementByID(n, id)
-		if node != nil {
-			return true
+		for _, attr := range n.Attr {
+			if attr.Key == id {
+				return true
+			}
 		}
 	}
 	return false
@@ -90,10 +82,6 @@ func endElement(n *html.Node, id string) bool {
 	if n.Type == html.ElementNode {
 		depth--
 		fmt.Printf("%*s</%s>\n", depth*2, "", n.Data)
-		node := ElementByID(n, id)
-		if node != nil {
-			return true
-		}
 	}
 	return false
 }
@@ -101,13 +89,6 @@ func endElement(n *html.Node, id string) bool {
 //!-startend
 
 func ElementByID(doc *html.Node, id string) *html.Node {
-	if doc.Type == html.ElementNode {
-		for _, script := range doc.Attr {
-			if script.Key == "id" && script.Val == id {
-				fmt.Printf("id MATCH %s\n", id)
-				return doc
-			}
-		}
-	}
-	return nil
+	forEachNode(doc, startElement, endElement, id)
+	return doc
 }

@@ -2,24 +2,16 @@ package main
 
 import (
 	"fmt"
-	"os"
 )
 
 func main() {
-	fmt.Println(Join())
-	fmt.Println(Join("1", " "))
-	fmt.Println(Join("1", "2", " "))
-	fmt.Println(Join("abc", "cde", "fgh", " "))
+	fmt.Println(Join(" ", "1"))
+	fmt.Println(Join(" ", "1", "2"))
+	fmt.Println(Join(" ", "abc", "cde", "fgh"))
 
 }
 
-func Join(elems ...string) string {
-	length := len(elems)
-	if length < 1 {
-		fmt.Fprintf(os.Stderr, "Invalid number of argument")
-		return ""
-	}
-	sep := elems[len(elems)-1]
+func Join(sep string, elems ...string) string {
 	sum := ""
 	for i, v := range elems {
 		sum += v

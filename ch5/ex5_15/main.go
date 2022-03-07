@@ -9,7 +9,6 @@ package main
 import (
 	"fmt"
 	"math"
-	"os"
 )
 
 //!+
@@ -37,19 +36,17 @@ func max(vals ...int) (max int, err error) {
 	return max, err
 }
 
-func min(vals ...int) int {
-	length := len(vals)
-	if length == 0 {
-		fmt.Fprintf(os.Stderr, "no vals:")
-		return 0
+func min(vals ...int) (min int, err error) {
+	if len(vals) == 0 {
+		return 0, fmt.Errorf("no arguments")
 	}
-	var min int = math.MaxInt
+	min = math.MaxInt
 	for _, val := range vals {
 		if val < min {
 			min = val
 		}
 	}
-	return min
+	return min, err
 }
 
 //!-

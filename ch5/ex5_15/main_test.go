@@ -29,6 +29,7 @@ func TestInvalidArguments(t *testing.T) {
 	}{
 		{0, "no arguments", []int{}, sum},
 		{0, "no arguments", []int{}, max},
+		{0, "no arguments", []int{}, min},
 	}
 	for _, test := range tests {
 		_, err := test.f(test.given...)
@@ -69,7 +70,7 @@ func TestMin(t *testing.T) {
 		{0, []int{1, 0, 777, 5}},
 	}
 	for _, test := range tests {
-		actual := min(test.given...)
+		actual, _ := min(test.given...)
 		if actual != test.expected {
 			t.Errorf("(%v): expected %d, actual %d", test.given, test.expected, actual)
 		}

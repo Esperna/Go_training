@@ -26,7 +26,7 @@ func TestMax(t *testing.T) {
 		given    []int
 	}{
 		{5, []int{5}},
-		{777, []int{1, 0, 777, 0}},
+		{777, []int{1, 0, 777, 5}},
 	}
 	for _, test := range tests {
 		actual := max(test.given...)
@@ -43,6 +43,7 @@ func TestMin(t *testing.T) {
 		given    []int
 	}{
 		{5, []int{5}},
+		{0, []int{1, 0, 777, 5}},
 	}
 	for _, test := range tests {
 		actual := min(test.given...)

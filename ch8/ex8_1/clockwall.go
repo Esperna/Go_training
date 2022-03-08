@@ -28,16 +28,7 @@ type Time struct {
 }
 
 func main() {
-	var clocks []Clock
-	for i := 1; i < len(os.Args); i++ {
-		var clock Clock
-		slices := strings.Split(os.Args[i], "=")
-		clock.index = i - 1
-		clock.time.zone = slices[0]
-		clock.addr = slices[1]
-		clocks = append(clocks, clock)
-	}
-	numOfClock := len(os.Args) - 1
+	clocks, numOfClock := parse(os.Args)
 	clk := make(chan Clock, numOfClock)
 	for _, clock := range clocks {
 		go readWorldTime(clock, clk)
@@ -49,7 +40,6 @@ func main() {
 			clock := <-clk
 			m[clock.index] = clock.time
 		}
-
 		timelist := ""
 		for i := 0; i < len(m); timelist += " " {
 			timelist += m[i].zone + " " + m[i].value
@@ -57,6 +47,20 @@ func main() {
 		}
 		fmt.Printf("\r%s", timelist)
 	}
+}
+
+func parse(args []string) ([]Clock, int) {
+	var clocks []Clock
+	for i := 1; i < len(args); i++ {
+		var clock Clock
+		slices := strings.Split(args[i], "=")
+		clock.index = i - 1
+		clock.time.zone = slices[0]
+		clock.addr = slices[1]
+		clocks = append(clocks, clock)
+	}
+	numOfClock := len(args) - 1
+	return clocks, numOfClock
 }
 
 func readWorldTime(clock Clock, clk chan<- Clock) {

@@ -90,9 +90,7 @@ func (s *IntSet) Remove(x int) {
 }
 
 func (s *IntSet) Clear() {
-	for i, _ := range s.words {
-		s.words[i] = 0
-	}
+	s.words = nil
 }
 
 func (s *IntSet) Copy() *IntSet {

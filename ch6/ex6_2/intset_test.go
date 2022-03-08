@@ -94,6 +94,19 @@ func TestUnionWith(t *testing.T) {
 	if x.String() != "{1 9 42 144}" {
 		t.Errorf("x.String() != {1 9 42 144}. x.String() is %s", x.String())
 	}
+
+	var a, b IntSet
+	a.Add(1)
+	a.Add(144)
+	a.Add(9)
+	b.Add(9)
+	b.Add(42)
+	b.Add(100)
+	b.Add(101)
+	a.UnionWith(&b)
+	if a.String() != "{1 9 42 100 101 144}" {
+		t.Errorf("a.String() != {1 9 42 100 101 144}. a.String() is %s", a.String())
+	}
 }
 
 func TestLen(t *testing.T) {

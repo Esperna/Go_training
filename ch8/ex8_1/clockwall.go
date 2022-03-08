@@ -8,62 +8,71 @@
 package main
 
 import (
-	"io"
-	"io/ioutil"
+	"bufio"
+	"fmt"
 	"log"
 	"net"
 	"os"
+	"strings"
 )
 
+type Clock struct {
+	index int
+	time  Time
+	addr  string
+}
+
+type Time struct {
+	zone  string
+	value string
+}
+
 func main() {
-	go netcat("localhost:8010")
-	go netcat("localhost:8020")
-	go netcat("localhost:8030")
-	conn1, err := net.Dial("tcp", "localhost:8010")
-	if err != nil {
-		log.Fatal(err)
+	var clocks []Clock
+	for i := 1; i < len(os.Args); i++ {
+		var clock Clock
+		slices := strings.Split(os.Args[i], "=")
+		clock.index = i - 1
+		clock.time.zone = slices[0]
+		clock.addr = slices[1]
+		clocks = append(clocks, clock)
 	}
-	conn2, err := net.Dial("tcp", "localhost:8020")
-	if err != nil {
-		log.Fatal(err)
+	numOfClock := len(os.Args) - 1
+	clk := make(chan Clock, numOfClock)
+	for _, clock := range clocks {
+		go readWorldTime(clock, clk)
 	}
-	conn3, err := net.Dial("tcp", "localhost:8030")
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer conn1.Close()
-	defer conn2.Close()
-	defer conn3.Close()
 
 	for {
+		m := make(map[int]Time)
+		for i := 0; i < numOfClock; i++ {
+			clock := <-clk
+			m[clock.index] = clock.time
+		}
 
+		timelist := ""
+		for i := 0; i < len(m); timelist += " " {
+			timelist += m[i].zone + " " + m[i].value
+			i++
+		}
+		fmt.Printf("\r%s", timelist)
 	}
-	// concat(conn1, conn2, conn3)
-	// mustCopy(os.Stdout, conn1)
-	// mustCopy(os.Stdout, conn2)
-	// mustCopy(os.Stdout, conn3)
 }
 
-func mustCopy(dst io.Writer, src io.Reader) {
-	if _, err := io.Copy(dst, src); err != nil {
-		log.Fatal(err)
-	}
-}
-
-func concat(conn1, conn2, conn3 io.Reader) {
-	rd := io.MultiReader(conn1, conn2, conn3)
-	b, _ := ioutil.ReadAll(rd)
-	os.Stdout.Write(b)
-
-}
-
-func netcat(addr string) {
-	conn, err := net.Dial("tcp", addr)
+func readWorldTime(clock Clock, clk chan<- Clock) {
+	conn, err := net.Dial("tcp", clock.addr)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer conn.Close()
-	mustCopy(os.Stdout, conn)
+	scanner := bufio.NewScanner(conn)
+	for scanner.Scan() {
+		var c Clock
+		c.index = clock.index
+		c.time.zone = clock.time.zone
+		c.time.value = scanner.Text()
+		clk <- c
+	}
 }
 
 //!-

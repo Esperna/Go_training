@@ -102,10 +102,10 @@ func TestUnionWith(t *testing.T) {
 	b.Add(9)
 	b.Add(42)
 	b.Add(100)
-	b.Add(101)
+	b.Add(1000)
 	a.UnionWith(&b)
-	if a.String() != "{1 9 42 100 101 144}" {
-		t.Errorf("a.String() != {1 9 42 100 101 144}. a.String() is %s", a.String())
+	if a.String() != "{1 9 42 100 144 1000}" {
+		t.Errorf("a.String() != {1 9 42 100 144 1000}. a.String() is %s", a.String())
 	}
 }
 

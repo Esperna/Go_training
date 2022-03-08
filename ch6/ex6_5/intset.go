@@ -92,9 +92,7 @@ func (s *IntSet) Remove(x int) {
 }
 
 func (s *IntSet) Clear() {
-	for i, _ := range s.words {
-		s.words[i] = 0
-	}
+	s.words = nil
 }
 
 func (s *IntSet) Copy() *IntSet {
@@ -123,7 +121,7 @@ func (s *IntSet) IntersectWith(t *IntSet) {
 			s.words[j] = 0
 		}
 	} else {
-		for i, _ := range s.words {
+		for i := 0; i < lengthS; i++ {
 			s.words[i] &= t.words[i]
 		}
 	}
@@ -139,7 +137,7 @@ func (s *IntSet) DifferenceWith(t *IntSet) {
 			s.words[i] &= ^mask
 		}
 	} else {
-		for i, _ := range s.words {
+		for i := 0; i < lengthS; i++ {
 			mask := t.words[i] & s.words[i]
 			s.words[i] &= ^mask
 		}
@@ -155,7 +153,7 @@ func (s *IntSet) SymmetricDifference(t *IntSet) {
 			s.words[i] ^= word
 		}
 	} else {
-		for i, _ := range s.words {
+		for i := 0; i < lengthS; i++ {
 			s.words[i] ^= t.words[i]
 		}
 		for i := lengthS; i < lengthT; i++ {

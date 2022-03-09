@@ -7,10 +7,10 @@
 package main
 
 import (
-	"flag"
 	"fmt"
+	"html/template"
+	"log"
 	"os"
-	"sort"
 	"text/tabwriter"
 	"time"
 )
@@ -31,6 +31,31 @@ var tracks = []*Track{
 	{"Ready 2 Go", "Martin Solveig", "Smash", 2011, length("4m24s")},
 }
 
+type trackData struct {
+	Tracks []*Track
+}
+
+var trackList = template.Must(template.New("tracklist").Parse(`
+<h1>music list</h1>
+<table>
+<tr style = 'text-align: left'>
+	<th>Title</th>
+	<th>Artist</th>
+	<th>Album</th>
+	<th>Year</th>
+	<th>Length</th>
+{{range .Tracks}}
+<tr>
+	<td>{{.Title}}</td>
+	<td>{{.Artist}}</td>
+	<td>{{.Album}}</td>
+	<td>{{.Year}}</td>
+	<td>{{.Length}}</td>
+</tr>
+{{end}}
+</table>
+`))
+
 func length(s string) time.Duration {
 	d, err := time.ParseDuration(s)
 	if err != nil {
@@ -39,9 +64,6 @@ func length(s string) time.Duration {
 	return d
 }
 
-//!-main
-
-//!+printTracks
 func printTracks(tracks []*Track) {
 	const format = "%v\t%v\t%v\t%v\t%v\t\n"
 	tw := new(tabwriter.Writer).Init(os.Stdout, 0, 8, 2, ' ', 0)
@@ -52,8 +74,6 @@ func printTracks(tracks []*Track) {
 	}
 	tw.Flush() // calculate column widths and print table
 }
-
-//!-printTracks
 
 type byArtist []*Track
 
@@ -73,40 +93,52 @@ type sortKeys struct {
 }
 
 func main() {
-	fmt.Println("\nCustom:")
-	key1 := flag.String("k1", "Title", "first sort key")
-	key2 := flag.String("k2", "Artist", "second sort key")
-	var keys sortKeys
-	flag.Parse()
-	keys.first = *key1
-	keys.second = *key2
+	// fmt.Println("\nCustom:")
+	// key1 := flag.String("k1", "Title", "first sort key")
+	// key2 := flag.String("k2", "Artist", "second sort key")
+	// var keys sortKeys
+	// flag.Parse()
+	// keys.first = *key1
+	// keys.second = *key2
+	//
+	// if !(*key1 == "Title" || *key1 == "Artist" || *key1 == "Album" || *key1 == "Year" || *key1 == "length") {
+	// 	fmt.Print("invalid first key")
+	// 	os.Exit(1)
+	// }
+	// if !(*key1 == "Title" || *key1 == "Artist" || *key1 == "Album" || *key1 == "Year" || *key1 == "length") {
+	// 	fmt.Print("invalid second key")
+	// 	os.Exit(1)
+	// }
+	// m := map[sortKeys]func(x, y *Track) bool{
+	// 	{"Title", "Artist"}:  lessByTitleArtist,
+	// 	{"Title", "Album"}:   lessByTitleAlbum,
+	// 	{"Title", "Year"}:    lessByTitleYear,
+	// 	{"Title", "Length"}:  lessByTitleLength,
+	// 	{"Artist", "Title"}:  lessByArtistTitle,
+	// 	{"Artist", "Album"}:  lessByArtistAlbum,
+	// 	{"Artist", "Year"}:   lessByArtistYear,
+	// 	{"Artist", "Length"}: lessByArtistLength,
+	// }
+	//
+	// if m[keys] == nil {
+	// 	fmt.Print("not implemented currently")
+	// 	os.Exit(1)
+	// }
+	//
+	// sort.Sort(customSortBy2Key{tracks, m[keys]})
+	// printTracks(tracks)
 
-	if !(*key1 == "Title" || *key1 == "Artist" || *key1 == "Album" || *key1 == "Year" || *key1 == "length") {
-		fmt.Print("invalid first key")
-		os.Exit(1)
+	data := trackData{
+		[]*Track{
+			{"Go", "Delilah", "From the Roots Up", 2012, length("3m38s")},
+			{"Go", "Moby", "Moby", 1992, length("3m37s")},
+			{"Go Ahead", "Alicia Keys", "As I Am", 2007, length("4m36s")},
+			{"Ready 2 Go", "Martin Solveig", "Smash", 2011, length("4m24s")},
+		},
 	}
-	if !(*key1 == "Title" || *key1 == "Artist" || *key1 == "Album" || *key1 == "Year" || *key1 == "length") {
-		fmt.Print("invalid second key")
-		os.Exit(1)
+	if err := trackList.Execute(os.Stdout, data); err != nil {
+		log.Fatal(err)
 	}
-	m := map[sortKeys]func(x, y *Track) bool{
-		{"Title", "Artist"}:  lessByTitleArtist,
-		{"Title", "Album"}:   lessByTitleAlbum,
-		{"Title", "Year"}:    lessByTitleYear,
-		{"Title", "Length"}:  lessByTitleLength,
-		{"Artist", "Title"}:  lessByArtistTitle,
-		{"Artist", "Album"}:  lessByArtistAlbum,
-		{"Artist", "Year"}:   lessByArtistYear,
-		{"Artist", "Length"}: lessByArtistLength,
-	}
-
-	if m[keys] == nil {
-		fmt.Print("not implemented currently")
-		os.Exit(1)
-	}
-
-	sort.Sort(customSortBy2Key{tracks, m[keys]})
-	printTracks(tracks)
 }
 
 type customSortBy2Key struct {

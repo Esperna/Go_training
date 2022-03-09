@@ -11,6 +11,7 @@ func TestIsPalindrome(t *testing.T) {
 		given    sort.Interface
 	}{
 		{true, IntSlice{1, 2, 1}},
+		{false, IntSlice{1, 2, 3}},
 	}
 	for _, test := range tests {
 		actual := IsPalindrome(test.given)

@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"html/template"
 	"log"
+	"net/http"
 	"os"
 	"text/tabwriter"
 	"time"
@@ -128,6 +129,12 @@ func main() {
 	// sort.Sort(customSortBy2Key{tracks, m[keys]})
 	// printTracks(tracks)
 
+	http.HandleFunc("/", handler)
+	log.Fatal(http.ListenAndServe("localhost:8000", nil))
+
+}
+
+func handler(w http.ResponseWriter, r *http.Request) {
 	data := trackData{
 		[]*Track{
 			{"Go", "Delilah", "From the Roots Up", 2012, length("3m38s")},
@@ -136,7 +143,7 @@ func main() {
 			{"Ready 2 Go", "Martin Solveig", "Smash", 2011, length("4m24s")},
 		},
 	}
-	if err := trackList.Execute(os.Stdout, data); err != nil {
+	if err := trackList.Execute(w, data); err != nil {
 		log.Fatal(err)
 	}
 }

@@ -12,6 +12,8 @@ func TestIsPalindrome(t *testing.T) {
 	}{
 		{true, IntSlice{1, 2, 1}},
 		{false, IntSlice{1, 2, 3}},
+		{true, StringSlice{"time", "after", "time"}},
+		{false, StringSlice{"time", "goes", "by"}},
 	}
 	for _, test := range tests {
 		actual := IsPalindrome(test.given)

@@ -12,6 +12,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"sort"
 	"text/tabwriter"
 	"time"
 )
@@ -94,55 +95,34 @@ type sortKeys struct {
 }
 
 func main() {
-	// fmt.Println("\nCustom:")
-	// key1 := flag.String("k1", "Title", "first sort key")
-	// key2 := flag.String("k2", "Artist", "second sort key")
-	// var keys sortKeys
-	// flag.Parse()
-	// keys.first = *key1
-	// keys.second = *key2
-	//
-	// if !(*key1 == "Title" || *key1 == "Artist" || *key1 == "Album" || *key1 == "Year" || *key1 == "length") {
-	// 	fmt.Print("invalid first key")
-	// 	os.Exit(1)
-	// }
-	// if !(*key1 == "Title" || *key1 == "Artist" || *key1 == "Album" || *key1 == "Year" || *key1 == "length") {
-	// 	fmt.Print("invalid second key")
-	// 	os.Exit(1)
-	// }
-	// m := map[sortKeys]func(x, y *Track) bool{
-	// 	{"Title", "Artist"}:  lessByTitleArtist,
-	// 	{"Title", "Album"}:   lessByTitleAlbum,
-	// 	{"Title", "Year"}:    lessByTitleYear,
-	// 	{"Title", "Length"}:  lessByTitleLength,
-	// 	{"Artist", "Title"}:  lessByArtistTitle,
-	// 	{"Artist", "Album"}:  lessByArtistAlbum,
-	// 	{"Artist", "Year"}:   lessByArtistYear,
-	// 	{"Artist", "Length"}: lessByArtistLength,
-	// }
-	//
-	// if m[keys] == nil {
-	// 	fmt.Print("not implemented currently")
-	// 	os.Exit(1)
-	// }
-	//
-	// sort.Sort(customSortBy2Key{tracks, m[keys]})
-	// printTracks(tracks)
-
 	http.HandleFunc("/", handler)
 	log.Fatal(http.ListenAndServe("localhost:8000", nil))
 
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
-	data := trackData{
-		[]*Track{
-			{"Go", "Delilah", "From the Roots Up", 2012, length("3m38s")},
-			{"Go", "Moby", "Moby", 1992, length("3m37s")},
-			{"Go Ahead", "Alicia Keys", "As I Am", 2007, length("4m36s")},
-			{"Ready 2 Go", "Martin Solveig", "Smash", 2011, length("4m24s")},
-		},
+	var keys sortKeys
+	keys.first = "Title"
+	keys.second = "Year"
+
+	m := map[sortKeys]func(x, y *Track) bool{
+		{"Title", "Artist"}:  lessByTitleArtist,
+		{"Title", "Album"}:   lessByTitleAlbum,
+		{"Title", "Year"}:    lessByTitleYear,
+		{"Title", "Length"}:  lessByTitleLength,
+		{"Artist", "Title"}:  lessByArtistTitle,
+		{"Artist", "Album"}:  lessByArtistAlbum,
+		{"Artist", "Year"}:   lessByArtistYear,
+		{"Artist", "Length"}: lessByArtistLength,
 	}
+	if m[keys] == nil {
+		fmt.Print("not implemented currently")
+		os.Exit(1)
+	}
+	sort.Sort(customSortBy2Key{tracks, m[keys]})
+	printTracks(tracks)
+	var data trackData
+	data.Tracks = append(data.Tracks, tracks...)
 	if err := trackList.Execute(w, data); err != nil {
 		log.Fatal(err)
 	}

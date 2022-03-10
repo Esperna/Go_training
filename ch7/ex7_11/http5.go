@@ -21,6 +21,7 @@ func main() {
 	http.HandleFunc("/list", db.list)
 	http.HandleFunc("/price", db.price)
 	http.HandleFunc("/update", db.update)
+	http.HandleFunc("/delete", db.delete)
 	log.Fatal(http.ListenAndServe("localhost:8000", nil))
 }
 
@@ -53,6 +54,7 @@ func (db database) update(w http.ResponseWriter, req *http.Request) {
 	if _, ok := db[item]; !ok {
 		w.WriteHeader(http.StatusNotFound) // 404
 		fmt.Fprintf(w, "no such item: %q\n", item)
+		return
 	}
 	price := req.URL.Query().Get("price")
 	if price == "" {
@@ -74,4 +76,13 @@ func (db database) update(w http.ResponseWriter, req *http.Request) {
 	}
 
 	fmt.Fprintf(w, "%s: %s\n", item, db[item])
+}
+
+func (db database) delete(w http.ResponseWriter, req *http.Request) {
+	item := req.URL.Query().Get("item")
+	if _, ok := db[item]; !ok {
+		w.WriteHeader(http.StatusNotFound) // 404
+		fmt.Fprintf(w, "no such item: %q\n", item)
+		return
+	}
 }

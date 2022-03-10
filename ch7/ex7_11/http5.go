@@ -100,10 +100,10 @@ func (db database) create(w http.ResponseWriter, req *http.Request) {
 		fmt.Fprintf(w, "no item specified\n")
 		return
 	}
-	// price := req.URL.Query().Get("price")
-	// if price == "" {
-	// 	w.WriteHeader(http.StatusBadRequest)
-	// 	fmt.Fprintf(w, "no price specified to %s\n", item)
-	// 	return
-	// }
+	price := req.URL.Query().Get("price")
+	if price == "" {
+		w.WriteHeader(http.StatusBadRequest)
+		fmt.Fprintf(w, "no price specified to %s\n", item)
+		return
+	}
 }

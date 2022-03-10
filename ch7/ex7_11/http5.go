@@ -90,14 +90,20 @@ func (db database) delete(w http.ResponseWriter, req *http.Request) {
 
 func (db database) create(w http.ResponseWriter, req *http.Request) {
 	item := req.URL.Query().Get("item")
-	// if _, ok := db[item]; ok {
-	// 	w.WriteHeader(http.StatusBadRequest)
-	// 	fmt.Fprintf(w, "item: %q already exists\n", item)
-	// 	return
-	// }
+	if _, ok := db[item]; ok {
+		w.WriteHeader(http.StatusBadRequest)
+		fmt.Fprintf(w, "item: %q already exists\n", item)
+		return
+	}
 	if item == "" {
 		w.WriteHeader(http.StatusBadRequest)
 		fmt.Fprintf(w, "no item specified\n")
 		return
 	}
+	// price := req.URL.Query().Get("price")
+	// if price == "" {
+	// 	w.WriteHeader(http.StatusBadRequest)
+	// 	fmt.Fprintf(w, "no price specified to %s\n", item)
+	// 	return
+	// }
 }

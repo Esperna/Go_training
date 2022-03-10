@@ -30,4 +30,6 @@ Command="fetch http://localhost:8000/update?item=socks&price=-10"
 CommandWithEcho
 Command="fetch http://localhost:8000/update?item=socks&price=10yen"
 CommandWithEcho
+Command="fetch http://localhost:8000/delete"
+CommandWithEcho
 

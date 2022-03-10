@@ -22,6 +22,7 @@ func main() {
 	http.HandleFunc("/price", db.price)
 	http.HandleFunc("/update", db.update)
 	http.HandleFunc("/delete", db.delete)
+	http.HandleFunc("/create", db.create)
 	log.Fatal(http.ListenAndServe("localhost:8000", nil))
 }
 
@@ -74,7 +75,6 @@ func (db database) update(w http.ResponseWriter, req *http.Request) {
 		fmt.Fprintf(w, "invalid price %s specified to %s\n", db[item], item)
 		return
 	}
-
 	fmt.Fprintf(w, "%s: %s\n", item, db[item])
 }
 
@@ -86,4 +86,18 @@ func (db database) delete(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 	delete(db, item)
+}
+
+func (db database) create(w http.ResponseWriter, req *http.Request) {
+	item := req.URL.Query().Get("item")
+	// if _, ok := db[item]; ok {
+	// 	w.WriteHeader(http.StatusBadRequest)
+	// 	fmt.Fprintf(w, "item: %q already exists\n", item)
+	// 	return
+	// }
+	if item == "" {
+		w.WriteHeader(http.StatusBadRequest)
+		fmt.Fprintf(w, "no item specified\n")
+		return
+	}
 }

@@ -85,4 +85,5 @@ func (db database) delete(w http.ResponseWriter, req *http.Request) {
 		fmt.Fprintf(w, "no such item: %q\n", item)
 		return
 	}
+	delete(db, item)
 }

@@ -12,7 +12,32 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	"text/template"
 )
+
+type Product struct {
+	Item  string
+	Price dollars
+}
+
+type productData struct {
+	Products []Product
+}
+
+var productList = template.Must(template.New("productlist").Parse(`
+<h1>Product List</h1>
+<table>
+<tr style = 'text-align: left'>
+	<th>Item</th>
+	<th>Price</th>
+{{range .Products}}
+<tr>
+	<td>{{.Item}}</td>
+	<td>{{.Price}}</td>
+</tr>
+{{end}}
+</table>
+`))
 
 //!+main
 
@@ -35,8 +60,15 @@ func (d dollars) String() string { return fmt.Sprintf("$%.2f", d) }
 type database map[string]dollars
 
 func (db database) list(w http.ResponseWriter, req *http.Request) {
+	var data productData
 	for item, price := range db {
-		fmt.Fprintf(w, "%s: %s\n", item, price)
+		var d Product
+		d.Item = item
+		d.Price = price
+		data.Products = append(data.Products, d)
+	}
+	if err := productList.Execute(w, data); err != nil {
+		log.Fatal(err)
 	}
 }
 

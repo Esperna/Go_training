@@ -10,6 +10,7 @@ CommandWithEcho
 go build http5.go
 echo "./http5 &"
 ./http5 &
+sleep 1
 
 Command="fetch http://localhost:8000/list"
 CommandWithEcho

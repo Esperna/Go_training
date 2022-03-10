@@ -38,4 +38,6 @@ Command="fetch http://localhost:8000/create"
 CommandWithEcho
 Command="fetch http://localhost:8000/create?item=socks"
 CommandWithEcho
+Command="fetch http://localhost:8000/create?item=shoes"
+CommandWithEcho
 

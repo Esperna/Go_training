@@ -24,4 +24,7 @@ Command="fetch http://localhost:8000/price?item=hat"
 CommandWithEcho
 Command="fetch http://localhost:8000/update?item=socks&price=6"
 CommandWithEcho
+Command="fetch http://localhost:8000/update?item=socks"
+CommandWithEcho
+
 

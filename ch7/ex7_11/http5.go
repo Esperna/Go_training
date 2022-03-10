@@ -58,8 +58,4 @@ func (db database) update(w http.ResponseWriter, req *http.Request) {
 	f, _ := strconv.ParseFloat(price, 32)
 	db[item] = dollars(f)
 	fmt.Fprintf(w, "%s: %s\n", item, db[item])
-	// for item, price := range db {
-	// 	fmt.Fprintf(w, "%s: %s\n", item, price)
-	// }
-
 }

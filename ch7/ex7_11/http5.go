@@ -56,11 +56,17 @@ func (db database) update(w http.ResponseWriter, req *http.Request) {
 	}
 	price := req.URL.Query().Get("price")
 	if price == "" {
-		w.WriteHeader(http.StatusNotFound) // 404
+		w.WriteHeader(http.StatusBadRequest)
 		fmt.Fprintf(w, "no price specified to %s\n", item)
 		return
 	}
 	f, _ := strconv.ParseFloat(price, 32)
 	db[item] = dollars(f)
+	if f < 0 {
+		w.WriteHeader(http.StatusBadRequest)
+		fmt.Fprintf(w, "invalid price specified to %s\n", item)
+		return
+	}
+
 	fmt.Fprintf(w, "%s: %s\n", item, db[item])
 }

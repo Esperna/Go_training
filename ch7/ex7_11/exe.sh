@@ -5,10 +5,11 @@ CommandWithEcho(){
     $Command
 }
 
-Command="killall http4"
+Command="killall http5"
 CommandWithEcho
-echo "http4 &"
-http4 &
+go build http5.go
+echo "./http5 &"
+./http5 &
 
 Command="fetch http://localhost:8000/list"
 CommandWithEcho

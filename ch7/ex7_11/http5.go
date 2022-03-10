@@ -60,11 +60,16 @@ func (db database) update(w http.ResponseWriter, req *http.Request) {
 		fmt.Fprintf(w, "no price specified to %s\n", item)
 		return
 	}
-	f, _ := strconv.ParseFloat(price, 32)
+	f, err := strconv.ParseFloat(price, 32)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		fmt.Fprintf(w, "invalid price %s specified to %s\n", price, item)
+		return
+	}
 	db[item] = dollars(f)
 	if f < 0 {
 		w.WriteHeader(http.StatusBadRequest)
-		fmt.Fprintf(w, "invalid price specified to %s\n", item)
+		fmt.Fprintf(w, "invalid price %s specified to %s\n", db[item], item)
 		return
 	}
 

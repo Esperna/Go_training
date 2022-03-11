@@ -41,17 +41,17 @@ func TestEval(t *testing.T) {
 			continue
 		}
 		fmt.Printf("%v", expr.String())
-		var result Expr
-		result, err = Parse(expr.String())
+		//var result Expr
+		result, err := Parse(expr.String())
 		if err != nil {
 			t.Error(err) // parse error
 			continue
 		}
-		if result != expr {
-			t.Errorf("Parse result is %v. Want %v.", result, expr)
-			continue
-		}
-		got := fmt.Sprintf("%.6g", expr.Eval(test.env))
+		//if result != expr {
+		//	t.Errorf("Parse result is %v. Want %v.", result, expr)
+		//	continue
+		//}
+		got := fmt.Sprintf("%.6g", result.Eval(test.env))
 		fmt.Printf("\t%v => %s\n", test.env, got)
 		if got != test.want {
 			t.Errorf("%s.Eval() in %v = %q, want %q\n",

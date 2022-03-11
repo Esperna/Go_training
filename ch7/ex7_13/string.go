@@ -10,7 +10,7 @@ func (v Var) String() string {
 }
 
 func (l literal) String() string {
-	return strconv.Itoa(int(float64(l)))
+	return strconv.FormatFloat(float64(l), 'f', 0, 64)
 }
 
 func (u unary) String() string {
@@ -22,8 +22,7 @@ func (b binary) String() string {
 }
 
 func (c call) String() string {
-	str := c.fn
-	str += "("
+	str := c.fn + "("
 	for i := 0; i < len(c.args); i++ {
 		if i > 0 {
 			str += ","

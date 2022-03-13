@@ -1,4 +1,4 @@
 #!/bin/zsh
 
-echo "go run ./outline.go -url https://golang.org -id lang"
-go run ./outline.go -url https://golang.org -id lang
+echo "go run ./elementById.go -url https://golang.org -id lang"
+go run ./elementById.go -url https://golang.org -id lang

@@ -3,50 +3,59 @@ package main
 import (
 	"fmt"
 	"io"
+	"log"
 
 	"golang.org/x/net/html"
 )
 
 type Reader struct {
-	s string
-	i int64
+	s   string
+	i   int64
+	buf []byte
 }
 
 func main() {
-	rd := NewReader("<html><head><title>under construction</title></head><body></body></html>")
+	s := `<p>Links:</p><ul><li><a href="foo">Foo</a><li><a href="/bar/baz">BarBaz</a></ul>`
+	rd := NewReader(s)
 	doc, err := html.Parse(rd)
 	if err != nil {
-		fmt.Errorf("html parse failed:%s", err)
+		log.Fatalf("html parse failed:%s", err)
 	}
-	dispNode(nil, doc)
+	for _, link := range visit(nil, doc) {
+		fmt.Println(link)
+	}
 }
 
-func dispNode(stack []string, n *html.Node) {
-	fmt.Printf("Type: %v, DataAtom: %v, Data: %s, Namespace: %s, Attr: %v\n", n.Type, n.DataAtom, n.Data, n.Namespace, n.Attr)
-	for c := n.FirstChild; c != nil; c = c.NextSibling {
-		dispNode(stack, c)
+func visit(links []string, n *html.Node) []string {
+	fmt.Println(n.Type)
+	if n.Type == html.ElementNode && n.Data == "a" {
+		fmt.Println(n.Data)
+		for _, a := range n.Attr {
+			fmt.Println(a)
+			if a.Key == "href" {
+				links = append(links, a.Val)
+			}
+		}
 	}
+	for c := n.FirstChild; c != nil; c = c.NextSibling {
+		links = visit(links, c)
+	}
+	return links
 }
 
 func NewReader(s string) *Reader {
 	var rd Reader
-	rd = Reader{s, 0}
+	buffer := make([]byte, len(s))
+	rd = Reader{s, 0, buffer}
 	return &rd
 }
 
-func (r *Reader) Read(b []byte) (n int, err error) {
-	length := len(b)
-	if length == 0 {
-		return 0, nil
-	} else if length < 0 {
-		err = fmt.Errorf("invalid byte length")
-		return n, err
+func (r *Reader) Read(p []byte) (n int, err error) {
+	length := len(p)
+	if r.i >= int64(length) && r.i != 0 {
+		return n, io.EOF
 	}
-	if r.i >= int64(len(r.s)) {
-		return 0, io.EOF
-	}
-
-	r.s = string(b)
-	r.i += int64(len(b))
+	n = copy(r.buf, p)
+	r.i += int64(n)
 	return n, err
 }

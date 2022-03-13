@@ -28,6 +28,7 @@ func TestRead(t *testing.T) {
 	}{
 		{[]byte("hello"), expect{5, nil}},
 		{[]byte("<html><title>Under Construction</title></html>"), expect{46, nil}},
+		{[]byte(""), expect{0, nil}},
 	}
 	for _, test := range tests {
 		var r Reader

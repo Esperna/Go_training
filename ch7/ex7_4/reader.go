@@ -9,9 +9,8 @@ import (
 )
 
 type Reader struct {
-	s   string
-	i   int64
-	buf []byte
+	s string
+	i int64
 }
 
 func main() {
@@ -42,10 +41,7 @@ func visit(links []string, n *html.Node) []string {
 }
 
 func NewReader(s string) *Reader {
-	var rd Reader
-	buffer := make([]byte, len(s))
-	rd = Reader{s, 0, buffer}
-	return &rd
+	return &Reader{s, 0}
 }
 
 func (r *Reader) Read(p []byte) (n int, err error) {

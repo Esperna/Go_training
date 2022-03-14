@@ -12,7 +12,10 @@ func main() {
 	fmt.Print("Input your expression>")
 	scanner := bufio.NewScanner(os.Stdin)
 	for {
-		scanner.Scan()
+		if !scanner.Scan() {
+			fmt.Fprintf(os.Stderr, "%s\n", scanner.Err())
+			continue
+		}
 		in := scanner.Text()
 		expr, err := eval.Parse(in)
 		if err != nil {
@@ -27,7 +30,10 @@ func main() {
 		env := make(map[eval.Var]float64)
 		for k := range vars {
 			fmt.Printf("%s=", k)
-			scanner.Scan()
+			if !scanner.Scan() {
+				fmt.Fprintf(os.Stderr, "%s\n", scanner.Err())
+				continue
+			}
 			in := scanner.Text()
 			val, err := strconv.ParseFloat(in, 64)
 			if err != nil {

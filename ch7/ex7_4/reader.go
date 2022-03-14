@@ -17,6 +17,7 @@ type Reader struct {
 func main() {
 	s := `<p>Links:</p><ul><li><a href="foo">Foo</a><li><a href="/bar/baz">BarBaz</a></ul>`
 	rd := NewReader(s)
+	//rd := strings.NewReader(s)
 	doc, err := html.Parse(rd)
 	if err != nil {
 		log.Fatalf("html parse failed:%s", err)
@@ -27,11 +28,8 @@ func main() {
 }
 
 func visit(links []string, n *html.Node) []string {
-	fmt.Println(n.Type)
 	if n.Type == html.ElementNode && n.Data == "a" {
-		fmt.Println(n.Data)
 		for _, a := range n.Attr {
-			fmt.Println(a)
 			if a.Key == "href" {
 				links = append(links, a.Val)
 			}
@@ -51,11 +49,10 @@ func NewReader(s string) *Reader {
 }
 
 func (r *Reader) Read(p []byte) (n int, err error) {
-	length := len(p)
-	if r.i >= int64(length) && r.i != 0 {
+	if r.i >= int64(len(r.s)) {
 		return n, io.EOF
 	}
-	n = copy(r.buf, p)
+	n = copy(p, r.s[r.i:])
 	r.i += int64(n)
 	return n, err
 }

@@ -5,8 +5,20 @@ import (
 	"io"
 	"log"
 	"net"
+	"strconv"
 	"strings"
 )
+
+var responses = map[int]string{
+	202: "Command not implemented, superfluous at this site.",
+	220: "Service ready for new user.",
+	230: "User logged in, proceed",
+	331: "User name okay, need password.",
+}
+
+func respMsg(code int) string {
+	return strconv.Itoa(code) + " " + responses[code] + "\n"
+}
 
 func main() {
 	listener, err := net.Listen("tcp", "localhost:21")
@@ -43,7 +55,7 @@ func handleConn(c net.Conn) {
 		log.Printf("line: %s\n", line)
 		str := strings.Split(line, " ")
 		if len(str) > 2 {
-			_, err := io.WriteString(c, "202 Command not implemented, superfluous at this site.\n")
+			_, err := io.WriteString(c, respMsg(202))
 			if err != nil {
 				return
 			}
@@ -51,20 +63,18 @@ func handleConn(c net.Conn) {
 		cmd := str[0]
 		switch cmd {
 		case "USER":
-			_, err := io.WriteString(c, "331 User name okay, need password.\n")
-			if err != nil {
+			if _, err := io.WriteString(c, respMsg(331)); err != nil {
 				log.Printf("%v\n", err)
 				break
 			}
 		case "PASS":
-			_, err := io.WriteString(c, "230 User logged in, proceed.\n")
-			if err != nil {
+			if _, err := io.WriteString(c, respMsg(230)); err != nil {
 				log.Printf("%v\n", err)
 				break
 			}
 		default:
-			_, err := io.WriteString(c, "202 Command not implemented, superfluous at this site.\n")
-			if err != nil {
+			if _, err := io.WriteString(c, respMsg(202)); err != nil {
+				log.Printf("%v\n", err)
 				break
 			}
 		}

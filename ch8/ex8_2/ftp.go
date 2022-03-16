@@ -1,11 +1,11 @@
 package main
 
 import (
-	"fmt"
+	"bufio"
 	"io"
 	"log"
 	"net"
-	"time"
+	"strings"
 )
 
 func main() {
@@ -24,13 +24,49 @@ func main() {
 }
 
 func handleConn(c net.Conn) {
-	fmt.Printf("Accept %v\n", c.RemoteAddr())
 	defer c.Close()
+	log.Printf("Accept %v\n", c.RemoteAddr())
+	_, err := io.WriteString(c, "220 Service ready for new user.\n")
+	if err != nil {
+		log.Printf("%v\n", err)
+		return
+	}
+	reader := bufio.NewReader(c)
 	for {
-		_, err := io.WriteString(c, "220 Service ready for new user.\n")
+		line, err := reader.ReadString('\n')
 		if err != nil {
-			return
+			if err != io.EOF {
+				log.Printf("%v\n", err)
+			}
+			break
 		}
-		time.Sleep(1 * time.Second)
+		log.Printf("line: %s\n", line)
+		str := strings.Split(line, " ")
+		if len(str) > 2 {
+			_, err := io.WriteString(c, "202 Command not implemented, superfluous at this site.\n")
+			if err != nil {
+				return
+			}
+		}
+		cmd := str[0]
+		switch cmd {
+		case "USER":
+			_, err := io.WriteString(c, "331 User name okay, need password.\n")
+			if err != nil {
+				log.Printf("%v\n", err)
+				break
+			}
+		case "PASS":
+			_, err := io.WriteString(c, "230 User logged in, proceed.\n")
+			if err != nil {
+				log.Printf("%v\n", err)
+				break
+			}
+		default:
+			_, err := io.WriteString(c, "202 Command not implemented, superfluous at this site.\n")
+			if err != nil {
+				break
+			}
+		}
 	}
 }

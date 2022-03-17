@@ -56,6 +56,8 @@ func main() {
 	}
 }
 
+var dp dataPort
+
 func handleControlConn(c net.Conn) {
 	defer c.Close()
 	log.Printf("Accept %v\n", c.RemoteAddr())
@@ -65,8 +67,18 @@ func handleControlConn(c net.Conn) {
 		return
 	}
 	reader := bufio.NewReader(c)
-	var dp dataPort
 	for {
+		commands := map[string]func(net.Conn, []string) error{
+			"USER": user,
+			"PASS": pass,
+			"QUIT": quit,
+			"PASV": pasv,
+			"SYST": syst,
+			"PORT": port,
+			"FEAT": feat,
+			"LIST": list,
+		}
+
 		line, err := reader.ReadString('\n')
 		if err != nil {
 			if err != io.EOF {
@@ -75,90 +87,96 @@ func handleControlConn(c net.Conn) {
 			break
 		}
 		log.Printf("line: %s\n", line)
-		str := strings.Split(line, " ")
-		if len(str) == 1 {
-			str = strings.Split(str[0], "\r")
-			str = strings.Split(str[0], "\n")
+		msg := strings.Split(line, " ")
+		if len(msg) == 1 {
+			msg = strings.Split(msg[0], "\r")
+			msg = strings.Split(msg[0], "\n")
 		}
-		log.Printf("str: %v len: %d\n", str, len(str))
-		cmd := str[0]
-		switch cmd {
-		case "USER":
-			if _, err := io.WriteString(c, respMsg(331)); err != nil {
-				log.Printf("%v\n", err)
-				break
-			}
-		case "PASS":
-			if _, err := io.WriteString(c, respMsg(230)); err != nil {
-				log.Printf("%v\n", err)
-				break
-			}
-		case "QUIT":
-			if _, err := io.WriteString(c, respMsg(221)); err != nil {
-				log.Printf("%v\n", err)
-			}
-		case "PASV":
-			A := strings.Split("127.0.0.1", ".")
-			a := []int{2, 0} //Port:20
-			msg := fmt.Sprintf("%s %s,%s,%s,%s,%d,%d\n", responses[227], A[0], A[1], A[2], A[3], a[0], a[1])
-			log.Printf("%v\n", msg)
-			if _, err := io.WriteString(c, msg); err != nil {
-				log.Printf("%v\n", err)
-				break
-			}
-		case "SYST":
-			if _, err := io.WriteString(c, respMsg(215)); err != nil {
-				log.Printf("%v\n", err)
-			}
+		log.Printf("str: %v len: %d\n", msg, len(msg))
+		name := msg[0]
+		if err := commands[name](c, msg); err != nil {
+			log.Printf("%v\n", err)
 			break
-		case "PORT":
-			if _, err := fmt.Sscanf(str[1], "%d,%d,%d,%d,%d,%d\n", &dp.h1, &dp.h2, &dp.h3, &dp.h4, &dp.p1, &dp.p2); err != nil {
-				log.Printf("Sscanf failed: %v\n", err)
-				break
-			}
-			log.Printf("%v\n", dp)
-			if _, err := io.WriteString(c, respMsg(200)); err != nil {
-				log.Printf("%v\n", err)
-				break
-			}
-		case "FEAT":
-			if _, err := io.WriteString(c, respMsg(202)); err != nil {
-				log.Printf("%v\n", err)
-				break
-			}
-		case "LIST":
-			files, err := ioutil.ReadDir("./")
-			if err != nil {
-				log.Printf("%s\n", err)
-				break
-			}
-			if _, err := io.WriteString(c, respMsg(150)); err != nil {
-				log.Printf("%s\n", err)
-				break
-			}
-			dataConn, err := net.Dial("tcp", dp.toAddress())
-			if err != nil {
-				log.Printf("%s\n", err)
-				break
-
-			}
-			for _, file := range files {
-				if _, err := fmt.Fprintf(dataConn, "%s\r\n", file.Name()); err != nil {
-					log.Printf("%s\n", err)
-				}
-			}
-			if _, err := io.WriteString(c, respMsg(226)); err != nil {
-				log.Printf("%s\n", err)
-				dataConn.Close()
-				break
-			}
-			dataConn.Close()
-			break
-		default:
-			// if _, err := io.WriteString(c, respMsg(202)); err != nil {
-			// 	log.Printf("%v\n", err)
-			// 	break
-			// }
 		}
 	}
+}
+
+func user(c net.Conn, _ []string) error {
+	if _, err := io.WriteString(c, respMsg(331)); err != nil {
+		return fmt.Errorf("%s", err)
+	}
+	return nil
+}
+
+func pass(c net.Conn, _ []string) error {
+	if _, err := io.WriteString(c, respMsg(230)); err != nil {
+		return fmt.Errorf("%s", err)
+	}
+	return nil
+}
+
+func quit(c net.Conn, _ []string) error {
+	if _, err := io.WriteString(c, respMsg(221)); err != nil {
+		return fmt.Errorf("%s", err)
+	}
+	return nil
+}
+
+func pasv(c net.Conn, _ []string) error {
+	A := strings.Split("127.0.0.1", ".")
+	a := []int{2, 0} //Port:20
+	msg := fmt.Sprintf("%s %s,%s,%s,%s,%d,%d\n", responses[227], A[0], A[1], A[2], A[3], a[0], a[1])
+	if _, err := io.WriteString(c, msg); err != nil {
+		return fmt.Errorf("%s", err)
+	}
+	return nil
+}
+
+func syst(c net.Conn, _ []string) error {
+	if _, err := io.WriteString(c, respMsg(215)); err != nil {
+		return fmt.Errorf("%s", err)
+	}
+	return nil
+}
+
+func feat(c net.Conn, _ []string) error {
+	if _, err := io.WriteString(c, respMsg(202)); err != nil {
+		return fmt.Errorf("%s", err)
+	}
+	return nil
+}
+
+func port(c net.Conn, msg []string) error {
+	if _, err := fmt.Sscanf(msg[1], "%d,%d,%d,%d,%d,%d\n", &dp.h1, &dp.h2, &dp.h3, &dp.h4, &dp.p1, &dp.p2); err != nil {
+		return fmt.Errorf("Sscanf failed: %s", err)
+	}
+	log.Printf("%v\n", dp)
+	if _, err := io.WriteString(c, respMsg(200)); err != nil {
+		return fmt.Errorf("%s", err)
+	}
+	return nil
+}
+
+func list(c net.Conn, _ []string) error {
+	files, err := ioutil.ReadDir("./")
+	if err != nil {
+		return fmt.Errorf("%s", err)
+	}
+	if _, err := io.WriteString(c, respMsg(150)); err != nil {
+		return fmt.Errorf("%s", err)
+	}
+	dataConn, err := net.Dial("tcp", dp.toAddress())
+	defer dataConn.Close()
+	if err != nil {
+		return fmt.Errorf("%s", err)
+	}
+	for _, file := range files {
+		if _, err := fmt.Fprintf(dataConn, "%s\r\n", file.Name()); err != nil {
+			return fmt.Errorf("%s", err)
+		}
+	}
+	if _, err := io.WriteString(c, respMsg(226)); err != nil {
+		log.Printf("%s\n", err)
+	}
+	return nil
 }

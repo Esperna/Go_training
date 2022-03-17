@@ -76,6 +76,9 @@ func handleConn(c net.Conn) {
 			"PORT": port,
 			"FEAT": feat,
 			"LIST": list,
+			"RETR": retr,
+			"CWD":  cwd,
+			"STOR": stor,
 		}
 		line, err := reader.ReadString('\n')
 		if err != nil {
@@ -174,6 +177,27 @@ func list(c net.Conn, _ []string) error {
 	}
 	if _, err := io.WriteString(c, respMsg(226)); err != nil {
 		log.Printf("%s\n", err)
+	}
+	return nil
+}
+
+func retr(c net.Conn, _ []string) error {
+	if _, err := io.WriteString(c, respMsg(202)); err != nil {
+		return fmt.Errorf("%s", err)
+	}
+	return nil
+}
+
+func cwd(c net.Conn, _ []string) error {
+	if _, err := io.WriteString(c, respMsg(202)); err != nil {
+		return fmt.Errorf("%s", err)
+	}
+	return nil
+}
+
+func stor(c net.Conn, _ []string) error {
+	if _, err := io.WriteString(c, respMsg(202)); err != nil {
+		return fmt.Errorf("%s", err)
 	}
 	return nil
 }

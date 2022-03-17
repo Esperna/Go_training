@@ -2,3 +2,7 @@ open localhost
 user hoge huga
 epsv4
 ls
+get ftp.go
+cd sandbox
+put
+close

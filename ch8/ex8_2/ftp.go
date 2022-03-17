@@ -52,18 +52,17 @@ func main() {
 			log.Print(err)
 			continue
 		}
-		go handleControlConn(conn)
+		go handleConn(conn)
 	}
 }
 
-var dp dataPort
+var dp dataPort //exclusive Control is needed
 
-func handleControlConn(c net.Conn) {
+func handleConn(c net.Conn) {
 	defer c.Close()
-	log.Printf("Accept %v\n", c.RemoteAddr())
 	_, err := io.WriteString(c, respMsg(220))
 	if err != nil {
-		log.Printf("%v\n", err)
+		log.Printf("%s", err)
 		return
 	}
 	reader := bufio.NewReader(c)
@@ -78,21 +77,19 @@ func handleControlConn(c net.Conn) {
 			"FEAT": feat,
 			"LIST": list,
 		}
-
 		line, err := reader.ReadString('\n')
 		if err != nil {
 			if err != io.EOF {
-				log.Printf("%v\n", err)
+				log.Printf("%s\n", err)
 			}
 			break
 		}
-		log.Printf("line: %s\n", line)
 		msg := strings.Split(line, " ")
 		if len(msg) == 1 {
 			msg = strings.Split(msg[0], "\r")
 			msg = strings.Split(msg[0], "\n")
 		}
-		log.Printf("str: %v len: %d\n", msg, len(msg))
+		log.Printf("msg: %s len: %d\n", msg[0], len(msg))
 		name := msg[0]
 		if err := commands[name](c, msg); err != nil {
 			log.Printf("%v\n", err)

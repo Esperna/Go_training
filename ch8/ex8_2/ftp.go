@@ -12,6 +12,7 @@ import (
 var responses = map[int]string{
 	202: "Command not implemented, superfluous at this site.",
 	220: "Service ready for new user.",
+	221: "Service closing control connection.",
 	230: "User logged in, proceed",
 	331: "User name okay, need password.",
 }
@@ -54,12 +55,11 @@ func handleConn(c net.Conn) {
 		}
 		log.Printf("line: %s\n", line)
 		str := strings.Split(line, " ")
-		if len(str) > 2 {
-			_, err := io.WriteString(c, respMsg(202))
-			if err != nil {
-				return
-			}
+		if len(str) == 1 {
+			str = strings.Split(str[0], "\r")
+			str = strings.Split(str[0], "\n")
 		}
+		log.Printf("str: %v len: %d\n", str, len(str))
 		cmd := str[0]
 		switch cmd {
 		case "USER":
@@ -72,6 +72,11 @@ func handleConn(c net.Conn) {
 				log.Printf("%v\n", err)
 				break
 			}
+		case "QUIT":
+			if _, err := io.WriteString(c, respMsg(221)); err != nil {
+				log.Printf("%v\n", err)
+			}
+			break
 		default:
 			if _, err := io.WriteString(c, respMsg(202)); err != nil {
 				log.Printf("%v\n", err)

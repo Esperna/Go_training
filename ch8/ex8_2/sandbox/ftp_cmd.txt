@@ -1,0 +1,4 @@
+open localhost
+user hoge huga
+epsv4
+ls

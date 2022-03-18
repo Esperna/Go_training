@@ -13,7 +13,7 @@ func TestNewReader(t *testing.T) {
 	}
 	for _, test := range tests {
 		rd := NewReader(test.input)
-		if rd.s != test.input && rd.i != int64(test.want) {
+		if string(rd.b) != test.input && rd.i != int64(test.want) {
 			t.Errorf("NewReader result is not expected.  expected: %v actual: %v", test, rd)
 		}
 	}
@@ -44,5 +44,3 @@ func TestRead(t *testing.T) {
 	}
 
 }
-
-//func (r *Reader) Read(b []byte) (n int, err error) {

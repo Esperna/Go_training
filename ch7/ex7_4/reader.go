@@ -9,7 +9,7 @@ import (
 )
 
 type Reader struct {
-	s string
+	b []byte
 	i int64
 }
 
@@ -41,14 +41,14 @@ func visit(links []string, n *html.Node) []string {
 }
 
 func NewReader(s string) *Reader {
-	return &Reader{s, 0}
+	return &Reader{[]byte(s), 0}
 }
 
 func (r *Reader) Read(p []byte) (n int, err error) {
-	if r.i >= int64(len(r.s)) {
-		return n, io.EOF
+	if r.i >= int64(len(r.b)) {
+		return 0, io.EOF
 	}
-	n = copy(p, r.s[r.i:])
+	n = copy(p, r.b[r.i:])
 	r.i += int64(n)
 	return n, err
 }

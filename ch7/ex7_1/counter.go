@@ -9,7 +9,6 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"os"
 	"strings"
 )
 
@@ -23,20 +22,20 @@ func (c *ByteCounter) Write(p []byte) (int, error) {
 type WordCounter int
 
 func (c *WordCounter) Write(p []byte) (int, error) {
-	count := countByFunc(p, bufio.ScanWords)
+	count, err := countByFunc(p, bufio.ScanWords)
 	*c += WordCounter(count)
-	return count, nil
+	return count, err
 }
 
 type LineCounter int
 
 func (c *LineCounter) Write(p []byte) (int, error) {
-	count := countByFunc(p, bufio.ScanLines)
+	count, err := countByFunc(p, bufio.ScanLines)
 	*c += LineCounter(count)
-	return count, nil
+	return count, err
 }
 
-func countByFunc(p []byte, f bufio.SplitFunc) (count int) {
+func countByFunc(p []byte, f bufio.SplitFunc) (count int, err error) {
 	s := string(p)
 	scanner := bufio.NewScanner(strings.NewReader(s))
 	scanner.Split(f)
@@ -45,13 +44,12 @@ func countByFunc(p []byte, f bufio.SplitFunc) (count int) {
 		count++
 	}
 	if err := scanner.Err(); err != nil {
-		fmt.Fprintln(os.Stderr, "reading input:", err)
+		err = fmt.Errorf("scan falied %s", err)
 	}
-	return
+	return count, err
 }
 
 func main() {
-	//!+main
 	var c ByteCounter
 	c.Write([]byte("hello"))
 	fmt.Println(c) // "5", = len("hello")
@@ -60,5 +58,4 @@ func main() {
 	var name = "Dolly"
 	fmt.Fprintf(&c, "hello, %s", name)
 	fmt.Println(c) // "12", = len("hello, Dolly")
-	//!-main
 }

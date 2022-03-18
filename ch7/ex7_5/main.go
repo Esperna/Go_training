@@ -31,7 +31,7 @@ func (r *Reader) Read(p []byte) (n int, err error) {
 	if r.i >= r.size {
 		return n, io.EOF
 	}
-	n, _ = r.r.Read(p)
+	n, _ = r.r.Read(p[:r.size])
 	if int64(n) > r.size {
 		n = int(r.size)
 	}

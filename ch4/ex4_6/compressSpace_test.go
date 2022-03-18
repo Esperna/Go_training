@@ -23,8 +23,21 @@ func TestCompressSpace(t *testing.T) {
 	}
 }
 
-func TestFunction(t *testing.T) {
+func TestInvaildByte1(t *testing.T) {
 	b := []byte{0xff}
+	defer func() {
+		switch p := recover(); p {
+		case fmt.Sprintf("Invalid byte s %q %d", b, 1):
+			fmt.Printf("This panic is expected by test\n")
+		default:
+			panic(p)
+		}
+	}()
+	compressUnicodeSpaces(b)
+}
+
+func TestInvaildByte2(t *testing.T) {
+	b := []byte{0x20, 0xff}
 	defer func() {
 		switch p := recover(); p {
 		case fmt.Sprintf("Invalid byte s %q %d", b, 1):

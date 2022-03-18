@@ -25,13 +25,10 @@ func Length(s string) string {
 
 func expand(s string, f func(string) string) string {
 	rep := regexp.MustCompile(`\$[A-Za-z]*`)
-	strSlices := rep.FindAllStringSubmatch(s, -1)
-	for _, strSlice := range strSlices {
-		str := strings.Join(strSlice, "")
-		str = strings.Replace(str, "$", "", 1)
-		s = strings.Replace(s, str, f(str), 1)
+	stripDollar := func(s string) string {
 		s = strings.Replace(s, "$", "", 1)
+		return f(s)
 	}
-
+	s = rep.ReplaceAllStringFunc(s, stripDollar)
 	return s
 }

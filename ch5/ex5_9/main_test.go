@@ -16,6 +16,7 @@ func TestExpand(t *testing.T) {
 		{"$foo $foo", "3 3", Length},
 		{"$hoge, $foo, $fuga", "4, 3, 4", Length},
 		{"$hoge, $foo, $fuga", "HOGE, FOO, FUGA", strings.ToUpper},
+		{"$hoge, $foo, $fuga", "$hoge, $foo, $fuga", ReturnSameStringiWithDollar},
 	}
 
 	for _, test := range tests {
@@ -24,4 +25,8 @@ func TestExpand(t *testing.T) {
 			t.Errorf("result is not expected. result is %s. expected is %s.", result, test.expected)
 		}
 	}
+}
+
+func ReturnSameStringiWithDollar(s string) string {
+	return "$" + s
 }

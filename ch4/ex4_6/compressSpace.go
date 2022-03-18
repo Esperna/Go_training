@@ -20,41 +20,26 @@ func main() {
 
 func compressUnicodeSpaces(b []byte) []byte {
 	for i := 0; i < len(b); {
-		r, size := utf8.DecodeRune(b[i:])
-		if r == utf8.RuneError && size == 1 {
-			panic(fmt.Sprintf("Invalid byte slice %q %d", r, size))
+		r1, size1 := utf8.DecodeRune(b[i:])
+		if r1 == utf8.RuneError && size1 == 1 {
+			panic(fmt.Sprintf("Invalid byte s %q %d", b, size1))
 		}
-
-		if i+size-1 < len(b) {
-			if unicode.IsSpace(r) {
-				for j := i + size - 1; j > i; j-- {
-					b = remove(b, j)
-				}
-				b[i] = ' '
-				i++
-			} else {
-				i += size
-			}
+		r2, size2 := utf8.DecodeRune(b[i+size1:])
+		if r2 == utf8.RuneError && size2 == 1 {
+			panic(fmt.Sprintf("Invalid byte s %q %d", b, size2))
+		}
+		if unicode.IsSpace(r1) && unicode.IsSpace(r2) {
+			b = remove(b, i, size1+size2)
+			b = append(b[:i+1], b[i:]...)
+			b[i] = ' '
+		} else {
+			i += size1
 		}
 	}
-	b = deleteDupSpace(b)
 	return b
 }
-func deleteDupSpace(s []byte) []byte {
-	for i := 0; i < len(s); i++ {
-		if i+1 < len(s) {
-			r1 := []rune(string(s[i+1]))
-			r0 := []rune(string(s[i]))
-			if unicode.IsSpace(r1[0]) && unicode.IsSpace(r0[0]) {
-				s = remove(s, i)
-				s = deleteDupSpace(s)
-			}
-		}
-	}
-	return s
-}
 
-func remove(slice []byte, i int) []byte {
-	copy(slice[i:], slice[i+1:])
-	return slice[:len(slice)-1]
+func remove(s []byte, i, size int) []byte {
+	copy(s[i:], s[i+size:])
+	return s[:len(s)-size]
 }

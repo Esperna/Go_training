@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net"
+	"os"
 	"strconv"
 	"strings"
 )
@@ -22,6 +23,7 @@ var responses = map[int]string{
 	227: "Entering Passive Mode.",
 	230: "User logged in, proceed",
 	331: "User name okay, need password.",
+	501: "Syntax error in parameters or arguments.",
 	530: "Not Logged in.",
 }
 
@@ -203,10 +205,38 @@ func list(c net.Conn, msg []string) error {
 	return nil
 }
 
-func retr(c net.Conn, _ []string) error {
-	if _, err := io.WriteString(c, respMsg(202)); err != nil {
+func retr(c net.Conn, msg []string) error {
+	var m string
+	if len(msg) <= 1 {
+		if _, err := io.WriteString(c, respMsg(501)); err != nil {
+			return fmt.Errorf("%s", err)
+		}
+	}
+	if _, err := fmt.Sscanf(msg[1], "%s\n", &m); err != nil {
+		return fmt.Errorf("Sscanf failed: %s", err)
+	}
+
+	dataConn, err := net.Dial("tcp", dp.toAddress())
+	defer dataConn.Close()
+	if err != nil {
 		return fmt.Errorf("%s", err)
 	}
+
+	file, err := os.Open(m)
+	if err != nil {
+		return fmt.Errorf("%s", err)
+	}
+	if _, err := io.WriteString(c, respMsg(150)); err != nil {
+		return fmt.Errorf("%s", err)
+	}
+	if _, err := io.Copy(dataConn, file); err != nil {
+		return fmt.Errorf("%s", err)
+	}
+
+	if _, err := io.WriteString(c, respMsg(226)); err != nil {
+		log.Printf("%s\n", err)
+	}
+
 	return nil
 }
 

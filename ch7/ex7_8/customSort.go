@@ -73,7 +73,6 @@ type sortKeys struct {
 }
 
 func main() {
-	fmt.Println("\nCustom:")
 	key1 := flag.String("k1", "Title", "first sort key")
 	key2 := flag.String("k2", "Artist", "second sort key")
 	var keys sortKeys

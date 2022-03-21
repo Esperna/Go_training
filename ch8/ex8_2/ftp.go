@@ -169,8 +169,14 @@ func port(c net.Conn, msg []string) error {
 	return nil
 }
 
-func list(c net.Conn, _ []string) error {
-	files, err := ioutil.ReadDir("./")
+func list(c net.Conn, msg []string) error {
+	var m string
+	if len(msg) > 1 {
+		if _, err := fmt.Sscanf(msg[1], "%s\n", &m); err != nil {
+			return fmt.Errorf("Sscanf failed: %s", err)
+		}
+	}
+	files, err := ioutil.ReadDir("./" + m)
 	if err != nil {
 		return fmt.Errorf("%s", err)
 	}

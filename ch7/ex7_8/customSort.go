@@ -89,6 +89,11 @@ func main() {
 		fmt.Print("invalid second key")
 		os.Exit(1)
 	}
+	tracks := customSortBy1st2ndKey(*key1, *key2)
+	printTracks(tracks)
+}
+
+func customSortBy1st2ndKey(key1, key2 string) []*Track {
 	lessBy1st2ndKey := func(x, y *Track) bool {
 		m := map[string]func(x, y *Track) bool{
 			"Title":  lessByTitle,
@@ -97,17 +102,16 @@ func main() {
 			"Year":   lessByYear,
 			"Length": lessByLength,
 		}
-		if m[*key1](x, y) {
-			return m[*key1](x, y)
+		if m[key1](x, y) {
+			return m[key1](x, y)
 		}
-		if m[*key1](y, x) {
-			return m[*key1](x, y)
+		if m[key1](y, x) {
+			return m[key1](x, y)
 		}
-		return m[*key2](x, y)
+		return m[key2](x, y)
 	}
-
 	sort.Sort(customSortBy2Key{tracks, lessBy1st2ndKey})
-	printTracks(tracks)
+	return tracks
 }
 
 type customSortBy2Key struct {

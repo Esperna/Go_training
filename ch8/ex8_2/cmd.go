@@ -121,11 +121,14 @@ func retr(c net.Conn, msg []string) error {
 	if _, err := fmt.Sscanf(msg[1], "%s\n", &m); err != nil {
 		return fmt.Errorf("Sscanf failed: %s", err)
 	}
-
 	dataConn, err := net.Dial("tcp", dp.toAddress())
 	defer dataConn.Close()
 	if err != nil {
 		return fmt.Errorf("%s", err)
+	}
+
+	if !strings.HasPrefix(m, "./") {
+		m = "./" + m
 	}
 
 	file, err := os.Open(m)

@@ -64,3 +64,32 @@ func TestReadTwice(t *testing.T) {
 		}
 	}
 }
+
+func TestReadLessThanSizeOfLimitReader(t *testing.T) {
+	type Output struct {
+		n   int
+		err error
+	}
+	type Input struct {
+		str string
+		val int
+	}
+	var tests = []struct {
+		expected Output
+		given    Input
+	}{
+		{Output{4, nil}, Input{"Hello Hello", 5}},
+	}
+	for _, test := range tests {
+		r := strings.NewReader(test.given.str)
+		lr := LimitReader(r, int64(test.given.val))
+		p1 := make([]byte, test.given.val-1)
+		n, err := lr.Read(p1)
+		if n != test.expected.n {
+			t.Errorf("Not expected n. Expected %d Actual %d", test.expected.n, n)
+		}
+		if err != test.expected.err {
+			t.Errorf("Not expected err. Expected %s Actual %s", test.expected.err, err)
+		}
+	}
+}

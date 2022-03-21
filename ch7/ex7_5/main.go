@@ -31,10 +31,17 @@ func (r *Reader) Read(p []byte) (n int, err error) {
 	if r.i >= r.size {
 		return n, io.EOF
 	}
-	n, _ = r.r.Read(p[:r.size])
-	if int64(n) > r.size {
-		n = int(r.size)
+
+	if r.size > int64(len(p)) {
+		n, _ = r.r.Read(p[:])
+	} else {
+		n, _ = r.r.Read(p[:r.size])
 	}
+
 	r.i += int64(n)
 	return n, err
+}
+
+type Dummy interface {
+	LimitReader(r io.Reader, n int64) io.Reader
 }

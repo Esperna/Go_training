@@ -22,6 +22,7 @@ var responses = map[int]string{
 	227: "Entering Passive Mode.",
 	230: "User logged in, proceed",
 	331: "User name okay, need password.",
+	530: "Not Logged in.",
 }
 
 type dataPort struct {
@@ -108,9 +109,20 @@ func user(c net.Conn, _ []string) error {
 	return nil
 }
 
-func pass(c net.Conn, _ []string) error {
-	if _, err := io.WriteString(c, respMsg(230)); err != nil {
-		return fmt.Errorf("%s", err)
+func pass(c net.Conn, msg []string) error {
+	var m string
+	if _, err := fmt.Sscanf(msg[1], "%s\n", &m); err != nil {
+		return fmt.Errorf("Sscanf failed: %s", err)
+	}
+	password := "huga"
+	if m == password {
+		if _, err := io.WriteString(c, respMsg(230)); err != nil {
+			return fmt.Errorf("%s", err)
+		}
+	} else {
+		if _, err := io.WriteString(c, respMsg(530)); err != nil {
+			return fmt.Errorf("%s", err)
+		}
 	}
 	return nil
 }

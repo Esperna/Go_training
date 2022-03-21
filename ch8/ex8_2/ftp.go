@@ -176,16 +176,20 @@ func list(c net.Conn, msg []string) error {
 			return fmt.Errorf("Sscanf failed: %s", err)
 		}
 	}
-	files, err := ioutil.ReadDir("./" + m)
+	dataConn, err := net.Dial("tcp", dp.toAddress())
+	defer dataConn.Close()
+	if err != nil {
+		return fmt.Errorf("%s", err)
+	}
+
+	if !strings.HasPrefix(m, "./") {
+		m = "./" + m
+	}
+	files, err := ioutil.ReadDir(m)
 	if err != nil {
 		return fmt.Errorf("%s", err)
 	}
 	if _, err := io.WriteString(c, respMsg(150)); err != nil {
-		return fmt.Errorf("%s", err)
-	}
-	dataConn, err := net.Dial("tcp", dp.toAddress())
-	defer dataConn.Close()
-	if err != nil {
 		return fmt.Errorf("%s", err)
 	}
 	for _, file := range files {

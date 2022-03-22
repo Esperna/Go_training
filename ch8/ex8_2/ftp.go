@@ -6,42 +6,8 @@ import (
 	"io"
 	"log"
 	"net"
-	"strconv"
 	"strings"
 )
-
-var responses = map[int]string{
-	150: "File status okay; about to open data connection.",
-	200: "Command okay.",
-	202: "Command not implemented, superfluous at this site.",
-	215: "NAME system type. Where NAME is an official system name from the list in the Assigned Numbers document.",
-	220: "Service ready for new user.",
-	221: "Service closing control connection.",
-	226: "Closing data connection. Requested file action successful (for example, file transfer or file abort).",
-	227: "Entering Passive Mode.",
-	230: "User logged in, proceed",
-	250: "Requested file action okay, completed.",
-	331: "User name okay, need password.",
-	501: "Syntax error in parameters or arguments.",
-	530: "Not Logged in.",
-}
-
-type dataPort struct {
-	h1, h2, h3, h4 int
-	p1, p2         int
-}
-
-func (d *dataPort) toAddress() string {
-	if d == nil {
-		return ""
-	}
-	port := d.p1<<8 + d.p2
-	return fmt.Sprintf("%d.%d.%d.%d:%d", d.h1, d.h2, d.h3, d.h4, port)
-}
-
-func respMsg(code int) string {
-	return strconv.Itoa(code) + " " + responses[code] + "\n"
-}
 
 func main() {
 	listener, err := net.Listen("tcp", "localhost:21")
@@ -88,12 +54,15 @@ func handleConn(c net.Conn) {
 			break
 		}
 		msg := strings.Split(line, " ")
+		var name string
 		if len(msg) == 1 {
-			msg = strings.Split(msg[0], "\r")
-			msg = strings.Split(msg[0], "\n")
+			if _, err := fmt.Sscanf(msg[0], "%s\n", &name); err != nil {
+				log.Printf("Sscanf failed: %s", err)
+			}
+		} else {
+			name = msg[0]
 		}
-		log.Printf("msg: %s len: %d\n", msg[0], len(msg))
-		name := msg[0]
+		log.Printf("msg: %s len: %d\n", name, len(msg))
 		if err := commands[name](c, msg); err != nil {
 			log.Printf("%v\n", err)
 			break

@@ -20,6 +20,7 @@ var responses = map[int]string{
 	226: "Closing data connection. Requested file action successful (for example, file transfer or file abort).",
 	227: "Entering Passive Mode.",
 	230: "User logged in, proceed",
+	250: "Requested file action okay, completed.",
 	331: "User name okay, need password.",
 	501: "Syntax error in parameters or arguments.",
 	530: "Not Logged in.",
@@ -56,8 +57,6 @@ func main() {
 		go handleConn(conn)
 	}
 }
-
-var dp dataPort //exclusive Control is needed
 
 func handleConn(c net.Conn) {
 	defer c.Close()

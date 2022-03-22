@@ -7,5 +7,6 @@ ls ./sandbox
 get ftp.go
 get ./data/sample1.txt
 cd sandbox
+ls
 put
 close

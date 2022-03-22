@@ -66,6 +66,10 @@ func feat(c net.Conn, _ []string) error {
 	return nil
 }
 
+var (
+	dp dataPort //exclusive Control is needed
+)
+
 func port(c net.Conn, msg []string) error {
 	if _, err := fmt.Sscanf(msg[1], "%d,%d,%d,%d,%d,%d\n", &dp.h1, &dp.h2, &dp.h3, &dp.h4, &dp.p1, &dp.p2); err != nil {
 		return fmt.Errorf("Sscanf failed: %s", err)
@@ -86,6 +90,7 @@ func list(c net.Conn, msg []string) error {
 	}
 	dataConn, err := net.Dial("tcp", dp.toAddress())
 	defer dataConn.Close()
+
 	if err != nil {
 		return fmt.Errorf("%s", err)
 	}
@@ -117,6 +122,7 @@ func retr(c net.Conn, msg []string) error {
 		if _, err := io.WriteString(c, respMsg(501)); err != nil {
 			return fmt.Errorf("%s", err)
 		}
+		return fmt.Errorf("Invalid argument")
 	}
 	if _, err := fmt.Sscanf(msg[1], "%s\n", &m); err != nil {
 		return fmt.Errorf("Sscanf failed: %s", err)
@@ -149,8 +155,29 @@ func retr(c net.Conn, msg []string) error {
 	return nil
 }
 
-func cwd(c net.Conn, _ []string) error {
-	if _, err := io.WriteString(c, respMsg(202)); err != nil {
+func cwd(c net.Conn, msg []string) error {
+	var m string
+	if len(msg) <= 1 {
+		if _, err := io.WriteString(c, respMsg(501)); err != nil {
+			return fmt.Errorf("%s", err)
+		}
+		return fmt.Errorf("Invalid argument")
+	}
+	log.Printf("%v\n", msg)
+	if _, err := fmt.Sscanf(msg[1], "%s\n", &m); err != nil {
+		return fmt.Errorf("Sscanf failed: %s", err)
+	}
+	log.Printf("After Sscanf:%s\n", m)
+
+	if !strings.HasPrefix(m, "./") {
+		m = "./" + m
+	}
+	log.Printf("%s\n", m)
+	if err := os.Chdir(m); err != nil {
+		return fmt.Errorf("%s", err)
+	}
+
+	if _, err := io.WriteString(c, respMsg(250)); err != nil {
 		return fmt.Errorf("%s", err)
 	}
 	return nil

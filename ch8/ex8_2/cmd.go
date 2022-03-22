@@ -88,9 +88,9 @@ func list(c net.Conn, msg []string) error {
 			return fmt.Errorf("Sscanf failed: %s", err)
 		}
 	}
+
 	dataConn, err := net.Dial("tcp", dp.toAddress())
 	defer dataConn.Close()
-
 	if err != nil {
 		return fmt.Errorf("%s", err)
 	}
@@ -127,6 +127,7 @@ func retr(c net.Conn, msg []string) error {
 	if _, err := fmt.Sscanf(msg[1], "%s\n", &m); err != nil {
 		return fmt.Errorf("Sscanf failed: %s", err)
 	}
+
 	dataConn, err := net.Dial("tcp", dp.toAddress())
 	defer dataConn.Close()
 	if err != nil {
@@ -163,11 +164,10 @@ func cwd(c net.Conn, msg []string) error {
 		}
 		return fmt.Errorf("Invalid argument")
 	}
-	log.Printf("%v\n", msg)
+
 	if _, err := fmt.Sscanf(msg[1], "%s\n", &m); err != nil {
 		return fmt.Errorf("Sscanf failed: %s", err)
 	}
-	log.Printf("After Sscanf:%s\n", m)
 
 	if !strings.HasPrefix(m, "./") {
 		m = "./" + m

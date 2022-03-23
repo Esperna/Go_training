@@ -15,7 +15,9 @@ import (
 
 //!+
 func main() {
-	conn, err := net.Dial("tcp", "localhost:8000")
+	//	conn, err := net.DialTCP("tcp", "localhost:8000")
+	tcpAddr, err := net.ResolveTCPAddr("tcp", "localhost:8000")
+	conn, err := net.DialTCP("tcp", nil, tcpAddr)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -26,8 +28,9 @@ func main() {
 		done <- struct{}{} // signal the main goroutine
 	}()
 	mustCopy(conn, os.Stdin)
-	conn.Close()
+	conn.CloseWrite()
 	<-done // wait for background goroutine to finish
+	conn.CloseRead()
 }
 
 //!-

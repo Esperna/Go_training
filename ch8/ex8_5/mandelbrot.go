@@ -15,20 +15,40 @@ import (
 	"os"
 )
 
+type Point struct {
+	x, y int
+	z    complex128
+}
+
 func main() {
+	points := make(chan Point)
+	done := make(chan struct{})
 	const (
 		xmin, ymin, xmax, ymax = -2, -2, +2, +2
 		width, height          = 1024, 1024
 	)
-
 	img := image.NewRGBA(image.Rect(0, 0, width, height))
 	for py := 0; py < height; py++ {
 		y := float64(py)/height*(ymax-ymin) + ymin
 		for px := 0; px < width; px++ {
-			x := float64(px)/width*(xmax-xmin) + xmin
-			z := complex(x, y)
-			// Image point (px, py) represents complex value z.
-			img.Set(px, py, mandelbrot(z))
+			go func(px, py int) {
+				x := float64(px)/width*(xmax-xmin) + xmin
+				z := complex(x, y)
+				points <- Point{px, py, z}
+			}(px, py)
+		}
+	}
+
+	go func() {
+		for point := range points {
+			img.Set(point.x, point.y, mandelbrot(point.z))
+			done <- struct{}{}
+		}
+	}()
+
+	for py := 0; py < height; py++ {
+		for px := 0; px < width; px++ {
+			<-done
 		}
 	}
 	png.Encode(os.Stdout, img) // NOTE: ignoring errors

@@ -23,17 +23,33 @@ func echo(c net.Conn, shout string, delay time.Duration) {
 	fmt.Fprintln(c, "\t", strings.ToLower(shout))
 }
 
-//!+
 func handleConn(c net.Conn) {
 	input := bufio.NewScanner(c)
-	for input.Scan() {
-		go echo(c, input.Text(), 1*time.Second)
-	}
-	// NOTE: ignoring potential errors from input.Err()
-	c.Close()
-}
+	start := make(chan string)
+	go func() {
+		for input.Scan() {
+			start <- input.Text()
+			go echo(c, input.Text(), 1*time.Second)
+		}
+		close(start)
+		c.Close()
 
-//!-
+	}()
+loop:
+	for {
+		select {
+		case <-time.After(10 * time.Second):
+			fmt.Printf("Timeout\n")
+			c.Close()
+			break loop
+		case _, ok := <-start:
+			if !ok {
+				fmt.Print("break\n")
+				break loop
+			}
+		}
+	}
+}
 
 func main() {
 	l, err := net.Listen("tcp", "localhost:8000")

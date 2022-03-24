@@ -1,3 +1,3 @@
 #!/bin/zsh
 go build findlinks.go
-./findlinks http://gopl.io/
+./findlinks -depth=3 http://gopl.io/

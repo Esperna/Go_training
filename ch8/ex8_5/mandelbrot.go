@@ -102,13 +102,13 @@ func drawMandelbrotWithGoRoutine() {
 	png.Encode(ioutil.Discard, img) // NOTE: ignoring errors
 }
 
-func drawMandelbrotWithGoRoutineWithBuffer() {
+func drawMandelbrotWithGoRoutineWithBuffer(numOfBuf int) {
 	const (
 		xmin, ymin, xmax, ymax = -2, -2, +2, +2
 		width, height          = 1024, 1024
 	)
 	img := image.NewRGBA(image.Rect(0, 0, width, height))
-	ch := make(chan struct{}, 4)
+	ch := make(chan struct{}, numOfBuf)
 
 	var wg sync.WaitGroup
 	for py := 0; py < height; py++ {

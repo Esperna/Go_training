@@ -11,6 +11,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
 	"os"
@@ -18,41 +19,52 @@ import (
 	"gopl.io/ch5/links"
 )
 
-func crawl(url string) []string {
-	fmt.Println(url)
+type urlInfo struct {
+	links []string
+	depth int
+}
+
+var depthLimit = flag.Int("depth", 1, "depth of crawl\n")
+var tokens = make(chan struct{}, 10)
+
+func crawl(url string, depth int) *urlInfo {
+	if depth > *depthLimit {
+		return &urlInfo{nil, depth}
+	}
+	fmt.Printf("depth %d %s\n", depth, url)
+	tokens <- struct{}{}
 	list, err := links.Extract(url)
+	<-tokens
 	if err != nil {
 		log.Print(err)
 	}
-	return list
+	return &urlInfo{list, depth + 1}
 }
 
 //!+
 func main() {
-	worklist := make(chan []string)  // lists of URLs, may have duplicates
-	unseenLinks := make(chan string) // de-duplicated URLs
-
-	// Add command-line arguments to worklist.
-	go func() { worklist <- os.Args[1:] }()
-
-	// Create 20 crawler goroutines to fetch each unseen link.
-	for i := 0; i < 20; i++ {
-		go func() {
-			for link := range unseenLinks {
-				foundLinks := crawl(link)
-				go func() { worklist <- foundLinks }()
-			}
-		}()
+	if len(os.Args) < 3 {
+		log.Fatal("Invalid number of Argument\n")
 	}
+	flag.Parse()
 
-	// The main goroutine de-duplicates worklist items
-	// and sends the unseen ones to the crawlers.
+	worklist := make(chan urlInfo)
+	var n int // number of pending sends to worklist
+	// Start with the command-line arguments.
+	n++
+	go func() { worklist <- urlInfo{os.Args[2:], 0} }()
+
+	// Crawl the web concurrently.
 	seen := make(map[string]bool)
-	for list := range worklist {
-		for _, link := range list {
+	for ; n > 0; n-- {
+		list := <-worklist
+		for _, link := range list.links {
 			if !seen[link] {
 				seen[link] = true
-				unseenLinks <- link
+				n++
+				go func(link string, depth int) {
+					worklist <- *crawl(link, depth)
+				}(link, list.depth)
 			}
 		}
 	}

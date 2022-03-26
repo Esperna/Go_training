@@ -8,7 +8,7 @@ package intset
 
 import (
 	"bytes"
-	"ch6/ex6_4/popcount"
+	"ch6/ex01/popcount"
 	"fmt"
 )
 
@@ -90,9 +90,7 @@ func (s *IntSet) Remove(x int) {
 }
 
 func (s *IntSet) Clear() {
-	for i, _ := range s.words {
-		s.words[i] = 0
-	}
+	s.words = nil
 }
 
 func (s *IntSet) Copy() *IntSet {
@@ -100,80 +98,4 @@ func (s *IntSet) Copy() *IntSet {
 	ret.words = make([]uint64, len(s.words))
 	copy(ret.words, s.words)
 	return &ret
-}
-
-func (s *IntSet) AddAll(vals ...int) *IntSet {
-	for _, v := range vals {
-		s.Add(v)
-	}
-	return s
-}
-
-func (s *IntSet) IntersectWith(t *IntSet) {
-	lengthS := len(s.words)
-	lengthT := len(t.words)
-
-	if lengthT < lengthS {
-		for i, word := range t.words {
-			s.words[i] &= word
-		}
-		for j := lengthT; j < lengthS; j++ {
-			s.words[j] = 0
-		}
-	} else {
-		for i, _ := range s.words {
-			s.words[i] &= t.words[i]
-		}
-	}
-}
-
-func (s *IntSet) DifferenceWith(t *IntSet) {
-	lengthS := len(s.words)
-	lengthT := len(t.words)
-
-	if lengthT < lengthS {
-		for i, word := range t.words {
-			mask := s.words[i] & word
-			s.words[i] &= ^mask
-		}
-	} else {
-		for i, _ := range s.words {
-			mask := t.words[i] & s.words[i]
-			s.words[i] &= ^mask
-		}
-	}
-}
-
-func (s *IntSet) SymmetricDifference(t *IntSet) {
-	lengthS := len(s.words)
-	lengthT := len(t.words)
-
-	if lengthT < lengthS {
-		for i, word := range t.words {
-			s.words[i] ^= word
-		}
-	} else {
-		for i, _ := range s.words {
-			s.words[i] ^= t.words[i]
-		}
-		for i := lengthS; i < lengthT; i++ {
-			s.words = append(s.words, t.words[i])
-		}
-	}
-}
-
-func (s *IntSet) Elem() []uint64 {
-	var elem []uint64
-	var offset uint64
-	for _, word := range s.words {
-		for i := 0; i < 64; i++ {
-			mask := uint64(1)
-			if word&mask == 1 {
-				elem = append(elem, offset+uint64(i))
-			}
-			word = word >> 1
-		}
-		offset += 64
-	}
-	return elem
 }

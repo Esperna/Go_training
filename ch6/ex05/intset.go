@@ -8,7 +8,7 @@ package intset
 
 import (
 	"bytes"
-	"ch6/ex6_5/popcount"
+	"ch6/ex05/popcount"
 	"fmt"
 )
 

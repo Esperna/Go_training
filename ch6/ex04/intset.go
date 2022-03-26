@@ -8,7 +8,7 @@ package intset
 
 import (
 	"bytes"
-	"ch6/ex6_3/popcount"
+	"ch6/ex04/popcount"
 	"fmt"
 )
 
@@ -90,7 +90,9 @@ func (s *IntSet) Remove(x int) {
 }
 
 func (s *IntSet) Clear() {
-	s.words = nil
+	for i, _ := range s.words {
+		s.words[i] = 0
+	}
 }
 
 func (s *IntSet) Copy() *IntSet {
@@ -124,6 +126,7 @@ func (s *IntSet) IntersectWith(t *IntSet) {
 		}
 	}
 }
+
 func (s *IntSet) DifferenceWith(t *IntSet) {
 	lengthS := len(s.words)
 	lengthT := len(t.words)
@@ -140,6 +143,7 @@ func (s *IntSet) DifferenceWith(t *IntSet) {
 		}
 	}
 }
+
 func (s *IntSet) SymmetricDifference(t *IntSet) {
 	lengthS := len(s.words)
 	lengthT := len(t.words)
@@ -156,4 +160,20 @@ func (s *IntSet) SymmetricDifference(t *IntSet) {
 			s.words = append(s.words, t.words[i])
 		}
 	}
+}
+
+func (s *IntSet) Elem() []uint64 {
+	var elem []uint64
+	var offset uint64
+	for _, word := range s.words {
+		for i := 0; i < 64; i++ {
+			mask := uint64(1)
+			if word&mask == 1 {
+				elem = append(elem, offset+uint64(i))
+			}
+			word = word >> 1
+		}
+		offset += 64
+	}
+	return elem
 }

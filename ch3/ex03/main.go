@@ -59,11 +59,9 @@ func main() {
 
 func colorValToHexStr(colorVal uint8) string {
 	if colorVal < 0x10 {
-		hexStr = fmt.Sprintf("0%x", colorVal)
-	} else {
-		hexStr = fmt.Sprintf("%x", colorVal)
+		return fmt.Sprintf("0%x", colorVal)
 	}
-	return hexStr
+	return fmt.Sprintf("%x", colorVal)
 }
 
 type Point struct {

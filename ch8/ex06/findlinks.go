@@ -31,13 +31,13 @@ func crawl(url string, depth int) *urlInfo {
 	if depth > *depthLimit {
 		return &urlInfo{nil, depth}
 	}
-	fmt.Printf("depth %d %s\n", depth, url)
 	tokens <- struct{}{}
 	list, err := links.Extract(url)
 	<-tokens
 	if err != nil {
 		log.Print(err)
 	}
+	fmt.Printf("depth %d %s\n", depth, url)
 	return &urlInfo{list, depth + 1}
 }
 
@@ -68,6 +68,7 @@ func main() {
 			}
 		}
 	}
+	fmt.Printf("Finish!!\n")
 }
 
 //!-

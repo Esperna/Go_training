@@ -27,9 +27,16 @@ func SortStringByCharacter(s string) string {
 	return string(r)
 }
 
+func isAnagram(arg1, arg2 string) bool {
+	if arg1 == arg2 {
+		return false
+	}
+	return SortStringByCharacter(arg1) == SortStringByCharacter(arg2)
+}
+
 func main() {
 	if len(os.Args) == 3 {
-		if SortStringByCharacter(os.Args[1]) == SortStringByCharacter(os.Args[2]) {
+		if isAnagram(os.Args[1], os.Args[2]) {
 			fmt.Println("Anagram!")
 		} else {
 			fmt.Println("Not Anagram!")

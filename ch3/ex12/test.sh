@@ -3,7 +3,7 @@
 go build ./anagram.go
 echo "Input->Expected:"
 echo "a             -> Invalid Number of Argument"
-echo "ab ab         -> Anagram!"
+echo "ab ab         -> Not Anagram!"
 echo "ab ba         -> Anagram!"
 echo "ab bac        -> Not Anagram!"
 echo "abc def       -> Not Anagram!"

@@ -1,5 +1,9 @@
 #!/bin/zsh
 
+cd clock
+sh exe.sh
+sleep 1
+cd ../
 
 if [ -e "clockwall" ]; then
     rm clockwall

@@ -1,6 +1,6 @@
 #!/bin/zsh
 
-go build ./main.go
+go build ./anagram.go
 echo "Input->Expected:"
 echo "a             -> Invalid Number of Argument"
 echo "ab ab         -> Anagram!"
@@ -14,14 +14,14 @@ echo "bbbab aabab   -> Not Anagram!"
 echo "abc def hij   -> Invalid Number of Argument"
 echo ""
 echo "Actual:"
-./main a
-./main ab ab
-./main ab ba
-./main ab bac
-./main abc def
-./main cba bac
-./main aabb baba
-./main abcde adecb
-./main bbbab aabab
-./main abc def hij
+./anagram a
+./anagram ab ab
+./anagram ab ba
+./anagram ab bac
+./anagram abc def
+./anagram cba bac
+./anagram aabb baba
+./anagram abcde adecb
+./anagram bbbab aabab
+./anagram abc def hij
 

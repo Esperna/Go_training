@@ -8,9 +8,9 @@
 package main
 
 import (
-	"ch2/ex2_2/lengthconv"
-	"ch2/ex2_2/tempconv"
-	"ch2/ex2_2/weightconv"
+	"ch2/ex02/lengthconv"
+	"ch2/ex02/tempconv"
+	"ch2/ex02/weightconv"
 	"fmt"
 	"os"
 	"strconv"

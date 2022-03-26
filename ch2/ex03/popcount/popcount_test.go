@@ -4,7 +4,7 @@
 package popcount_test
 
 import (
-	"ch2/ex2_3/popcount"
+	"ch2/ex03/popcount"
 	"testing"
 	//	"gopl.io/ch2/popcount"
 )

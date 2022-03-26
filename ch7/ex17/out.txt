@@ -1,0 +1,2801 @@
+lang	en
+lang	en
+xmlns	http://www.w3.org/1999/xhtml
+type	text/css
+rel	stylesheet
+type	text/css
+href	http://www.w3.org/StyleSheets/TR/W3C-REC.css
+class	head
+href	http://www.w3.org/
+src	http://www.w3.org/Icons/w3c_home
+alt	W3C
+height	48
+width	72
+name	title
+id	title
+name	w3c-doctype
+id	w3c-doctype
+href	http://www.w3.org/TR/2006/REC-xml11-20060816
+href	http://www.w3.org/TR/xml11
+href	http://www.w3.org/TR/2006/PER-xml11-20060614
+href	mailto:tbray@textuality.com
+href	mailto:jeanpa@microsoft.com
+href	mailto:cmsmcq@w3.org
+href	mailto:elm@east.sun.com
+href	mailto:cowan@ccil.org
+href	http://www.w3.org/XML/xml-V11-2e-errata
+href	http://www.w3.org/XML/xml-V11-1e-errata
+href	http://www.w3.org/2003/03/Translations/byTechnology?technology=xml11
+href	REC-xml11-20060816.xml
+href	REC-xml11-20060816-review.html
+class	copyright
+href	http://www.w3.org/Consortium/Legal/ipr-notice#Copyright
+href	http://www.w3.org/
+title	World Wide Web Consortium
+href	http://www.csail.mit.edu/
+title	Massachusetts Institute of Technology
+href	http://www.ercim.org/
+title	European Research Consortium for Informatics and Mathematics
+href	http://www.keio.ac.jp/
+href	http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer
+href	http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks
+href	http://www.w3.org/Consortium/Legal/copyright-documents
+name	abstract
+id	abstract
+name	status
+id	status
+href	http://www.w3.org/TR/
+href	http://www.w3.org/XML/Core/
+href	http://www.w3.org/XML/Activity
+href	http://www.w3.org/2003/03/Translations/byTechnology?technology=xml11
+href	http://www.w3.org/2005/10/Process-20051014/tr.html#q74
+href	http://www.w3.org/XML/xml-V11-1e-errata
+href	http://www.w3.org/TR/2004/REC-xml11-20040204/
+href	#rfc2119
+href	#rfc2119
+href	http://www.w3.org/TR/2004/REC-xml11-20040204
+href	mailto:xml-editor@w3.org
+href	http://lists.w3.org/Archives/Public/xml-editor/
+href	REC-xml11-20060816-review.html
+href	http://www.w3.org/XML/xml-V11-1e-errata
+href	http://www.w3.org/XML/xml-V11-2e-errata
+href	http://www.w3.org/XML/2006/06/xml11-2e-implementation.html
+href	http://www.w3.org/XML/Test/
+href	http://www.w3.org/TR/2002/NOTE-patent-practice-20020124
+href	http://www.w3.org/2004/02/05-pp-transition
+href	http://www.w3.org/2002/08/xmlcore-IPR-statements
+rel	disclosure
+href	http://www.w3.org/Consortium/Patent-Policy-20040205/#def-essential
+href	http://www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure
+class	toc
+name	contents
+id	contents
+class	toc
+href	#sec-intro
+href	#sec-origin-goals
+href	#sec-terminology
+href	#sec-xml11
+href	#sec-documents
+href	#sec-well-formed
+href	#charsets
+href	#sec-common-syn
+href	#syntax
+href	#sec-comments
+href	#sec-pi
+href	#sec-cdata-sect
+href	#sec-prolog-dtd
+href	#sec-rmd
+href	#sec-white-space
+href	#sec-line-ends
+href	#sec-lang-tag
+href	#sec-normalization-checking
+href	#sec-logical-struct
+href	#sec-starttags
+href	#elemdecls
+href	#sec-element-content
+href	#sec-mixed-content
+href	#attdecls
+href	#sec-attribute-types
+href	#sec-attr-defaults
+href	#AVNormalize
+href	#sec-condition-sect
+href	#sec-physical-struct
+href	#sec-references
+href	#sec-entity-decl
+href	#sec-internal-ent
+href	#sec-external-ent
+href	#TextEntities
+href	#sec-TextDecl
+href	#wf-entities
+href	#charencoding
+href	#sec-version-info
+href	#entproc
+href	#not-recognized
+href	#included
+href	#include-if-valid
+href	#forbidden
+href	#inliteral
+href	#notify
+href	#bypass
+href	#as-PE
+href	#error
+href	#intern-replacement
+href	#sec-predefined-ent
+href	#Notations
+href	#sec-doc-entity
+href	#sec-conformance
+href	#proc-types
+href	#safe-behavior
+href	#sec-notation
+name	appendices
+id	appendices
+class	toc
+href	#sec-bibliography
+href	#sec-existing-stds
+href	#null
+href	#sec-CharNorm
+href	#sec-entexpand
+href	#determinism
+href	#sec-guessing
+href	#sec-guessing-no-ext-info
+href	#sec-guessing-with-ext-info
+href	#sec-xml-wg
+href	#sec-core-wg
+href	#prod-notes
+href	#sec-suggested-names
+class	body
+class	div1
+name	sec-intro
+id	sec-intro
+title	XML Document
+href	#dt-xml-doc
+href	#ISO8879
+title	Entity
+href	#dt-entity
+title	Character
+href	#dt-character
+title	Character Data
+href	#dt-chardata
+title	Markup
+href	#dt-markup
+name	dt-xml-proc
+id	dt-xml-proc
+title	XML Processor
+name	dt-app
+id	dt-app
+title	Application
+class	div2
+name	sec-origin-goals
+id	sec-origin-goals
+class	enumar
+href	#Unicode
+href	#ISO10646
+href	#RFC1766
+href	#ISO639
+href	#ISO3166
+class	div2
+name	sec-terminology
+id	sec-terminology
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+href	#rfc2119
+class	label
+name	dt-error
+id	dt-error
+title	Error
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	label
+name	dt-fatal
+id	dt-fatal
+title	Fatal Error
+title	XML Processor
+href	#dt-xml-proc
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	label
+name	dt-atuseroption
+id	dt-atuseroption
+title	At user option
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	label
+name	dt-vc
+id	dt-vc
+title	Validity constraint
+title	Validity
+href	#dt-valid
+class	rfc2119
+title	Keyword in RFC 2119 context
+title	Validating Processor
+href	#dt-validating
+class	label
+name	dt-wfc
+id	dt-wfc
+title	Well-formedness constraint
+title	Well-Formed
+href	#dt-wellformed
+title	Fatal Error
+href	#dt-fatal
+class	label
+name	dt-match
+id	dt-match
+title	match
+href	#elementvalid
+class	label
+name	dt-compat
+id	dt-compat
+title	For Compatibility
+class	label
+name	dt-interop
+id	dt-interop
+title	For interoperability
+class	div2
+name	sec-xml11
+id	sec-xml11
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	div1
+name	sec-documents
+id	sec-documents
+name	dt-xml-doc
+id	dt-xml-doc
+title	XML Document
+title	Well-Formed
+href	#dt-wellformed
+title	Validity
+href	#dt-valid
+title	Entity
+href	#dt-entity
+title	Entity Reference
+href	#dt-entref
+title	Document Entity
+href	#dt-docent
+class	rfc2119
+title	Keyword in RFC 2119 context
+href	#wf-entities
+class	div2
+name	sec-well-formed
+id	sec-well-formed
+name	dt-wellformed
+id	dt-wellformed
+title	Well-Formed
+class	enumar
+href	#NT-document
+title	Text Entity
+href	#dt-parsedent
+title	Well-Formed
+href	#dt-wellformed
+name	document
+id	document
+class	scrap
+summary	Scrap
+valign	baseline
+name	NT-document
+id	NT-document
+href	#NT-prolog
+href	#NT-element
+href	#NT-Misc
+href	#NT-Char
+href	#NT-RestrictedChar
+href	#NT-Char
+href	#NT-document
+class	enumar
+title	Element
+href	#dt-element
+name	dt-root
+id	dt-root
+title	Root Element
+title	Content
+href	#dt-content
+title	Start-Tag
+href	#dt-stag
+title	End Tag
+href	#dt-etag
+name	dt-parentchild
+id	dt-parentchild
+title	Parent/Child
+class	div2
+name	charsets
+id	charsets
+name	dt-text
+id	dt-text
+title	Text
+title	Character
+href	#dt-character
+name	dt-character
+id	dt-character
+title	Character
+href	#ISO10646
+href	#sec-existing-stds
+class	rfc2119
+title	Keyword in RFC 2119 context
+href	#NT-Char
+name	char32
+id	char32
+class	scrap
+summary	Scrap
+valign	baseline
+name	NT-Char
+id	NT-Char
+valign	baseline
+name	NT-RestrictedChar
+id	NT-RestrictedChar
+class	rfc2119
+title	Keyword in RFC 2119 context
+href	#Unicode
+href	#charencoding
+class	note
+class	prefix
+href	#Unicode
+class	exampleInner
+class	div2
+name	sec-common-syn
+id	sec-common-syn
+href	#NT-S
+name	white
+id	white
+class	scrap
+summary	Scrap
+valign	baseline
+name	NT-S
+id	NT-S
+class	note
+class	prefix
+href	http://www.w3.org/TR/1998/REC-xml-19980210
+href	#sec-line-ends
+name	dt-name
+id	dt-name
+title	Name
+class	note
+class	prefix
+href	#xml-names
+href	#NT-Nmtoken
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+href	#sec-suggested-names
+name	IDAKUDS
+id	IDAKUDS
+class	scrap
+summary	Scrap
+valign	baseline
+name	NT-NameStartChar
+id	NT-NameStartChar
+valign	baseline
+name	NT-NameChar
+id	NT-NameChar
+href	#NT-NameStartChar
+valign	baseline
+name	NT-Name
+id	NT-Name
+href	#NT-NameStartChar
+href	#NT-NameChar
+valign	baseline
+name	NT-Names
+id	NT-Names
+href	#NT-Name
+href	#NT-Name
+valign	baseline
+name	NT-Nmtoken
+id	NT-Nmtoken
+href	#NT-NameChar
+valign	baseline
+name	NT-Nmtokens
+id	NT-Nmtokens
+href	#NT-Nmtoken
+href	#NT-Nmtoken
+class	note
+class	prefix
+href	#NT-Names
+href	#NT-Nmtokens
+href	#sec-attribute-types
+href	#NT-EntityValue
+href	#NT-AttValue
+href	#NT-SystemLiteral
+href	#NT-SystemLiteral
+name	IDAKYDS
+id	IDAKYDS
+class	scrap
+summary	Scrap
+valign	baseline
+name	NT-EntityValue
+id	NT-EntityValue
+href	#NT-PEReference
+href	#NT-Reference
+valign	baseline
+href	#NT-PEReference
+href	#NT-Reference
+valign	baseline
+name	NT-AttValue
+id	NT-AttValue
+href	#NT-Reference
+valign	baseline
+href	#NT-Reference
+valign	baseline
+name	NT-SystemLiteral
+id	NT-SystemLiteral
+valign	baseline
+name	NT-PubidLiteral
+id	NT-PubidLiteral
+href	#NT-PubidChar
+href	#NT-PubidChar
+valign	baseline
+name	NT-PubidChar
+id	NT-PubidChar
+class	note
+class	prefix
+href	#NT-EntityValue
+class	div2
+name	syntax
+id	syntax
+title	Text
+href	#dt-text
+title	Character Data
+href	#dt-chardata
+name	dt-markup
+id	dt-markup
+title	Markup
+title	Start-Tag
+href	#dt-stag
+title	End Tag
+href	#dt-etag
+title	Empty
+href	#dt-empty
+title	Entity Reference
+href	#dt-entref
+title	Character Reference
+href	#dt-charref
+title	Comment
+href	#dt-comment
+title	CDATA Section
+href	#dt-cdsection
+title	Document Type Declaration
+href	#dt-doctype
+title	Processing instruction
+href	#dt-pi
+href	#NT-XMLDecl
+href	#NT-TextDecl
+name	dt-chardata
+id	dt-chardata
+title	Character Data
+class	rfc2119
+title	Keyword in RFC 2119 context
+title	Comment
+href	#dt-comment
+title	Processing instruction
+href	#dt-pi
+title	CDATA Section
+href	#dt-cdsection
+class	rfc2119
+title	Keyword in RFC 2119 context
+title	escape
+href	#dt-escape
+title	Character Reference
+href	#dt-charref
+class	rfc2119
+title	Keyword in RFC 2119 context
+title	For Compatibility
+href	#dt-compat
+title	CDATA Section
+href	#dt-cdsection
+name	IDAABES
+id	IDAABES
+class	scrap
+summary	Scrap
+valign	baseline
+name	NT-CharData
+id	NT-CharData
+class	div2
+name	sec-comments
+id	sec-comments
+name	dt-comment
+id	dt-comment
+title	Comment
+title	Markup
+href	#dt-markup
+title	Character Data
+href	#dt-chardata
+class	rfc2119
+title	Keyword in RFC 2119 context
+title	For Compatibility
+href	#dt-compat
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+name	IDA5CES
+id	IDA5CES
+class	scrap
+summary	Scrap
+valign	baseline
+name	NT-Comment
+id	NT-Comment
+href	#NT-Char
+href	#NT-Char
+class	exampleInner
+class	exampleInner
+class	div2
+name	sec-pi
+id	sec-pi
+name	dt-pi
+id	dt-pi
+title	Processing instruction
+name	IDAREES
+id	IDAREES
+class	scrap
+summary	Scrap
+valign	baseline
+name	NT-PI
+id	NT-PI
+href	#NT-PITarget
+href	#NT-S
+href	#NT-Char
+href	#NT-Char
+href	#NT-Char
+valign	baseline
+name	NT-PITarget
+id	NT-PITarget
+href	#NT-Name
+title	Character Data
+href	#dt-chardata
+class	rfc2119
+title	Keyword in RFC 2119 context
+href	#NT-PITarget
+title	Notation
+href	#dt-notation
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	div2
+name	sec-cdata-sect
+id	sec-cdata-sect
+name	dt-cdsection
+id	dt-cdsection
+title	CDATA Section
+name	IDA2HES
+id	IDA2HES
+class	scrap
+summary	Scrap
+valign	baseline
+name	NT-CDSect
+id	NT-CDSect
+href	#NT-CDStart
+href	#NT-CData
+href	#NT-CDEnd
+valign	baseline
+name	NT-CDStart
+id	NT-CDStart
+valign	baseline
+name	NT-CData
+id	NT-CData
+href	#NT-Char
+href	#NT-Char
+href	#NT-Char
+valign	baseline
+name	NT-CDEnd
+id	NT-CDEnd
+href	#NT-CDEnd
+title	Character Data
+href	#dt-chardata
+title	Markup
+href	#dt-markup
+class	exampleInner
+class	div2
+name	sec-prolog-dtd
+id	sec-prolog-dtd
+name	dt-xmldecl
+id	dt-xmldecl
+title	XML Declaration
+class	rfc2119
+title	Keyword in RFC 2119 context
+title	Well-Formed
+href	#dt-wellformed
+title	Validity
+href	#dt-valid
+class	exampleInner
+class	exampleInner
+title	Document Type Declaration
+href	#dt-doctype
+name	dt-valid
+id	dt-valid
+title	Validity
+class	rfc2119
+title	Keyword in RFC 2119 context
+title	Element
+href	#dt-element
+name	xmldoc
+id	xmldoc
+class	scrap
+summary	Scrap
+valign	baseline
+name	NT-prolog
+id	NT-prolog
+href	#NT-XMLDecl
+href	#NT-Misc
+href	#NT-doctypedecl
+href	#NT-Misc
+valign	baseline
+name	NT-XMLDecl
+id	NT-XMLDecl
+href	#NT-VersionInfo
+href	#NT-EncodingDecl
+href	#NT-SDDecl
+href	#NT-S
+valign	baseline
+name	NT-VersionInfo
+id	NT-VersionInfo
+href	#NT-S
+href	#NT-Eq
+href	#NT-VersionNum
+href	#NT-VersionNum
+valign	baseline
+name	NT-Eq
+id	NT-Eq
+href	#NT-S
+href	#NT-S
+valign	baseline
+name	NT-VersionNum
+id	NT-VersionNum
+valign	baseline
+name	NT-Misc
+id	NT-Misc
+href	#NT-Comment
+href	#NT-PI
+href	#NT-S
+name	dt-doctype
+id	dt-doctype
+title	Document Type Declaration
+title	markup declaration
+href	#dt-markupdecl
+title	External Entity
+href	#dt-extent
+name	dt-markupdecl
+id	dt-markupdecl
+title	markup declaration
+title	Element Type declaration
+href	#dt-eldecl
+title	Attribute-List Declaration
+href	#dt-attdecl
+title	entity declaration
+href	#dt-entdecl
+title	Notation Declaration
+href	#dt-notdecl
+title	Parameter entity
+href	#dt-PE
+href	#sec-physical-struct
+name	dtd
+id	dtd
+class	scrap
+summary	Scrap
+valign	baseline
+name	NT-doctypedecl
+id	NT-doctypedecl
+href	#NT-S
+href	#NT-Name
+href	#NT-S
+href	#NT-ExternalID
+href	#NT-S
+href	#NT-intSubset
+href	#NT-S
+href	#vc-roottype
+valign	baseline
+href	#ExtSubset
+valign	baseline
+name	NT-DeclSep
+id	NT-DeclSep
+href	#NT-PEReference
+href	#NT-S
+href	#PE-between-Decls
+valign	baseline
+name	NT-intSubset
+id	NT-intSubset
+href	#NT-markupdecl
+href	#NT-DeclSep
+valign	baseline
+name	NT-markupdecl
+id	NT-markupdecl
+href	#NT-elementdecl
+href	#NT-AttlistDecl
+href	#NT-EntityDecl
+href	#NT-NotationDecl
+href	#NT-PI
+href	#NT-Comment
+href	#vc-PEinMarkupDecl
+valign	baseline
+href	#wfc-PEinInternalSubset
+href	#NT-doctypedecl
+title	Replacement Text
+href	#dt-repltext
+title	Parameter entity
+href	#dt-PE
+href	#NT-elementdecl
+href	#NT-AttlistDecl
+title	Include
+href	#dt-include
+href	#sec-condition-sect
+class	constraint
+class	prefix
+name	vc-roottype
+id	vc-roottype
+href	#NT-Name
+class	rfc2119
+title	Keyword in RFC 2119 context
+title	Root Element
+href	#dt-root
+class	constraint
+class	prefix
+name	vc-PEinMarkupDecl
+id	vc-PEinMarkupDecl
+title	Replacement Text
+href	#dt-repltext
+class	rfc2119
+title	Keyword in RFC 2119 context
+href	#NT-markupdecl
+title	Parameter-entity reference
+href	#dt-PERef
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	constraint
+class	prefix
+name	wfc-PEinInternalSubset
+id	wfc-PEinInternalSubset
+title	Parameter-entity reference
+href	#dt-PERef
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	constraint
+class	prefix
+name	ExtSubset
+id	ExtSubset
+class	rfc2119
+title	Keyword in RFC 2119 context
+href	#NT-extSubset
+class	constraint
+class	prefix
+name	PE-between-Decls
+id	PE-between-Decls
+href	#NT-DeclSep
+class	rfc2119
+title	Keyword in RFC 2119 context
+href	#NT-extSubsetDecl
+href	#NT-DeclSep
+class	rfc2119
+title	Keyword in RFC 2119 context
+href	#NT-markupdecl
+title	Parameter-entity reference
+href	#dt-PERef
+title	conditional section
+href	#dt-cond-section
+name	ext-Subset
+id	ext-Subset
+class	scrap
+summary	Scrap
+valign	baseline
+name	NT-extSubset
+id	NT-extSubset
+href	#NT-TextDecl
+href	#NT-extSubsetDecl
+valign	baseline
+name	NT-extSubsetDecl
+id	NT-extSubsetDecl
+href	#NT-markupdecl
+href	#NT-conditionalSect
+href	#NT-DeclSep
+title	Parameter-entity reference
+href	#dt-PERef
+class	exampleInner
+title	System Identifier
+href	#dt-sysid
+class	exampleInner
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	div2
+name	sec-rmd
+id	sec-rmd
+title	XML Processor
+href	#dt-xml-proc
+title	Document Entity
+href	#dt-docent
+name	dt-extmkpdecl
+id	dt-extmkpdecl
+title	External Markup Declaration
+name	fulldtd
+id	fulldtd
+class	scrap
+summary	Scrap
+valign	baseline
+name	NT-SDDecl
+id	NT-SDDecl
+href	#NT-S
+href	#NT-Eq
+href	#vc-check-rmd
+title	External Markup Declaration
+href	#dt-extmkpdecl
+class	constraint
+class	prefix
+name	vc-check-rmd
+id	vc-check-rmd
+class	rfc2119
+title	Keyword in RFC 2119 context
+title	Attribute Default
+href	#dt-default
+title	Entity Reference
+href	#dt-entref
+href	#AVNormalize
+title	Element content
+href	#dt-elemcontent
+class	exampleInner
+class	div2
+name	sec-white-space
+id	sec-white-space
+title	XML Processor
+href	#dt-xml-proc
+class	rfc2119
+title	Keyword in RFC 2119 context
+title	Validating Processor
+href	#dt-validating
+class	rfc2119
+title	Keyword in RFC 2119 context
+title	Element content
+href	#dt-elemcontent
+title	Attribute
+href	#dt-attr
+class	rfc2119
+title	Keyword in RFC 2119 context
+title	Attribute-List Declaration
+href	#dt-attdecl
+class	rfc2119
+title	Keyword in RFC 2119 context
+title	Enumerated Attribute
+Values
+href	#dt-enumerated
+class	exampleInner
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+title	Root Element
+href	#dt-root
+class	div2
+name	sec-line-ends
+id	sec-line-ends
+title	Text Entity
+href	#dt-parsedent
+title	Application
+href	#dt-app
+title	XML Processor
+href	#dt-xml-proc
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	enumar
+class	div2
+name	sec-lang-tag
+id	sec-lang-tag
+title	Attribute
+href	#dt-attr
+class	rfc2119
+title	Keyword in RFC 2119 context
+title	Attribute-List Declaration
+href	#dt-attdecl
+href	#RFC1766
+class	exampleInner
+class	note
+class	prefix
+class	exampleInner
+class	exampleInner
+class	div2
+name	sec-normalization-checking
+id	sec-normalization-checking
+title	Text Entity
+href	#dt-parsedent
+title	Document Entity
+href	#dt-docent
+class	rfc2119
+title	Keyword in RFC 2119 context
+title	fully normalized
+href	#dt-fullnorm
+href	#sec-CharNorm
+name	dt-relconst
+id	dt-relconst
+class	enumar
+title	Replacement Text
+href	#dt-repltext
+title	Text Entity
+href	#dt-parsedent
+class	enumla
+href	#NT-CData
+href	#NT-CharData
+href	#NT-content
+href	#NT-Name
+href	#NT-Nmtoken
+title	fully normalized
+href	#dt-fullnorm
+class	rfc2119
+title	Keyword in RFC 2119 context
+title	fully normalized
+href	#dt-fullnorm
+class	rfc2119
+title	Keyword in RFC 2119 context
+title	certified
+href	#dt-certified
+href	#sec-CharNorm
+class	rfc2119
+title	Keyword in RFC 2119 context
+title	include-normalized
+href	#dt-inclnorm
+href	#sec-CharNorm
+title	composing character
+href	#dt-compchar
+href	#sec-CharNorm
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	note
+class	prefix
+title	composing character
+href	#dt-compchar
+title	composing character
+href	#dt-compchar
+href	#Unicode
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+title	fully normalized
+href	#dt-fullnorm
+class	rfc2119
+title	Keyword in RFC 2119 context
+title	fully normalized
+href	#dt-fullnorm
+title	fully normalized
+href	#dt-fullnorm
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	div1
+name	sec-logical-struct
+id	sec-logical-struct
+name	dt-element
+id	dt-element
+title	Element
+title	XML Document
+href	#dt-xml-doc
+title	Start-Tag
+href	#dt-stag
+title	End Tag
+href	#dt-etag
+title	Empty
+href	#dt-empty
+title	empty-element tag
+href	#dt-eetag
+title	Attribute Name
+href	#dt-attrname
+title	Attribute Value
+href	#dt-attrval
+name	IDALUFS
+id	IDALUFS
+class	scrap
+summary	Scrap
+valign	baseline
+name	NT-element
+id	NT-element
+href	#NT-EmptyElemTag
+valign	baseline
+href	#NT-STag
+href	#NT-content
+href	#NT-ETag
+href	#GIMatch
+valign	baseline
+href	#elementvalid
+class	constraint
+class	prefix
+name	GIMatch
+id	GIMatch
+href	#NT-Name
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	constraint
+class	prefix
+name	elementvalid
+id	elementvalid
+href	#NT-elementdecl
+href	#NT-Name
+class	enumar
+title	Content
+href	#dt-content
+href	#NT-children
+title	Parent/Child
+href	#dt-parentchild
+href	#NT-Misc
+href	#NT-S
+href	#NT-S
+href	#NT-Mixed
+title	Character Data
+href	#dt-chardata
+title	CDATA Section
+href	#dt-cdsection
+title	Comment
+href	#dt-comment
+title	Processing instruction
+href	#dt-pi
+title	Parent/Child
+href	#dt-parentchild
+title	CDATA Section
+href	#dt-cdsection
+title	Comment
+href	#dt-comment
+title	Processing instruction
+href	#dt-pi
+title	Parent/Child
+href	#dt-parentchild
+class	div2
+name	sec-starttags
+id	sec-starttags
+name	dt-stag
+id	dt-stag
+title	Start-Tag
+name	IDA10FS
+id	IDA10FS
+class	scrap
+summary	Scrap
+valign	baseline
+name	NT-STag
+id	NT-STag
+href	#NT-Name
+href	#NT-S
+href	#NT-Attribute
+href	#NT-S
+href	#uniqattspec
+valign	baseline
+name	NT-Attribute
+id	NT-Attribute
+href	#NT-Name
+href	#NT-Eq
+href	#NT-AttValue
+href	#ValueType
+valign	baseline
+href	#NoExternalRefs
+valign	baseline
+href	#CleanAttrVals
+href	#NT-Name
+name	dt-attr
+id	dt-attr
+title	Attribute
+href	#NT-Name
+href	#NT-AttValue
+name	dt-attrname
+id	dt-attrname
+title	Attribute Name
+href	#NT-Name
+name	dt-attrval
+id	dt-attrval
+title	Attribute Value
+href	#NT-AttValue
+class	constraint
+class	prefix
+name	uniqattspec
+id	uniqattspec
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	constraint
+class	prefix
+name	ValueType
+id	ValueType
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+href	#attdecls
+class	constraint
+class	prefix
+name	NoExternalRefs
+id	NoExternalRefs
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	constraint
+class	prefix
+name	CleanAttrVals
+id	CleanAttrVals
+title	Replacement Text
+href	#dt-repltext
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	exampleInner
+name	dt-etag
+id	dt-etag
+title	End Tag
+class	rfc2119
+title	Keyword in RFC 2119 context
+name	IDAZIIS
+id	IDAZIIS
+class	scrap
+summary	Scrap
+valign	baseline
+name	NT-ETag
+id	NT-ETag
+href	#NT-Name
+href	#NT-S
+class	exampleInner
+name	dt-content
+id	dt-content
+title	Content
+title	Text
+href	#dt-text
+name	IDAHKIS
+id	IDAHKIS
+class	scrap
+summary	Scrap
+valign	baseline
+name	NT-content
+id	NT-content
+href	#NT-CharData
+href	#NT-element
+href	#NT-Reference
+href	#NT-CDSect
+href	#NT-PI
+href	#NT-Comment
+href	#NT-CharData
+name	dt-empty
+id	dt-empty
+title	Empty
+href	#NT-content
+name	dt-eetag
+id	dt-eetag
+title	empty-element tag
+name	IDAMMIS
+id	IDAMMIS
+class	scrap
+summary	Scrap
+valign	baseline
+name	NT-EmptyElemTag
+id	NT-EmptyElemTag
+href	#NT-Name
+href	#NT-S
+href	#NT-Attribute
+href	#NT-S
+href	#uniqattspec
+title	For interoperability
+href	#dt-interop
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	exampleInner
+class	div2
+name	elemdecls
+id	elemdecls
+title	Element
+href	#dt-element
+title	XML Document
+href	#dt-xml-doc
+title	Validity
+href	#dt-valid
+title	Content
+href	#dt-content
+title	Parent/Child
+href	#dt-parentchild
+class	rfc2119
+title	Keyword in RFC 2119 context
+name	dt-eldecl
+id	dt-eldecl
+title	Element Type declaration
+name	IDAYPIS
+id	IDAYPIS
+class	scrap
+summary	Scrap
+valign	baseline
+name	NT-elementdecl
+id	NT-elementdecl
+href	#NT-S
+href	#NT-Name
+href	#NT-S
+href	#NT-contentspec
+href	#NT-S
+href	#EDUnique
+valign	baseline
+name	NT-contentspec
+id	NT-contentspec
+href	#NT-Mixed
+href	#NT-children
+href	#NT-Name
+class	constraint
+class	prefix
+name	EDUnique
+id	EDUnique
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	exampleInner
+class	div3
+name	sec-element-content
+id	sec-element-content
+name	dt-elemcontent
+id	dt-elemcontent
+title	Element content
+title	Start-Tag
+href	#dt-stag
+class	rfc2119
+title	Keyword in RFC 2119 context
+title	Parent/Child
+href	#dt-parentchild
+href	#NT-S
+name	dt-content-model
+id	dt-content-model
+title	Content model
+href	#NT-cp
+name	IDATTIS
+id	IDATTIS
+class	scrap
+summary	Scrap
+valign	baseline
+name	NT-children
+id	NT-children
+href	#NT-choice
+href	#NT-seq
+valign	baseline
+name	NT-cp
+id	NT-cp
+href	#NT-Name
+href	#NT-choice
+href	#NT-seq
+valign	baseline
+name	NT-choice
+id	NT-choice
+href	#NT-S
+href	#NT-cp
+href	#NT-S
+href	#NT-S
+href	#NT-cp
+href	#NT-S
+href	#vc-PEinGroup
+valign	baseline
+name	NT-seq
+id	NT-seq
+href	#NT-S
+href	#NT-cp
+href	#NT-S
+href	#NT-S
+href	#NT-cp
+href	#NT-S
+href	#vc-PEinGroup
+href	#NT-Name
+title	Parent/Child
+href	#dt-parentchild
+title	Element content
+href	#dt-elemcontent
+class	rfc2119
+title	Keyword in RFC 2119 context
+title	Element content
+href	#dt-elemcontent
+class	rfc2119
+title	Keyword in RFC 2119 context
+title	For Compatibility
+href	#dt-compat
+href	#determinism
+class	constraint
+class	prefix
+name	vc-PEinGroup
+id	vc-PEinGroup
+title	Replacement Text
+href	#dt-repltext
+class	rfc2119
+title	Keyword in RFC 2119 context
+href	#NT-choice
+href	#NT-seq
+href	#NT-Mixed
+title	Parameter-entity reference
+href	#dt-PERef
+class	rfc2119
+title	Keyword in RFC 2119 context
+title	For interoperability
+href	#dt-interop
+href	#NT-choice
+href	#NT-seq
+href	#NT-Mixed
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	exampleInner
+class	div3
+name	sec-mixed-content
+id	sec-mixed-content
+name	dt-mixed
+id	dt-mixed
+title	Mixed Content
+title	Start-Tag
+href	#dt-stag
+title	Parent/Child
+href	#dt-parentchild
+name	IDAC2IS
+id	IDAC2IS
+class	scrap
+summary	Scrap
+valign	baseline
+name	NT-Mixed
+id	NT-Mixed
+href	#NT-S
+href	#NT-S
+href	#NT-S
+href	#NT-Name
+href	#NT-S
+valign	baseline
+href	#NT-S
+href	#NT-S
+href	#vc-PEinGroup
+valign	baseline
+href	#vc-MixedChildrenUnique
+href	#NT-Name
+class	constraint
+class	prefix
+name	vc-MixedChildrenUnique
+id	vc-MixedChildrenUnique
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	exampleInner
+class	div2
+name	attdecls
+id	attdecls
+title	Attribute
+href	#dt-attr
+title	Element
+href	#dt-element
+class	rfc2119
+title	Keyword in RFC 2119 context
+title	Start-Tag
+href	#dt-stag
+title	empty-element tag
+href	#dt-eetag
+href	#sec-starttags
+title	Attribute Default
+href	#dt-default
+name	dt-attdecl
+id	dt-attdecl
+title	Attribute-List Declaration
+name	IDAUAJS
+id	IDAUAJS
+class	scrap
+summary	Scrap
+valign	baseline
+name	NT-AttlistDecl
+id	NT-AttlistDecl
+href	#NT-S
+href	#NT-Name
+href	#NT-AttDef
+href	#NT-S
+valign	baseline
+name	NT-AttDef
+id	NT-AttDef
+href	#NT-S
+href	#NT-Name
+href	#NT-S
+href	#NT-AttType
+href	#NT-S
+href	#NT-DefaultDecl
+href	#NT-Name
+href	#NT-AttlistDecl
+class	rfc2119
+title	Keyword in RFC 2119 context
+href	#NT-Name
+href	#NT-AttDef
+href	#NT-AttlistDecl
+title	For interoperability
+href	#dt-interop
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	div3
+name	sec-attribute-types
+id	sec-attribute-types
+href	#AVNormalize
+name	IDAVEJS
+id	IDAVEJS
+class	scrap
+summary	Scrap
+valign	baseline
+name	NT-AttType
+id	NT-AttType
+href	#NT-StringType
+href	#NT-TokenizedType
+href	#NT-EnumeratedType
+valign	baseline
+name	NT-StringType
+id	NT-StringType
+valign	baseline
+name	NT-TokenizedType
+id	NT-TokenizedType
+href	#id
+valign	baseline
+href	#one-id-per-el
+valign	baseline
+href	#id-default
+valign	baseline
+href	#idref
+valign	baseline
+href	#idref
+valign	baseline
+href	#entname
+valign	baseline
+href	#entname
+valign	baseline
+href	#nmtok
+valign	baseline
+href	#nmtok
+class	constraint
+class	prefix
+name	id
+id	id
+class	rfc2119
+title	Keyword in RFC 2119 context
+href	#NT-Name
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	constraint
+class	prefix
+name	one-id-per-el
+id	one-id-per-el
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	constraint
+class	prefix
+name	id-default
+id	id-default
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	constraint
+class	prefix
+name	idref
+id	idref
+class	rfc2119
+title	Keyword in RFC 2119 context
+href	#NT-Name
+class	rfc2119
+title	Keyword in RFC 2119 context
+href	#NT-Names
+href	#NT-Name
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	constraint
+class	prefix
+name	entname
+id	entname
+class	rfc2119
+title	Keyword in RFC 2119 context
+href	#NT-Name
+class	rfc2119
+title	Keyword in RFC 2119 context
+href	#NT-Names
+href	#NT-Name
+class	rfc2119
+title	Keyword in RFC 2119 context
+title	Unparsed Entity
+href	#dt-unparsed
+title	Document Type Declaration
+href	#dt-doctype
+class	constraint
+class	prefix
+name	nmtok
+id	nmtok
+class	rfc2119
+title	Keyword in RFC 2119 context
+href	#NT-Nmtoken
+class	rfc2119
+title	Keyword in RFC 2119 context
+href	#NT-Nmtokens
+name	dt-enumerated
+id	dt-enumerated
+title	Enumerated Attribute
+Values
+class	rfc2119
+title	Keyword in RFC 2119 context
+name	IDAANJS
+id	IDAANJS
+class	scrap
+summary	Scrap
+valign	baseline
+name	NT-EnumeratedType
+id	NT-EnumeratedType
+href	#NT-NotationType
+href	#NT-Enumeration
+valign	baseline
+name	NT-NotationType
+id	NT-NotationType
+href	#NT-S
+href	#NT-S
+href	#NT-Name
+href	#NT-S
+href	#NT-S
+href	#NT-Name
+href	#NT-S
+href	#notatn
+valign	baseline
+href	#OneNotationPer
+valign	baseline
+href	#NoNotationEmpty
+valign	baseline
+href	#NoDuplicateTokens
+valign	baseline
+name	NT-Enumeration
+id	NT-Enumeration
+href	#NT-S
+href	#NT-Nmtoken
+href	#NT-S
+href	#NT-S
+href	#NT-Nmtoken
+href	#NT-S
+href	#enum
+valign	baseline
+href	#NoDuplicateTokens
+title	Notation
+href	#dt-notation
+class	constraint
+class	prefix
+name	notatn
+id	notatn
+class	rfc2119
+title	Keyword in RFC 2119 context
+href	#Notations
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	constraint
+class	prefix
+name	OneNotationPer
+id	OneNotationPer
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	constraint
+class	prefix
+name	NoNotationEmpty
+id	NoNotationEmpty
+title	For Compatibility
+href	#dt-compat
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	constraint
+class	prefix
+name	NoDuplicateTokens
+id	NoDuplicateTokens
+href	#NT-NotationType
+href	#NT-Nmtoken
+href	#NT-Enumeration
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	constraint
+class	prefix
+name	enum
+id	enum
+class	rfc2119
+title	Keyword in RFC 2119 context
+href	#NT-Nmtoken
+title	For interoperability
+href	#dt-interop
+href	#NT-Nmtoken
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	div3
+name	sec-attr-defaults
+id	sec-attr-defaults
+title	Attribute-List Declaration
+href	#dt-attdecl
+class	rfc2119
+title	Keyword in RFC 2119 context
+name	IDAGUJS
+id	IDAGUJS
+class	scrap
+summary	Scrap
+valign	baseline
+name	NT-DefaultDecl
+id	NT-DefaultDecl
+valign	baseline
+href	#NT-S
+href	#NT-AttValue
+href	#RequiredAttr
+valign	baseline
+href	#defattrvalid
+valign	baseline
+href	#CleanAttrVals
+valign	baseline
+href	#FixedAttr
+valign	baseline
+href	#NoExternalRefs
+class	rfc2119
+title	Keyword in RFC 2119 context
+name	dt-default
+id	dt-default
+title	Attribute Default
+href	#NT-AttValue
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	constraint
+class	prefix
+name	RequiredAttr
+id	RequiredAttr
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	constraint
+class	prefix
+name	defattrvalid
+id	defattrvalid
+class	rfc2119
+title	Keyword in RFC 2119 context
+href	#NT-Name
+href	#NT-Names
+href	#NT-Nmtoken
+href	#NT-Nmtokens
+href	#NT-EnumeratedType
+href	#NT-NotationType
+href	#NT-Enumeration
+class	constraint
+class	prefix
+name	FixedAttr
+id	FixedAttr
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	exampleInner
+class	div3
+name	AVNormalize
+id	AVNormalize
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	enumar
+class	rfc2119
+title	Keyword in RFC 2119 context
+href	#sec-line-ends
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+title	Attribute Value
+href	#dt-attrval
+title	Entity Reference
+href	#dt-entref
+class	exampleInner
+border	1
+frame	border
+summary	Attribute normalization summary
+class	exampleInner
+class	exampleInner
+class	exampleInner
+class	exampleInner
+class	exampleInner
+class	exampleInner
+class	exampleInner
+class	exampleInner
+class	exampleInner
+class	div2
+name	sec-condition-sect
+id	sec-condition-sect
+name	dt-cond-section
+id	dt-cond-section
+title	conditional section
+title	Document Type Declaration
+href	#dt-doctype
+name	IDA1AKS
+id	IDA1AKS
+class	scrap
+summary	Scrap
+valign	baseline
+name	NT-conditionalSect
+id	NT-conditionalSect
+href	#NT-includeSect
+href	#NT-ignoreSect
+valign	baseline
+name	NT-includeSect
+id	NT-includeSect
+href	#NT-S
+href	#NT-S
+href	#NT-extSubsetDecl
+href	#condsec-nesting
+valign	baseline
+name	NT-ignoreSect
+id	NT-ignoreSect
+href	#NT-S
+href	#NT-S
+href	#NT-ignoreSectContents
+href	#condsec-nesting
+valign	baseline
+name	NT-ignoreSectContents
+id	NT-ignoreSectContents
+href	#NT-Ignore
+href	#NT-ignoreSectContents
+href	#NT-Ignore
+valign	baseline
+name	NT-Ignore
+id	NT-Ignore
+href	#NT-Char
+href	#NT-Char
+href	#NT-Char
+class	constraint
+class	prefix
+name	condsec-nesting
+id	condsec-nesting
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	exampleInner
+class	div1
+name	sec-physical-struct
+id	sec-physical-struct
+name	dt-entity
+id	dt-entity
+title	Entity
+title	Document Entity
+href	#dt-docent
+title	Document Type Declaration
+href	#dt-doctype
+title	Document Entity
+href	#dt-docent
+title	XML Processor
+href	#dt-xml-proc
+name	dt-parsedent
+id	dt-parsedent
+title	Text Entity
+title	Replacement Text
+href	#dt-repltext
+title	Text
+href	#dt-text
+name	dt-unparsed
+id	dt-unparsed
+title	Unparsed Entity
+title	Text
+href	#dt-text
+title	Notation
+href	#dt-notation
+name	gen-entity
+id	gen-entity
+title	general entity
+name	dt-PE
+id	dt-PE
+title	Parameter entity
+class	div2
+name	sec-references
+id	sec-references
+name	dt-charref
+id	dt-charref
+title	Character Reference
+name	IDAOKKS
+id	IDAOKKS
+class	scrap
+summary	Scrap
+valign	baseline
+name	NT-CharRef
+id	NT-CharRef
+valign	baseline
+href	#wf-Legalchar
+class	constraint
+class	prefix
+name	wf-Legalchar
+id	wf-Legalchar
+class	rfc2119
+title	Keyword in RFC 2119 context
+href	#NT-Char
+name	dt-entref
+id	dt-entref
+title	Entity Reference
+name	dt-GERef
+id	dt-GERef
+title	General Entity Reference
+name	dt-PERef
+id	dt-PERef
+title	Parameter-entity reference
+name	IDA1MKS
+id	IDA1MKS
+class	scrap
+summary	Scrap
+valign	baseline
+name	NT-Reference
+id	NT-Reference
+href	#NT-EntityRef
+href	#NT-CharRef
+valign	baseline
+name	NT-EntityRef
+id	NT-EntityRef
+href	#NT-Name
+href	#wf-entdeclared
+valign	baseline
+href	#vc-entdeclared
+valign	baseline
+href	#textent
+valign	baseline
+href	#norecursion
+valign	baseline
+name	NT-PEReference
+id	NT-PEReference
+href	#NT-Name
+href	#vc-entdeclared
+valign	baseline
+href	#norecursion
+valign	baseline
+href	#indtd
+class	constraint
+class	prefix
+name	wf-entdeclared
+id	wf-entdeclared
+href	#NT-Name
+class	rfc2119
+title	Keyword in RFC 2119 context
+title	match
+href	#dt-match
+href	#sec-entity-decl
+class	rfc2119
+title	Keyword in RFC 2119 context
+href	#include-if-valid
+href	#sec-rmd
+class	constraint
+class	prefix
+name	vc-entdeclared
+id	vc-entdeclared
+href	#NT-Name
+class	rfc2119
+title	Keyword in RFC 2119 context
+title	match
+href	#dt-match
+href	#sec-entity-decl
+class	rfc2119
+title	Keyword in RFC 2119 context
+href	#sec-predefined-ent
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	constraint
+class	prefix
+name	textent
+id	textent
+class	rfc2119
+title	Keyword in RFC 2119 context
+title	Unparsed Entity
+href	#dt-unparsed
+title	Attribute Value
+href	#dt-attrval
+class	constraint
+class	prefix
+name	norecursion
+id	norecursion
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	constraint
+class	prefix
+name	indtd
+id	indtd
+class	rfc2119
+title	Keyword in RFC 2119 context
+title	Document Type Declaration
+href	#dt-doctype
+class	exampleInner
+class	exampleInner
+class	div2
+name	sec-entity-decl
+id	sec-entity-decl
+name	dt-entdecl
+id	dt-entdecl
+title	entity declaration
+name	IDABVKS
+id	IDABVKS
+class	scrap
+summary	Scrap
+valign	baseline
+name	NT-EntityDecl
+id	NT-EntityDecl
+href	#NT-GEDecl
+href	#NT-PEDecl
+valign	baseline
+name	NT-GEDecl
+id	NT-GEDecl
+href	#NT-S
+href	#NT-Name
+href	#NT-S
+href	#NT-EntityDef
+href	#NT-S
+valign	baseline
+name	NT-PEDecl
+id	NT-PEDecl
+href	#NT-S
+href	#NT-S
+href	#NT-Name
+href	#NT-S
+href	#NT-PEDef
+href	#NT-S
+valign	baseline
+name	NT-EntityDef
+id	NT-EntityDef
+href	#NT-EntityValue
+href	#NT-ExternalID
+href	#NT-NDataDecl
+valign	baseline
+name	NT-PEDef
+id	NT-PEDef
+href	#NT-EntityValue
+href	#NT-ExternalID
+href	#NT-Name
+title	Entity Reference
+href	#dt-entref
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	div3
+name	sec-internal-ent
+id	sec-internal-ent
+name	dt-internent
+id	dt-internent
+title	Internal Entity Replacement Text
+href	#NT-EntityValue
+title	Literal Entity Value
+href	#dt-litentval
+title	Replacement Text
+href	#dt-repltext
+href	#intern-replacement
+title	Text Entity
+href	#dt-parsedent
+class	exampleInner
+class	div3
+name	sec-external-ent
+id	sec-external-ent
+name	dt-extent
+id	dt-extent
+title	External Entity
+name	IDAX1KS
+id	IDAX1KS
+class	scrap
+summary	Scrap
+valign	baseline
+name	NT-ExternalID
+id	NT-ExternalID
+href	#NT-S
+href	#NT-SystemLiteral
+valign	baseline
+href	#NT-S
+href	#NT-PubidLiteral
+href	#NT-S
+href	#NT-SystemLiteral
+valign	baseline
+name	NT-NDataDecl
+id	NT-NDataDecl
+href	#NT-S
+href	#NT-S
+href	#NT-Name
+href	#not-declared
+href	#NT-NDataDecl
+title	Unparsed Entity
+href	#dt-unparsed
+class	constraint
+class	prefix
+name	not-declared
+id	not-declared
+href	#NT-Name
+class	rfc2119
+title	Keyword in RFC 2119 context
+title	Notation
+href	#dt-notation
+name	dt-sysid
+id	dt-sysid
+title	System Identifier
+href	#NT-SystemLiteral
+href	#rfc3986
+title	Document Entity
+href	#dt-docent
+title	Document Type Declaration
+href	#dt-doctype
+title	External Entity
+href	#dt-extent
+href	#rfc3986
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	enumar
+href	#Unicode
+name	dt-pubid
+id	dt-pubid
+title	Public identifier
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	exampleInner
+class	div2
+name	TextEntities
+id	TextEntities
+class	div3
+name	sec-TextDecl
+id	sec-TextDecl
+class	rfc2119
+title	Keyword in RFC 2119 context
+name	IDAGDLS
+id	IDAGDLS
+class	scrap
+summary	Scrap
+valign	baseline
+name	NT-TextDecl
+id	NT-TextDecl
+href	#NT-VersionInfo
+href	#NT-EncodingDecl
+href	#NT-S
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+title	Replacement Text
+href	#dt-repltext
+class	div3
+name	wf-entities
+id	wf-entities
+href	#NT-document
+href	#NT-extParsedEnt
+class	note
+class	prefix
+name	IDAKFLS
+id	IDAKFLS
+class	scrap
+summary	Scrap
+valign	baseline
+name	NT-extParsedEnt
+id	NT-extParsedEnt
+href	#NT-TextDecl
+href	#NT-content
+href	#NT-Char
+href	#NT-RestrictedChar
+href	#NT-Char
+href	#NT-content
+title	Start-Tag
+href	#dt-stag
+title	End Tag
+href	#dt-etag
+title	Empty
+href	#dt-empty
+title	Element
+href	#dt-element
+title	Comment
+href	#dt-comment
+title	Processing instruction
+href	#dt-pi
+title	Character Reference
+href	#dt-charref
+title	Entity Reference
+href	#dt-entref
+class	div3
+name	charencoding
+id	charencoding
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+href	#ISO10646
+href	#Unicode
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+href	#sec-TextDecl
+name	IDABKLS
+id	IDABKLS
+class	scrap
+summary	Scrap
+valign	baseline
+name	NT-EncodingDecl
+id	NT-EncodingDecl
+href	#NT-S
+href	#NT-Eq
+href	#NT-EncName
+href	#NT-EncName
+valign	baseline
+name	NT-EncName
+id	NT-EncName
+title	Document Entity
+href	#dt-docent
+title	XML Declaration
+href	#dt-xmldecl
+href	#NT-EncName
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+href	#IANA
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+title	Fatal Error
+href	#dt-fatal
+title	Fatal Error
+href	#dt-fatal
+href	#NT-TextDecl
+title	Fatal Error
+href	#dt-fatal
+title	Fatal Error
+href	#dt-fatal
+href	#Unicode
+title	Fatal Error
+href	#dt-fatal
+class	exampleInner
+class	div3
+name	sec-version-info
+id	sec-version-info
+title	Document Entity
+href	#dt-docent
+class	div2
+name	entproc
+id	entproc
+class	rfc2119
+title	Keyword in RFC 2119 context
+title	XML Processor
+href	#dt-xml-proc
+class	label
+title	Start-Tag
+href	#dt-stag
+title	End Tag
+href	#dt-etag
+href	#NT-content
+class	label
+title	Start-Tag
+href	#dt-stag
+title	Attribute-List Declaration
+href	#dt-attdecl
+href	#NT-AttValue
+class	label
+href	#NT-Name
+class	label
+title	Literal Entity Value
+href	#dt-litentval
+href	#NT-EntityValue
+class	label
+title	Document Type Declaration
+href	#dt-doctype
+href	#NT-EntityValue
+href	#NT-AttValue
+href	#NT-PI
+href	#NT-Comment
+href	#NT-SystemLiteral
+href	#NT-PubidLiteral
+href	#sec-condition-sect
+border	1
+frame	border
+cellpadding	7
+summary	Entity type/reference matrix
+align	center
+rowspan	2
+colspan	4
+align	center
+valign	bottom
+rowspan	2
+align	center
+align	center
+valign	bottom
+align	center
+valign	middle
+align	right
+href	#not-recognized
+href	#included
+href	#include-if-valid
+href	#forbidden
+href	#included
+align	center
+valign	middle
+align	right
+href	#not-recognized
+href	#inliteral
+href	#forbidden
+href	#forbidden
+href	#included
+align	center
+valign	middle
+align	right
+href	#not-recognized
+href	#forbidden
+href	#forbidden
+href	#notify
+href	#not-recognized
+align	center
+valign	middle
+align	right
+href	#inliteral
+href	#bypass
+href	#bypass
+href	#error
+href	#included
+align	center
+valign	middle
+align	right
+href	#as-PE
+href	#forbidden
+href	#forbidden
+href	#forbidden
+href	#forbidden
+class	div3
+name	not-recognized
+id	not-recognized
+href	#NT-content
+class	div3
+name	included
+id	included
+name	dt-include
+id	dt-include
+title	Include
+title	Replacement Text
+href	#dt-repltext
+title	Character Data
+href	#dt-chardata
+title	Markup
+href	#dt-markup
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	div3
+name	include-if-valid
+id	include-if-valid
+title	Validity
+href	#dt-valid
+class	rfc2119
+title	Keyword in RFC 2119 context
+title	Include
+href	#dt-include
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	div3
+name	forbidden
+id	forbidden
+title	Fatal Error
+href	#dt-fatal
+title	Unparsed Entity
+href	#dt-unparsed
+href	#NT-EntityValue
+href	#NT-EntityValue
+href	#NT-AttValue
+class	div3
+name	inliteral
+id	inliteral
+title	Entity Reference
+href	#dt-entref
+title	Replacement Text
+href	#dt-repltext
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	exampleInner
+class	exampleInner
+class	div3
+name	notify
+id	notify
+title	Unparsed Entity
+href	#dt-unparsed
+class	rfc2119
+title	Keyword in RFC 2119 context
+title	System Identifier
+href	#dt-sysid
+title	Public identifier
+href	#dt-pubid
+title	Notation
+href	#dt-notation
+class	div3
+name	bypass
+id	bypass
+href	#NT-EntityValue
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	div3
+name	as-PE
+id	as-PE
+href	#include-if-valid
+title	Replacement Text
+href	#dt-repltext
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+href	#inliteral
+class	div3
+name	error
+id	error
+title	Error
+href	#dt-error
+href	#NT-EntityValue
+class	div2
+name	intern-replacement
+id	intern-replacement
+name	dt-litentval
+id	dt-litentval
+title	Literal Entity Value
+href	#NT-EntityValue
+name	dt-extlitentval
+id	dt-extlitentval
+title	Literal Entity Value
+name	dt-repltext
+id	dt-repltext
+title	Replacement Text
+name	dt-extrepltext
+id	dt-extrepltext
+title	Replacement Text
+href	#NT-EntityValue
+class	rfc2119
+title	Keyword in RFC 2119 context
+title	Include
+href	#dt-include
+title	
+href	#inliteral
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	exampleInner
+class	exampleInner
+href	#sec-entexpand
+class	div2
+name	sec-predefined-ent
+id	sec-predefined-ent
+name	dt-escape
+id	dt-escape
+title	escape
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+title	For interoperability
+href	#dt-interop
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	exampleInner
+class	div2
+name	Notations
+id	Notations
+name	dt-notation
+id	dt-notation
+title	Notation
+title	Unparsed Entity
+href	#dt-unparsed
+title	Processing instruction
+href	#dt-pi
+name	dt-notdecl
+id	dt-notdecl
+title	Notation Declaration
+name	IDANRMS
+id	IDANRMS
+class	scrap
+summary	Scrap
+valign	baseline
+name	NT-NotationDecl
+id	NT-NotationDecl
+href	#NT-S
+href	#NT-Name
+href	#NT-S
+href	#NT-ExternalID
+href	#NT-PublicID
+href	#NT-S
+href	#UniqueNotationName
+valign	baseline
+name	NT-PublicID
+id	NT-PublicID
+href	#NT-S
+href	#NT-PubidLiteral
+class	constraint
+class	prefix
+name	UniqueNotationName
+id	UniqueNotationName
+href	#NT-Name
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+title	System Identifier
+href	#dt-sysid
+class	div2
+name	sec-doc-entity
+id	sec-doc-entity
+name	dt-docent
+id	dt-docent
+title	Document Entity
+title	XML Processor
+href	#dt-xml-proc
+class	div1
+name	sec-conformance
+id	sec-conformance
+class	div2
+name	proc-types
+id	proc-types
+title	XML Processor
+href	#dt-xml-proc
+class	rfc2119
+title	Keyword in RFC 2119 context
+title	Document Entity
+href	#dt-docent
+title	Text Entity
+href	#dt-parsedent
+name	dt-validating
+id	dt-validating
+title	Validating Processor
+class	rfc2119
+title	Keyword in RFC 2119 context
+title	Document Type Declaration
+href	#dt-doctype
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+title	Document Entity
+href	#dt-docent
+name	dt-use-mdecl
+id	dt-use-mdecl
+title	Process Declarations
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+href	#AVNormalize
+href	#included
+href	#sec-attr-defaults
+class	rfc2119
+title	Keyword in RFC 2119 context
+title	Process Declarations
+href	#dt-use-mdecl
+title	entity declaration
+href	#dt-entdecl
+title	Attribute-List Declaration
+href	#dt-attdecl
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	div2
+name	safe-behavior
+id	safe-behavior
+href	#wf-entdeclared
+href	#textent
+href	#norecursion
+href	#forbidden
+href	#entproc
+href	#AVNormalize
+href	#included
+href	#sec-attr-defaults
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	rfc2119
+title	Keyword in RFC 2119 context
+class	div1
+name	sec-notation
+id	sec-notation
+class	exampleInner
+class	label
+class	label
+href	#NT-Char
+class	label
+href	#NT-Char
+class	label
+href	#NT-Char
+class	label
+href	#NT-Char
+class	label
+title	match
+href	#dt-match
+class	label
+title	match
+href	#dt-match
+class	label
+class	label
+class	label
+class	label
+class	label
+class	label
+class	label
+class	label
+class	label
+title	Well-Formed
+href	#dt-wellformed
+class	label
+title	Validity
+href	#dt-valid
+class	back
+class	div1
+name	sec-bibliography
+id	sec-bibliography
+class	div2
+name	sec-existing-stds
+id	sec-existing-stds
+class	label
+name	IANA
+id	IANA
+href	http://www.iana.org/assignments/character-sets
+class	label
+name	rfc2119
+id	rfc2119
+href	http://www.ietf.org/rfc/rfc2119.txt
+class	label
+name	RFC1766
+id	RFC1766
+href	http://www.ietf.org/rfc/rfc3066.txt
+class	label
+name	rfc3986
+href	http://www.ietf.org/rfc/rfc3986.txt
+class	label
+name	ISO10646
+id	ISO10646
+href	http://www.iso.ch
+class	label
+name	Unicode
+id	Unicode
+href	http://www.unicode.org/unicode/standard/versions
+class	label
+name	XML1.0
+id	XML1.0
+href	http://www.w3.org/TR/xml
+class	div2
+name	null
+id	null
+class	label
+name	Aho
+id	Aho
+class	label
+name	ABK
+id	ABK
+href	ftp://ftp.informatik.uni-freiburg.de/documents/papers/brueggem/habil.ps
+class	label
+name	ABKDW
+id	ABKDW
+class	label
+name	Charmod
+id	Charmod
+href	http://www.w3.org/TR/2003/WD-charmod-20030822/
+class	label
+name	Clark
+id	Clark
+href	http://www.w3.org/TR/NOTE-sgml-xml-971215
+class	label
+name	IANA-LANGCODES
+id	IANA-LANGCODES
+href	http://www.iana.org/assignments/language-tags
+class	label
+name	RFC2141
+id	RFC2141
+href	http://www.ietf.org/rfc/rfc2141.txt
+class	label
+name	rfc2376
+id	rfc2376
+href	http://www.ietf.org/rfc/rfc3023.txt
+class	label
+name	rfc2781
+id	rfc2781
+href	http://www.ietf.org/rfc/rfc2781.txt
+class	label
+name	ISO639
+id	ISO639
+class	label
+name	ISO3166
+id	ISO3166
+class	label
+name	ISO8879
+id	ISO8879
+class	label
+name	ISO10744
+id	ISO10744
+class	label
+name	websgml
+id	websgml
+href	http://www.sgmlsource.com/8879/n0029.htm
+class	label
+name	xml-names
+id	xml-names
+href	http://www.w3.org/TR/REC-xml-names/
+class	div1
+name	sec-CharNorm
+id	sec-CharNorm
+href	#Charmod
+name	dt-Uni-encform
+id	dt-Uni-encform
+title	Unicode encoding form
+name	dt-legacyenc
+id	dt-legacyenc
+title	legacy encoding
+name	dt-normtransc
+id	dt-normtransc
+title	normalizing transcoder
+title	legacy encoding
+href	#dt-legacyenc
+title	Unicode encoding form
+href	#dt-Uni-encform
+href	#Unicode
+name	dt-charesc
+id	dt-charesc
+title	character escape
+class	enumar
+name	dt-certified
+id	dt-certified
+title	certified
+class	enumar
+name	dt-uninorm
+id	dt-uninorm
+title	Unicode-normalized
+title	Unicode encoding form
+href	#dt-Uni-encform
+href	#Unicode
+name	dt-inclnorm
+id	dt-inclnorm
+title	include-normalized
+class	enumar
+title	Unicode-normalized
+href	#dt-uninorm
+title	character escape
+href	#dt-charesc
+title	Include
+href	#dt-include
+title	Unicode-normalized
+href	#dt-uninorm
+title	legacy encoding
+href	#dt-legacyenc
+title	Unicode encoding form
+href	#dt-Uni-encform
+title	normalizing transcoder
+href	#dt-normtransc
+name	dt-compchar
+id	dt-compchar
+title	composing character
+class	enumar
+href	#Unicode
+href	#Unicode
+name	dt-fullnorm
+id	dt-fullnorm
+title	fully normalized
+class	enumar
+title	Unicode encoding form
+href	#dt-Uni-encform
+title	include-normalized
+href	#dt-inclnorm
+title	
+href	#dt-relconst
+title	composing character
+href	#dt-compchar
+title	composing character
+href	#dt-compchar
+title	legacy encoding
+href	#dt-legacyenc
+title	Unicode encoding form
+href	#dt-Uni-encform
+title	normalizing transcoder
+href	#dt-normtransc
+class	div1
+name	sec-entexpand
+id	sec-entexpand
+href	#entproc
+class	exampleInner
+class	exampleInner
+class	exampleInner
+class	exampleInner
+class	div1
+name	determinism
+id	determinism
+href	#sec-element-content
+title	For Compatibility
+href	#dt-compat
+href	#Aho
+href	#ABK
+class	div1
+name	sec-guessing
+id	sec-guessing
+class	div2
+name	sec-guessing-no-ext-info
+id	sec-guessing-no-ext-info
+border	1
+frame	border
+summary	Encoding detection summary
+border	1
+frame	border
+summary	Encoding detection summary
+rowspan	4
+class	note
+class	prefix
+class	div2
+name	sec-guessing-with-ext-info
+id	sec-guessing-with-ext-info
+href	#rfc2376
+class	div1
+name	sec-xml-wg
+id	sec-xml-wg
+class	div1
+name	sec-core-wg
+id	sec-core-wg
+class	div1
+name	prod-notes
+id	prod-notes
+href	http://www.w3.org/2002/xmlspec/dtd/2.10/xmlspec.dtd
+href	http://www.w3.org/2002/xmlspec/xhtml/1.13/xmlspec.xsl
+href	http://www.w3.org/2002/xmlspec/xhtml/1.13/diffspec.xsl
+href	REC-xml.xsl
+class	div1
+name	sec-suggested-names
+id	sec-suggested-names
+href	#XML1.0
+class	enumar
+type	application/javascript
+src	https://www.w3.org/scripts/TR/fixup.js

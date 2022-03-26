@@ -30,7 +30,6 @@ func main() {
 	mustCopy(conn, os.Stdin)
 	conn.CloseWrite()
 	<-done // wait for background goroutine to finish
-	conn.CloseRead()
 }
 
 //!-

@@ -24,13 +24,9 @@ type urlInfo struct {
 	depth int
 }
 
-var depthLimit = flag.Int("depth", 1, "depth of crawl\n")
 var tokens = make(chan struct{}, 10)
 
 func crawl(url string, depth int) *urlInfo {
-	if depth > *depthLimit {
-		return &urlInfo{nil, depth}
-	}
 	tokens <- struct{}{}
 	list, err := links.Extract(url)
 	<-tokens
@@ -41,7 +37,8 @@ func crawl(url string, depth int) *urlInfo {
 	return &urlInfo{list, depth + 1}
 }
 
-//!+
+var depthLimit = flag.Int("depth", 1, "depth of crawl\n")
+
 func main() {
 	if len(os.Args) < 3 {
 		log.Fatal("Invalid number of Argument\n")
@@ -61,6 +58,9 @@ func main() {
 		for _, link := range list.links {
 			if !seen[link] {
 				seen[link] = true
+				if list.depth > *depthLimit {
+					break
+				}
 				n++
 				go func(link string, depth int) {
 					worklist <- *crawl(link, depth)
@@ -70,5 +70,3 @@ func main() {
 	}
 	fmt.Printf("Finish!!\n")
 }
-
-//!-

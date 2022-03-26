@@ -69,7 +69,7 @@ func comma(s string) string {
 		if i+seprateNum < len(s) {
 			buf.WriteString(s[i : i+seprateNum])
 		} else {
-			buf.WriteString(s[i:len(s)])
+			buf.WriteString(s[i:])
 		}
 
 		i += seprateNum

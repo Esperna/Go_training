@@ -31,11 +31,12 @@ func main() {
 //!+
 // comma inserts commas in a non-negative decimal integer string.
 func comma(s string) string {
+	if s == "" {
+		return ""
+	}
 	var buf bytes.Buffer
 	const seprateNum = 3
-	i := 0
-	j := 0
-	k := 0
+	var i, j, k int
 	n := len(s)
 	hasDecimal := false
 	if s[i] == '.' {

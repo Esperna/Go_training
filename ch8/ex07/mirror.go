@@ -18,6 +18,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"regexp"
 	"strings"
 
 	"gopl.io/ch5/links"
@@ -47,7 +48,11 @@ func crawl(urlStr string, depth int) *urlInfo {
 			slashSplitDir := strings.Split(extractUrl.Path, "/")
 			path := extractUrl.Hostname()
 			for _, dir := range slashSplitDir[1:] {
-				if strings.HasSuffix(dir, ".html") {
+				matched, err := regexp.MatchString(`.*:\/\/.*\/.*\..*`, dir)
+				if err != nil {
+					log.Printf("failed to regexp MatchString %s: %s", `.*:\/\/.*\/.*\..*`, err)
+				}
+				if matched {
 					break
 				}
 				path += "/" + dir
@@ -56,7 +61,11 @@ func crawl(urlStr string, depth int) *urlInfo {
 				}
 			}
 			fmt.Printf("path: %s\n", path)
-			if !strings.HasSuffix(path, ".html") {
+			matched, err := regexp.MatchString(`.*:\/\/.*\/.*\..*`, path)
+			if err != nil {
+				log.Printf("failed to regexp MatchString %s: %s", `.*:\/\/.*\/.*\..*`, err)
+			}
+			if !matched {
 				path += "/index.html"
 			}
 			if err := download(item, path); err != nil {

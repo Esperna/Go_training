@@ -1,0 +1,5 @@
+https://www.google.com/intl/ja/about.html
+https://www.google.com/intl/aaa/aas//ja/sb/about.png
+https://www.google.co.jp/intl/aaa/aas//ja/sb/about.png
+https://www.google.com/intl
+

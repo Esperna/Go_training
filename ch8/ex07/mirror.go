@@ -155,9 +155,22 @@ func download(urlStr, path string) error {
 	if err != nil {
 		return fmt.Errorf("failed to read %s: %s", urlStr, err)
 	}
-	err = os.WriteFile(path, b, 0644)
+	list, err := links.Extract(urlStr)
 	if err != nil {
-		return fmt.Errorf("failed to write %s: %s", path, err)
+		log.Printf("failed to extract %s: %s", urlStr, err)
+	}
+	for _, item := range list {
+		pURL, err := url.Parse(item)
+		if err != nil {
+			log.Printf("failed to parse %s: %s", item, err)
+			continue
+		}
+		fmt.Printf("old: %s new:%s\n", item, pURL.Hostname()+pURL.Path+"index.html")
+		mirrorResult := strings.Replace(string(b), item, pURL.Hostname()+pURL.Path, 1)
+		err = os.WriteFile(path, []byte(mirrorResult), 0644)
+		if err != nil {
+			return fmt.Errorf("failed to write %s: %s", path, err)
+		}
 	}
 	return nil
 }

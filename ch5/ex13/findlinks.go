@@ -7,17 +7,16 @@
 package main
 
 import (
+	"ch5/ex13/links"
 	"fmt"
 	"io"
 	"log"
 	"net/http"
+	"net/url"
 	"os"
 	"strings"
-
-	"ch5/ex13/links"
 )
 
-//!+breadthFirst
 // breadthFirst calls f for each item in the worklist.
 // Any items returned by f are added to the worklist.
 // f is called at most once for each item.
@@ -29,65 +28,55 @@ func breadthFirst(f func(item string) []string, worklist []string) {
 		for _, item := range items {
 			if !seen[item] {
 				seen[item] = true
+				pURL, err := url.Parse(item)
+				if err != nil {
+					log.Printf("failed to parse %s: %s", item, err)
+					continue
+				}
+				hostname := pURL.Hostname()
+				if err := makeDirIfNotExist(hostname); err != nil {
+					log.Printf("failed to make directory: %s", err)
+				}
+				path := hostname + "/index.html"
+				if err := download(item, path); err != nil {
+					log.Printf("failed to download %s to %s: %s", item, path, err)
+					continue
+				}
 				worklist = append(worklist, f(item)...)
 			}
 		}
 	}
 }
 
-//!-breadthFirst
-
-//!+crawl
-func crawl(url string) []string {
-	fmt.Println(url)
-	list, err := links.Extract(url)
+func crawl(urlStr string) []string {
+	list, err := links.Extract(urlStr)
 	if err != nil {
-		log.Print(err)
+		log.Printf("failed to extrackt %s: %s", urlStr, err)
 	}
-	dirName := strings.Split(url, "https://")[1]
-	dirName = strings.Split(dirName, "/")[0]
-	makeDirIfNotExist(dirName)
-	for _, v := range list {
-		if strings.HasPrefix(v, url) {
-			resp, err := http.Get(v)
+	for _, item := range list {
+		if strings.HasPrefix(item, urlStr) {
+			extractUrl, err := url.Parse(item)
 			if err != nil {
-				log.Print(err)
+				log.Printf("failed to parse: %s", err)
 				continue
 			}
-			if resp.StatusCode != http.StatusOK {
-				log.Printf("getting %s: %s", v, resp.Status)
-				resp.Body.Close()
-				continue
-			}
-			b, err := io.ReadAll(resp.Body)
-			resp.Body.Close()
-			if err != nil {
-				log.Printf("reading %s: %v", v, err)
-				continue
-			}
-			urlSplitDir := strings.Split(v, url)
-			slashSplitDir := strings.Split(strings.Join(urlSplitDir, ""), "/")
-			dirPath := dirName + "/"
-			for _, dir := range slashSplitDir {
+			slashSplitDir := strings.Split(extractUrl.Path, "/")
+			path := extractUrl.Hostname()
+			for _, dir := range slashSplitDir[1:] {
 				if strings.HasSuffix(dir, ".html") {
 					break
 				}
-				dirPath += dir
-				if !strings.HasSuffix(dirPath, "/") {
-					dirPath += "/"
+				path += "/" + dir
+				if err := makeDirIfNotExist(path); err != nil {
+					log.Printf("failed to make directory: %s", err)
 				}
-				err = makeDirIfNotExist(dirPath)
 			}
-			if err != nil {
-				continue
+			fmt.Printf("path: %s\n", path)
+			if !strings.HasSuffix(path, ".html") {
+				path += "/index.html"
 			}
-			var filepath string
-			if !strings.HasSuffix(filepath, ".html") {
-				filepath = dirPath + "index.html"
-			}
-			err = os.WriteFile(filepath, b, 0644)
-			if err != nil {
-				log.Printf("writing %s: %v", filepath, err)
+			if err := download(item, path); err != nil {
+				log.Printf("failed to download %s to %s: %s", item, path, err)
 				continue
 			}
 		}
@@ -95,9 +84,8 @@ func crawl(url string) []string {
 	return list
 }
 
-//!-crawl
-func makeDirIfNotExist(dirName string) (err error) {
-	if _, err = os.Stat(dirName); os.IsNotExist(err) {
+func makeDirIfNotExist(dirName string) error {
+	if _, err := os.Stat(dirName); os.IsNotExist(err) {
 		err = os.Mkdir(dirName, 0644)
 		if err != nil {
 			log.Printf("making %s: %v", dirName, err)
@@ -109,14 +97,31 @@ func makeDirIfNotExist(dirName string) (err error) {
 			return err
 		}
 	}
-	return err
+	return nil
 }
 
-//!+main
+func download(urlStr, path string) error {
+	resp, err := http.Get(urlStr)
+	if err != nil {
+		return fmt.Errorf("gettig %s failed: %s", urlStr, err)
+	}
+	if resp.StatusCode != http.StatusOK {
+		return fmt.Errorf("getting %s failed: %s", urlStr, resp.Status)
+	}
+	b, err := io.ReadAll(resp.Body)
+	defer resp.Body.Close()
+	if err != nil {
+		return fmt.Errorf("reading %s failed: %s", urlStr, err)
+	}
+	err = os.WriteFile(path, b, 0644)
+	if err != nil {
+		return fmt.Errorf("writing %s failed: %s", path, err)
+	}
+	return nil
+}
+
 func main() {
 	// Crawl the web breadth-first,
 	// starting from the command-line arguments.
 	breadthFirst(crawl, os.Args[1:])
 }
-
-//!-main

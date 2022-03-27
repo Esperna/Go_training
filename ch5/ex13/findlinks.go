@@ -88,12 +88,12 @@ func makeDirIfNotExist(dirName string) error {
 	if _, err := os.Stat(dirName); os.IsNotExist(err) {
 		err = os.Mkdir(dirName, 0644)
 		if err != nil {
-			log.Printf("making %s: %v", dirName, err)
+			log.Printf("failed to make %s: %v", dirName, err)
 			return err
 		}
 		err = os.Chmod(dirName, 0744)
 		if err != nil {
-			log.Printf("changing permmision of %s: %v", dirName, err)
+			log.Printf("failed to change permmision of %s: %v", dirName, err)
 			return err
 		}
 	}
@@ -103,19 +103,19 @@ func makeDirIfNotExist(dirName string) error {
 func download(urlStr, path string) error {
 	resp, err := http.Get(urlStr)
 	if err != nil {
-		return fmt.Errorf("gettig %s failed: %s", urlStr, err)
+		return fmt.Errorf("failed to Get %s: %s", urlStr, err)
 	}
 	if resp.StatusCode != http.StatusOK {
-		return fmt.Errorf("getting %s failed: %s", urlStr, resp.Status)
+		return fmt.Errorf("failed to Get %s: %s", urlStr, resp.Status)
 	}
 	b, err := io.ReadAll(resp.Body)
 	defer resp.Body.Close()
 	if err != nil {
-		return fmt.Errorf("reading %s failed: %s", urlStr, err)
+		return fmt.Errorf("failed to read %s: %s", urlStr, err)
 	}
 	err = os.WriteFile(path, b, 0644)
 	if err != nil {
-		return fmt.Errorf("writing %s failed: %s", path, err)
+		return fmt.Errorf("failed to write %s: %s", path, err)
 	}
 	return nil
 }

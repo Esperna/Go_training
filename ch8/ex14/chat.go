@@ -61,11 +61,17 @@ func handleConn(conn net.Conn) {
 	go clientWriter(conn, ch)
 
 	who := conn.RemoteAddr().String()
-	ch <- "You are " + who
+	ch <- "Please input Your name."
+
+	input := bufio.NewScanner(conn)
+	for input.Scan() {
+		who = input.Text()
+		break
+	}
+
 	messages <- who + " has arrived"
 	entering <- client{who, ch}
 
-	input := bufio.NewScanner(conn)
 	start := make(chan string)
 	go timeout(conn, start)
 
@@ -84,8 +90,9 @@ func handleConn(conn net.Conn) {
 func timeout(conn net.Conn, start <-chan string) {
 loop:
 	for {
+		duration := 30 * time.Second
 		select {
-		case <-time.After(10 * time.Second):
+		case <-time.After(duration):
 			fmt.Println("Timeout")
 			conn.Close()
 			break loop

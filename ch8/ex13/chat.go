@@ -12,6 +12,7 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"time"
 )
 
 //!+broadcaster
@@ -65,14 +66,36 @@ func handleConn(conn net.Conn) {
 	entering <- client{who, ch}
 
 	input := bufio.NewScanner(conn)
+	start := make(chan string)
+	go timeout(conn, start)
+
 	for input.Scan() {
+		start <- input.Text()
 		messages <- who + ": " + input.Text()
 	}
+	close(start)
 	// NOTE: ignoring potential errors from input.Err()
 
 	leaving <- client{who, ch}
 	messages <- who + " has left"
 	conn.Close()
+}
+
+func timeout(conn net.Conn, start <-chan string) {
+loop:
+	for {
+		select {
+		case <-time.After(10 * time.Second):
+			fmt.Println("Timeout")
+			conn.Close()
+			break loop
+		case _, ok := <-start:
+			if !ok {
+				fmt.Println("Connection stopped")
+				break loop
+			}
+		}
+	}
 }
 
 func clientWriter(conn net.Conn, ch <-chan string) {

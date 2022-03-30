@@ -32,4 +32,35 @@ func TestBank(t *testing.T) {
 	if got, want := bank.Balance(), 300; got != want {
 		t.Errorf("Balance = %d, want %d", got, want)
 	}
+
+	var isSuccess bool
+	// Bob
+	go func() {
+		isSuccess = bank.Withdraw(100)
+		done <- struct{}{}
+	}()
+
+	// Wait for both transactions.
+	<-done
+	if !isSuccess {
+		t.Errorf("Withdraw returns %t want %t", isSuccess, true)
+	}
+	if got, want := bank.Balance(), 200; got != want {
+		t.Errorf("Balance = %d, want %d", got, want)
+	}
+
+	isSuccess = true
+	// Bob
+	go func() {
+		isSuccess = bank.Withdraw(300)
+		done <- struct{}{}
+	}()
+	<-done
+
+	if isSuccess {
+		t.Errorf("Withdraw returns %t want %t", isSuccess, false)
+	}
+	if got, want := bank.Balance(), 200; got != want {
+		t.Errorf("Balance = %d, want %d", got, want)
+	}
 }

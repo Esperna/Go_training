@@ -33,34 +33,32 @@ func TestBank(t *testing.T) {
 		t.Errorf("Balance = %d, want %d", got, want)
 	}
 
-	var isSuccess bool
-	// Bob
-	go func() {
-		isSuccess = bank.Withdraw(100)
-		done <- struct{}{}
-	}()
-
-	// Wait for both transactions.
-	<-done
-	if !isSuccess {
-		t.Errorf("Withdraw returns %t want %t", isSuccess, true)
+	type withdrawResult struct {
+		isSuccess bool
+		balance   int
 	}
-	if got, want := bank.Balance(), 200; got != want {
-		t.Errorf("Balance = %d, want %d", got, want)
+	var tests = []struct {
+		expected withdrawResult
+		given    int
+	}{
+		{withdrawResult{false, 300}, 400},
+		{withdrawResult{true, 200}, 100},
 	}
+	for _, test := range tests {
+		var isSuccess bool
+		// Bob
+		go func() {
+			isSuccess = bank.Withdraw(test.given)
+			done <- struct{}{}
+		}()
 
-	isSuccess = true
-	// Bob
-	go func() {
-		isSuccess = bank.Withdraw(300)
-		done <- struct{}{}
-	}()
-	<-done
-
-	if isSuccess {
-		t.Errorf("Withdraw returns %t want %t", isSuccess, false)
-	}
-	if got, want := bank.Balance(), 200; got != want {
-		t.Errorf("Balance = %d, want %d", got, want)
+		// Wait for both transactions.
+		<-done
+		if isSuccess != test.expected.isSuccess {
+			t.Errorf("Withdraw returns %t want %t", isSuccess, test.expected.isSuccess)
+		}
+		if got, want := bank.Balance(), test.expected.balance; got != want {
+			t.Errorf("Balance = %d, want %d", got, want)
+		}
 	}
 }

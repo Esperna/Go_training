@@ -4,10 +4,9 @@
 package bank_test
 
 import (
+	"ch9/ex01/bank"
 	"fmt"
 	"testing"
-
-	"gopl.io/ch9/bank1"
 )
 
 func TestBank(t *testing.T) {

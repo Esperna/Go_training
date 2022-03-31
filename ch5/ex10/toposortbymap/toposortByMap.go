@@ -11,23 +11,41 @@ import (
 )
 
 // prereqs maps computer science courses to their prerequisites.
-var prereqs = map[string][]string{
-	"algorithms": {"data structures"},
-	"calculus":   {"linear algebra"},
-
-	"compilers": {
-		"data structures",
-		"formal languages",
-		"computer organization",
+var prereqs = map[string]map[string]bool{
+	"algorithms": {
+		"data structures": true,
 	},
-
-	"data structures":       {"discrete math"},
-	"databases":             {"data structures"},
-	"discrete math":         {"intro to programming"},
-	"formal languages":      {"discrete math"},
-	"networks":              {"operating systems"},
-	"operating systems":     {"data structures", "computer organization"},
-	"programming languages": {"data structures", "computer organization"},
+	"calculus": {
+		"linear algebra": true,
+	},
+	"compilers": {
+		"data structures":       true,
+		"formal languages":      true,
+		"computer organization": true,
+	},
+	"data structures": {
+		"discrete math": true,
+	},
+	"databases": {
+		"data structures": true,
+	},
+	"discrete math": {
+		"intro to programming": true,
+	},
+	"formal languages": {
+		"discrete math": true,
+	},
+	"networks": {
+		"operating systems": true,
+	},
+	"operating systems": {
+		"data structures":       true,
+		"computer organization": true,
+	},
+	"programming languages": {
+		"data structures":       true,
+		"computer organization": true,
+	},
 }
 
 func main() {
@@ -36,31 +54,27 @@ func main() {
 	}
 }
 
-func topoSort(m map[string][]string) []string {
+func topoSort(m map[string]map[string]bool) []string {
 	var order []string
 	seen := make(map[string]bool)
-	var visitAll func(item string)
+	var visitAll func(m1 map[string]bool)
 
-	visitAll = func(item string) {
-		fmt.Printf("visit %v\n", item)
-		for _, v := range m[item] {
-			visitAll(v)
-			if !seen[v] {
-				seen[v] = true
-				order = append(order, v)
-				fmt.Printf("append %v\n", v)
-				break
+	visitAll = func(maps map[string]bool) {
+		for k := range maps {
+			if !seen[k] {
+				seen[k] = true
+				visitAll(m[k])
+				order = append(order, k)
 			}
 		}
-		if !seen[item] {
-			seen[item] = true
-			order = append(order, item)
-			fmt.Printf("append %v\n", item)
+	}
 
+	maps := make(map[string]bool)
+	for key, values := range m {
+		for _, v := range values {
+			maps[key] = v
 		}
 	}
-	for k := range m {
-		visitAll(k)
-	}
+	visitAll(maps)
 	return order
 }

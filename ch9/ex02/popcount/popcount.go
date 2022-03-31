@@ -14,8 +14,10 @@ var loadpcOnce sync.Once
 // pc[i] is the population count of i.
 
 var pc [256]byte
+var NumberOfcallLoadpc int
 
 func loadpc() {
+	NumberOfcallLoadpc++
 	for i := range pc {
 		pc[i] = pc[i/2] + byte(i&1)
 	}

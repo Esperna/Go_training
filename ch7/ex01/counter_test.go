@@ -1,6 +1,9 @@
 package main
 
 import (
+	"bufio"
+	"fmt"
+	"strings"
 	"testing"
 )
 
@@ -96,5 +99,20 @@ func TestLineCounterValue(t *testing.T) {
 		if c != LineCounter(test.want) {
 			t.Errorf("count != test.want. count:%d test.want:%d", c, test.want)
 		}
+	}
+}
+
+func TestTooLargeWordCounterValue(t *testing.T) {
+	var c WordCounter
+	input := []byte("Word1 " + strings.Repeat("X", bufio.MaxScanTokenSize+1) + " Word2")
+	count, err := c.Write(input)
+	fmt.Printf("%d %v", count, err)
+	expectedCount := 1
+	if count != expectedCount {
+		t.Errorf("count is not expected. count:%d test.want:%d", count, expectedCount)
+	}
+	expectedErr := fmt.Errorf("bufio.Scanner: token too long")
+	if err.Error() != expectedErr.Error() {
+		t.Errorf("err is not expectd. \n%s\n%s", err.Error(), expectedErr.Error())
 	}
 }

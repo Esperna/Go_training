@@ -35,18 +35,15 @@ func (c *LineCounter) Write(p []byte) (int, error) {
 	return count, err
 }
 
-func countByFunc(p []byte, f bufio.SplitFunc) (count int, err error) {
+func countByFunc(p []byte, f bufio.SplitFunc) (int, error) {
 	s := string(p)
 	scanner := bufio.NewScanner(strings.NewReader(s))
 	scanner.Split(f)
-	count = 0
+	count := 0
 	for scanner.Scan() {
 		count++
 	}
-	if err := scanner.Err(); err != nil {
-		err = fmt.Errorf("scan falied %s", err)
-	}
-	return count, err
+	return count, scanner.Err()
 }
 
 func main() {

@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"net/url"
 	"strconv"
 )
 
@@ -15,7 +14,7 @@ func main() {
 }
 
 func calcurator(w http.ResponseWriter, r *http.Request) {
-	query := url.QueryEscape(r.FormValue("expr"))
+	query := r.FormValue("expr")
 	if query == "" {
 		fmt.Fprintf(w, "no expression\n")
 		return

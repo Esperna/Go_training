@@ -1,19 +1,43 @@
 package main
 
-import "testing"
+import (
+	"fmt"
+	"testing"
+)
 
 func TestToposortBySlice(t *testing.T) {
 	isExpected := true
 	courses := topoSort(prereqs)
-	for i := 0; i < len(courses)-1; i++ {
-		for _, prereq := range prereqs[courses[i]] {
-			if courses[i+1] == prereq {
+	for i, course := range courses {
+		fmt.Printf("%d:\t%s\n", i+1, course)
+	}
+
+	for u := 0; u < len(courses); u++ {
+		for v := u + 1; v < len(courses); v++ {
+			isprereq := isPrereq(courses[u], courses[v])
+			if isprereq && (u >= v) {
 				isExpected = false
-				t.Errorf("next course is prereq. current: %s, next: %s", courses[i], courses[i+1])
+				t.Errorf("%s is not prereq of %s", courses[u], courses[v])
 			}
 		}
 	}
 	if !isExpected {
 		t.Errorf("Not Expected toposort result.")
 	}
+}
+
+func isPrereq(course1, course2 string) bool {
+	if course1 == course2 {
+		return false
+	}
+	for _, course := range prereqs[course2] {
+		if course1 == course {
+			return true
+		}
+		if isPrereq(course1, course) {
+			return true
+		}
+	}
+	return false
+
 }

@@ -69,12 +69,12 @@ func (db database) update(w http.ResponseWriter, req *http.Request) {
 		fmt.Fprintf(w, "invalid price %s specified to %s\n", price, item)
 		return
 	}
-	db[item] = dollars(f)
 	if f < 0 {
 		w.WriteHeader(http.StatusBadRequest)
 		fmt.Fprintf(w, "invalid price %s specified to %s\n", db[item], item)
 		return
 	}
+	db[item] = dollars(f)
 	fmt.Fprintf(w, "%s: %s\n", item, db[item])
 }
 
@@ -112,11 +112,11 @@ func (db database) create(w http.ResponseWriter, req *http.Request) {
 		fmt.Fprintf(w, "invalid price %s specified to %s\n", price, item)
 		return
 	}
-	db[item] = dollars(f)
 	if f < 0 {
 		w.WriteHeader(http.StatusBadRequest)
 		fmt.Fprintf(w, "invalid price %s specified to %s\n", db[item], item)
 		return
 	}
+	db[item] = dollars(f)
 	fmt.Fprintf(w, "%s: %s\n", item, db[item])
 }

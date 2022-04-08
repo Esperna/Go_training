@@ -16,6 +16,12 @@ import (
 	"unicode/utf8"
 )
 
+type charCount struct {
+	counts int
+	utflen int
+	err    error
+}
+
 func main() {
 	counts := make(map[rune]int)    // counts of Unicode characters
 	var utflen [utf8.UTFMax + 1]int // count of lengths of UTF-8 encodings
@@ -51,6 +57,10 @@ func main() {
 	if invalid > 0 {
 		fmt.Printf("\n%d invalid UTF-8 characters\n", invalid)
 	}
+}
+
+func countChar(rd io.Reader) charCount {
+	return charCount{3, 3, nil}
 }
 
 //!-

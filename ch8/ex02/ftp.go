@@ -2,7 +2,6 @@ package main
 
 import (
 	"bufio"
-	"fmt"
 	"io"
 	"log"
 	"net"
@@ -46,22 +45,21 @@ func handleConn(c net.Conn) {
 			"CWD":  cwd,
 			"STOR": stor,
 		}
-		line, err := reader.ReadString('\n')
+		//line, err := reader.ReadString('\n')
+		line, isPrefix, err := reader.ReadLine()
 		if err != nil {
 			if err != io.EOF {
 				log.Printf("%s\n", err)
 			}
 			break
 		}
-		msg := strings.Split(line, " ")
-		var name string
-		if len(msg) == 1 {
-			if _, err := fmt.Sscanf(msg[0], "%s\n", &name); err != nil {
-				log.Printf("Sscanf failed: %s", err)
-			}
-		} else {
-			name = msg[0]
+		if isPrefix {
+			log.Printf("line is too long\n")
+			break
 		}
+		msg := strings.Split(string(line), " ")
+		name := msg[0]
+
 		log.Printf("msg: %s len: %d\n", name, len(msg))
 		if err := commands[name](c, msg); err != nil {
 			log.Printf("%v\n", err)

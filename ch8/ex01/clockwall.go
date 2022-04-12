@@ -35,14 +35,14 @@ func main() {
 	}
 
 	for {
-		m := make(map[int]Time)
+		times := make([]Time, numOfClock)
 		for i := 0; i < numOfClock; i++ {
 			clock := <-clk
-			m[clock.index] = clock.time
+			times[clock.index] = clock.time
 		}
 		timelist := ""
-		for i := 0; i < len(m); timelist += " " {
-			timelist += m[i].zone + " " + m[i].value
+		for i := 0; i < len(times); timelist += " " {
+			timelist += times[i].zone + " " + times[i].value
 			i++
 		}
 		fmt.Printf("\r%s", timelist)

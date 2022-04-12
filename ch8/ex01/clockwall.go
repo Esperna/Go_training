@@ -28,15 +28,15 @@ type Time struct {
 }
 
 func main() {
-	clocks, numOfClock := parse(os.Args)
-	clk := make(chan Clock, numOfClock)
+	clocks := parse(os.Args)
+	clk := make(chan Clock, len(clocks))
 	for _, clock := range clocks {
 		go readWorldTime(clock, clk)
 	}
 
 	for {
-		times := make([]Time, numOfClock)
-		for i := 0; i < numOfClock; i++ {
+		times := make([]Time, len(clocks))
+		for range clocks {
 			clock := <-clk
 			times[clock.index] = clock.time
 		}
@@ -49,7 +49,7 @@ func main() {
 	}
 }
 
-func parse(args []string) ([]Clock, int) {
+func parse(args []string) []Clock {
 	var clocks []Clock
 	for i := 1; i < len(args); i++ {
 		var clock Clock
@@ -59,8 +59,7 @@ func parse(args []string) ([]Clock, int) {
 		clock.addr = slices[1]
 		clocks = append(clocks, clock)
 	}
-	numOfClock := len(args) - 1
-	return clocks, numOfClock
+	return clocks
 }
 
 func readWorldTime(clock Clock, clk chan<- Clock) {

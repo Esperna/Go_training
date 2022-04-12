@@ -9,6 +9,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"sync"
 )
 
 var responses = map[int]string{
@@ -28,6 +29,7 @@ var responses = map[int]string{
 }
 
 var (
+	mu sync.RWMutex
 	dp dataPort //exclusive Control is needed
 )
 
@@ -37,6 +39,8 @@ type dataPort struct {
 }
 
 func (d *dataPort) toAddress() string {
+	mu.RLock()
+	defer mu.RUnlock()
 	if d == nil {
 		return ""
 	}
@@ -105,10 +109,13 @@ func feat(c net.Conn, _ []string) error {
 }
 
 func port(c net.Conn, msg []string) error {
+	mu.RLock()
 	if _, err := fmt.Sscanf(msg[1], "%d,%d,%d,%d,%d,%d\n", &dp.h1, &dp.h2, &dp.h3, &dp.h4, &dp.p1, &dp.p2); err != nil {
+		mu.RUnlock()
 		return fmt.Errorf("Sscanf failed: %s", err)
 	}
 	log.Printf("%v\n", dp)
+	mu.RUnlock()
 	if _, err := io.WriteString(c, respMsg(200)); err != nil {
 		return fmt.Errorf("%s", err)
 	}

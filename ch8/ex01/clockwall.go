@@ -23,7 +23,6 @@ type Clock struct {
 }
 
 type Time struct {
-	zone  string
 	value string
 }
 
@@ -42,7 +41,7 @@ func main() {
 		}
 		timelist := ""
 		for i := 0; i < len(times); timelist += " " {
-			timelist += times[i].zone + " " + times[i].value
+			timelist += times[i].value
 			i++
 		}
 		fmt.Printf("\r%s", timelist)
@@ -55,7 +54,6 @@ func parse(args []string) []Clock {
 		var clock Clock
 		slices := strings.Split(args[i], "=")
 		clock.index = i - 1
-		clock.time.zone = slices[0]
 		clock.addr = slices[1]
 		clocks = append(clocks, clock)
 	}
@@ -72,7 +70,6 @@ func readWorldTime(clock Clock, clk chan<- Clock) {
 	for scanner.Scan() {
 		var c Clock
 		c.index = clock.index
-		c.time.zone = clock.time.zone
 		c.time.value = scanner.Text()
 		clk <- c
 	}

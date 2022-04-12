@@ -11,13 +11,14 @@ import (
 	"io"
 	"log"
 	"net"
+	"os"
 	"time"
 )
 
-func handleConn(c net.Conn) {
+func handleConn(c net.Conn, zone string) {
 	defer c.Close()
 	for {
-		_, err := io.WriteString(c, time.Now().Format("15:04:05\n"))
+		_, err := io.WriteString(c, zone+" "+time.Now().Format("15:04:05\n"))
 		if err != nil {
 			return // e.g., client disconnected
 		}
@@ -32,14 +33,20 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	//!+
+
+	var location *time.Location
+	location, err = time.LoadLocation(os.Getenv("TZ"))
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	for {
 		conn, err := listener.Accept()
 		if err != nil {
 			log.Print(err) // e.g., connection aborted
 			continue
 		}
-		go handleConn(conn) // handle connections concurrently
+		go handleConn(conn, location.String()) // handle connections concurrently
 	}
-	//!-
+
 }

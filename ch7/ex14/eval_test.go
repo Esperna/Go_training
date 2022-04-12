@@ -26,6 +26,8 @@ func TestEval(t *testing.T) {
 		// additional tests that don't appear in the book
 		{"-1 + -x", Env{"x": 1}, "-2"},
 		{"-1 - x", Env{"x": 1}, "-2"},
+		{"min(x, 2)", Env{"x": 1}, "1"},
+		{"min(1, 2, 3)", Env{}, "1"},
 		//!+Eval
 	}
 	var prevExpr string

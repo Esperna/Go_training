@@ -70,9 +70,19 @@ func (c call) Eval(env Env) float64 {
 func (vf variadicfunc) Eval(env Env) float64 {
 	switch vf.fn {
 	case "min":
-		return min(vf.args.Eval(env))
+		length := len(vf.args)
+		if length == 0 {
+			panic(fmt.Sprintf("unsupported variadic function call: %s %v", vf.fn, vf.args))
+		} else if length == 1 {
+			return vf.args[0].Eval(env)
+		}
+		min := vf.args[0].Eval(env)
+		for _, arg := range vf.args {
+			min = math.Min(min, arg.Eval(env))
+		}
+		return min
 	}
-	panic(fmt.Sprintf("unsupported variadic function call: %s", vf.fn))
+	panic(fmt.Sprintf("unsupported variadic variadic function call: %s", vf.fn))
 }
 
 //!-Eval2

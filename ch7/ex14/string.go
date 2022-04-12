@@ -32,3 +32,15 @@ func (c call) String() string {
 	str += ")"
 	return str
 }
+
+func (vf variadicfunc) String() string {
+	str := vf.fn + "("
+	for i := 0; i < len(vf.args); i++ {
+		if i > 0 {
+			str += ","
+		}
+		str += fmt.Sprintf("%s", vf.args[i])
+	}
+	str += ")"
+	return str
+}

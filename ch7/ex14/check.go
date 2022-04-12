@@ -53,6 +53,19 @@ func (c call) Check(vars map[Var]bool) error {
 	return nil
 }
 
+func (vf variadicfunc) Check(vars map[Var]bool) error {
+	arity := len(vf.args)
+	if arity == 0 {
+		return fmt.Errorf("unexpected number of arguments %d", arity)
+	}
+	for _, arg := range vf.args {
+		if err := arg.Check(vars); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 var numParams = map[string]int{"pow": 2, "sin": 1, "sqrt": 1}
 
 //!-Check

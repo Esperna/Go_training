@@ -6,20 +6,18 @@ package memo_test
 import (
 	"testing"
 
-	memo "ch9/ex03/memo5"
-	"ch9/ex03/memo5/memotest"
+	"ch9/ex03/memo"
+	"ch9/ex03/memotest"
 )
 
 var httpGetBody = memotest.HTTPGetBody
 
 func Test(t *testing.T) {
 	m := memo.New(httpGetBody)
-	defer m.Close()
 	memotest.Sequential(t, m)
 }
 
 func TestConcurrent(t *testing.T) {
 	m := memo.New(httpGetBody)
-	defer m.Close()
 	memotest.Concurrent(t, m)
 }

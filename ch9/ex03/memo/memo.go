@@ -9,10 +9,13 @@
 // This implementation uses a Mutex.
 package memo
 
-import "sync"
+import (
+	"sync"
+	"time"
+)
 
 // Func is the type of the function to memoize.
-type Func func(string) (interface{}, error)
+type Func func(string, <-chan struct{}) (interface{}, error)
 
 type result struct {
 	value interface{}
@@ -45,8 +48,14 @@ func (memo *Memo) Get(key string) (value interface{}, err error) {
 		e = &entry{ready: make(chan struct{})}
 		memo.cache[key] = e
 		memo.mu.Unlock()
-
-		e.res.value, e.res.err = memo.f(key)
+		done := make(chan struct{})
+		go func() {
+			ticker := time.NewTicker(500 * time.Millisecond)
+			<-ticker.C
+			ticker.Stop()
+			close(done)
+		}()
+		e.res.value, e.res.err = memo.f(key, done)
 
 		close(e.ready) // broadcast ready condition
 	} else {

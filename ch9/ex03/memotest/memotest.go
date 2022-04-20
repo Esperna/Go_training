@@ -18,13 +18,18 @@ import (
 )
 
 //!+httpRequestBody
-func httpGetBody(url string) (interface{}, error) {
+func httpGetBody(url string, done <-chan struct{}) (interface{}, error) {
 	resp, err := http.Get(url)
 	if err != nil {
 		return nil, err
 	}
 	defer resp.Body.Close()
-	return ioutil.ReadAll(resp.Body)
+	select {
+	case <-done:
+		return []byte{}, nil
+	default:
+		return ioutil.ReadAll(resp.Body)
+	}
 }
 
 //!-httpRequestBody

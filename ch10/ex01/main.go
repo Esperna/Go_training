@@ -14,10 +14,8 @@ import (
 	"fmt"
 	"image"
 	"image/gif"
-	_ "image/gif" // register PNG decoder
 	"image/jpeg"
 	"image/png"
-	_ "image/png" // register PNG decoder
 	"io"
 	"os"
 )

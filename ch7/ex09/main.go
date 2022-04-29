@@ -100,32 +100,48 @@ func main() {
 
 }
 
-func handler(w http.ResponseWriter, r *http.Request) {
-	var keys sortKeys
-	keys.first = "Title"
-	keys.second = "Year"
+var key1 string = "Title"
+var key2 string = "Year"
 
-	m := map[sortKeys]func(x, y *Track) bool{
-		{"Title", "Artist"}:  lessByTitleArtist,
-		{"Title", "Album"}:   lessByTitleAlbum,
-		{"Title", "Year"}:    lessByTitleYear,
-		{"Title", "Length"}:  lessByTitleLength,
-		{"Artist", "Title"}:  lessByArtistTitle,
-		{"Artist", "Album"}:  lessByArtistAlbum,
-		{"Artist", "Year"}:   lessByArtistYear,
-		{"Artist", "Length"}: lessByArtistLength,
+func handler(w http.ResponseWriter, r *http.Request) {
+	key2 = key1
+	if err := r.ParseForm(); err != nil {
+		log.Print(err)
 	}
-	if m[keys] == nil {
-		fmt.Print("not implemented currently")
-		os.Exit(1)
+	for k, v := range r.Form {
+		if k == "key" {
+			key1 = v[0]
+		}
 	}
-	sort.Sort(customSortBy2Key{tracks, m[keys]})
+
+	tracks := customSortBy1st2ndKey(key1, key2)
 	printTracks(tracks)
 	var data trackData
 	data.Tracks = append(data.Tracks, tracks...)
 	if err := trackList.Execute(w, data); err != nil {
 		log.Fatal(err)
 	}
+}
+
+func customSortBy1st2ndKey(key1, key2 string) []*Track {
+	lessBy1st2ndKey := func(x, y *Track) bool {
+		m := map[string]func(x, y *Track) bool{
+			"Title":  lessByTitle,
+			"Artist": lessByArtist,
+			"Album":  lessByAlbum,
+			"Year":   lessByYear,
+			"Length": lessByLength,
+		}
+		if m[key1](x, y) {
+			return m[key1](x, y)
+		}
+		if m[key1](y, x) {
+			return m[key1](x, y)
+		}
+		return m[key2](x, y)
+	}
+	sort.Sort(customSortBy2Key{tracks, lessBy1st2ndKey})
+	return tracks
 }
 
 type customSortBy2Key struct {
@@ -137,93 +153,8 @@ func (x customSortBy2Key) Len() int           { return len(x.t) }
 func (x customSortBy2Key) Less(i, j int) bool { return x.less(x.t[i], x.t[j]) }
 func (x customSortBy2Key) Swap(i, j int)      { x.t[i], x.t[j] = x.t[j], x.t[i] }
 
-func lessByTitle(x, y *Track) bool {
-	if x.Title != y.Title {
-		return x.Title < y.Title
-	}
-	return false
-}
-
-func lessByArtist(x, y *Track) bool {
-	if x.Artist != y.Artist {
-		return x.Artist < y.Artist
-	}
-	return false
-}
-
-func lessByAlbum(x, y *Track) bool {
-	if x.Album != y.Album {
-		return x.Album < y.Album
-	}
-	return false
-}
-
-func lessByYear(x, y *Track) bool {
-	if x.Year != y.Year {
-		return x.Year < y.Year
-	}
-	return false
-}
-
-func lessByLength(x, y *Track) bool {
-	if x.Length != y.Length {
-		return x.Length < y.Length
-	}
-	return false
-}
-
-func lessByTitleArtist(x, y *Track) bool {
-	if x.Title != y.Title {
-		return x.Title < y.Title
-	}
-	return lessByArtist(x, y)
-}
-
-func lessByTitleAlbum(x, y *Track) bool {
-	if x.Title != y.Title {
-		return x.Title < y.Title
-	}
-	return lessByAlbum(x, y)
-}
-
-func lessByTitleYear(x, y *Track) bool {
-	if x.Title != y.Title {
-		return x.Title < y.Title
-	}
-	return lessByYear(x, y)
-}
-
-func lessByTitleLength(x, y *Track) bool {
-	if x.Title != y.Title {
-		return x.Title < y.Title
-	}
-	return lessByYear(x, y)
-}
-
-func lessByArtistTitle(x, y *Track) bool {
-	if x.Artist != y.Artist {
-		return x.Artist < y.Artist
-	}
-	return lessByTitle(x, y)
-}
-
-func lessByArtistAlbum(x, y *Track) bool {
-	if x.Artist != y.Artist {
-		return x.Artist < y.Artist
-	}
-	return lessByAlbum(x, y)
-}
-
-func lessByArtistYear(x, y *Track) bool {
-	if x.Artist != y.Artist {
-		return x.Artist < y.Artist
-	}
-	return lessByYear(x, y)
-}
-
-func lessByArtistLength(x, y *Track) bool {
-	if x.Artist != y.Artist {
-		return x.Artist < y.Artist
-	}
-	return lessByLength(x, y)
-}
+func lessByTitle(x, y *Track) bool  { return x.Title < y.Title }
+func lessByArtist(x, y *Track) bool { return x.Artist < y.Artist }
+func lessByAlbum(x, y *Track) bool  { return x.Album < y.Album }
+func lessByYear(x, y *Track) bool   { return x.Year < y.Year }
+func lessByLength(x, y *Track) bool { return x.Length < y.Length }

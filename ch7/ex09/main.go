@@ -41,11 +41,11 @@ var trackList = template.Must(template.New("tracklist").Parse(`
 <h1>music list</h1>
 <table>
 <tr style = 'text-align: left'>
-	<th><a href="http://localhost:8000/?key=Title">Title</a></th>
-	<th><a href="http://localhost:8000/?key=Artist">Artist</a></th>
-	<th><a href="http://localhost:8000/?key=Album">Album</a></th>
-	<th><a href="http://localhost:8000/?key=Year">Year</a></th>
-	<th><a href="http://localhost:8000/?key=Length">Length</a></th>
+	<th><a href="/?key=Title">Title</a></th>
+	<th><a href="/?key=Artist">Artist</a></th>
+	<th><a href="/?key=Album">Album</a></th>
+	<th><a href="/?key=Year">Year</a></th>
+	<th><a href="/?key=Length">Length</a></th>
 {{range .Tracks}}
 <tr>
 	<td>{{.Title}}</td>

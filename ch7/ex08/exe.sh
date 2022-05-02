@@ -4,15 +4,16 @@ CommandWithEcho(){
     $Command
 }
 
-Command="go run customSort.go -k1 Title -k2 Artist"
+go build customSort.go trackData.go 
+Command="./customSort -k1 Title -k2 Artist"
 CommandWithEcho
-Command="go run customSort.go -k1 Title -k2 Album"
+Command="./customSort -k1 Title -k2 Album"
 CommandWithEcho
-Command="go run customSort.go -k1 Title -k2 Year"
+Command="./customSort -k1 Title -k2 Year"
 CommandWithEcho
-Command="go run customSort.go -k1 Title -k2 Length"
+Command="./customSort -k1 Title -k2 Length"
 CommandWithEcho
-Command="go run customSort.go -k1 Length -k2 Year"
+Command="./customSort -k1 Length -k2 Year"
 CommandWithEcho
-Command="go run customSort.go -k1 Album -k2 Year"
+Command="./customSort -k1 Album -k2 Year"
 CommandWithEcho

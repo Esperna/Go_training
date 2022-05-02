@@ -39,7 +39,7 @@ func TestCustomSortBy1st2ndKey(t *testing.T) {
 		}},
 	}
 	for _, test := range tests {
-		actual := customSortBy1st2ndKey(test.key1, test.key2)
+		actual := CustomSortBy1st2ndKey(test.key1, test.key2, tracks1)
 		if !equal(test.expected, actual) {
 			t.Errorf("Not expected.  expected %v, actual %v", test.expected, actual)
 		}
@@ -56,4 +56,40 @@ func equal(x, y []*Track) bool {
 		}
 	}
 	return true
+}
+
+func BenchmarkCustomSortBy1st2ndKey(b *testing.B) {
+	type Keys struct {
+		key1 string
+		key2 string
+	}
+	keys := []Keys{
+		{key1: "Title", key2: "Artist"},
+		{key1: "Album", key2: "Year"},
+		{key1: "Length", key2: "Title"},
+		{key1: "Artist", key2: "Album"},
+		{key1: "Year", key2: "Length"},
+	}
+	length := len(keys)
+	for i := 0; i < b.N; i++ {
+		CustomSortBy1st2ndKey(keys[i%length].key1, keys[i%length].key2, tracks2)
+	}
+}
+
+func BenchmarkSortStable(b *testing.B) {
+	type Keys struct {
+		key1 string
+		key2 string
+	}
+	keys := []Keys{
+		{key1: "Title", key2: "Artist"},
+		{key1: "Album", key2: "Year"},
+		{key1: "Length", key2: "Title"},
+		{key1: "Artist", key2: "Album"},
+		{key1: "Year", key2: "Length"},
+	}
+	length := len(keys)
+	for i := 0; i < b.N; i++ {
+		SortStable(keys[i%length].key1, keys[i%length].key2, tracks2)
+	}
 }

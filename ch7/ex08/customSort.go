@@ -24,13 +24,6 @@ type Track struct {
 	Length time.Duration
 }
 
-var tracks = []*Track{
-	{"Go", "Delilah", "From the Roots Up", 2012, length("3m38s")},
-	{"Go", "Moby", "Moby", 1992, length("3m37s")},
-	{"Go Ahead", "Alicia Keys", "As I Am", 2007, length("4m36s")},
-	{"Ready 2 Go", "Martin Solveig", "Smash", 2011, length("4m24s")},
-}
-
 func length(s string) time.Duration {
 	d, err := time.ParseDuration(s)
 	if err != nil {
@@ -88,11 +81,11 @@ func main() {
 		fmt.Print("invalid second key")
 		os.Exit(1)
 	}
-	tracks := customSortBy1st2ndKey(*key1, *key2)
+	tracks := CustomSortBy1st2ndKey(*key1, *key2, tracks1)
 	printTracks(tracks)
 }
 
-func customSortBy1st2ndKey(key1, key2 string) []*Track {
+func CustomSortBy1st2ndKey(key1, key2 string, tracks []*Track) []*Track {
 	lessBy1st2ndKey := func(x, y *Track) bool {
 		m := map[string]func(x, y *Track) bool{
 			"Title":  lessByTitle,
@@ -110,6 +103,27 @@ func customSortBy1st2ndKey(key1, key2 string) []*Track {
 		return m[key2](x, y)
 	}
 	sort.Sort(customSortBy2Key{tracks, lessBy1st2ndKey})
+	return tracks
+}
+
+func SortStable(key1, key2 string, tracks []*Track) []*Track {
+	lessBy1st2ndKey := func(x, y *Track) bool {
+		m := map[string]func(x, y *Track) bool{
+			"Title":  lessByTitle,
+			"Artist": lessByArtist,
+			"Album":  lessByAlbum,
+			"Year":   lessByYear,
+			"Length": lessByLength,
+		}
+		if m[key1](x, y) {
+			return m[key1](x, y)
+		}
+		if m[key1](y, x) {
+			return m[key1](x, y)
+		}
+		return m[key2](x, y)
+	}
+	sort.Stable(customSortBy2Key{tracks, lessBy1st2ndKey})
 	return tracks
 }
 

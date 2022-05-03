@@ -5,7 +5,6 @@ package intset
 
 import (
 	"fmt"
-	"testing"
 )
 
 func Example_one() {
@@ -50,20 +49,4 @@ func Example_two() {
 	// {1 9 42 144}
 	// {1 9 42 144}
 	// {[4398046511618 0 65536]}
-}
-
-func TestAddIntSet(t *testing.T) {
-	var x IntSet
-	y := make(map[uint64]bool)
-
-	given := []int{1, 144, 9, 42}
-	for _, val := range given {
-		x.Add(val)
-		y[uint64(val)] = true
-	}
-	for _, val := range given {
-		if x.Has(val) != y[uint64(val)] {
-			t.Errorf("x.Has(%d):%t y[%d]:%t", val, x.Has(val), given, y[uint64(val)])
-		}
-	}
 }

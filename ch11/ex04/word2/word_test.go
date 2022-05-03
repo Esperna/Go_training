@@ -6,12 +6,11 @@ package word
 import (
 	"fmt"
 	"math/rand"
+	"testing"
 	"time"
 )
 
 //!+bench
-
-import "testing"
 
 //!-bench
 
@@ -83,6 +82,16 @@ func randomPalindrome(rng *rand.Rand) string {
 		runes[i] = r
 		runes[n-1-i] = r
 	}
+	var pos int
+	if n != 0 {
+		pos = rng.Intn(n)
+		runes = append(runes[:pos+1], runes[pos:]...)
+		if rng.Intn(2) == 0 {
+			runes[pos] = randomPanctuation(rng)
+		} else {
+			runes[pos] = randomSpace(rng)
+		}
+	}
 	return string(runes)
 }
 
@@ -98,6 +107,26 @@ func TestRandomPalindromes(t *testing.T) {
 			t.Errorf("IsPalindrome(%q) = false", p)
 		}
 	}
+}
+
+func randomPanctuation(rng *rand.Rand) rune {
+	const base = 0x2000
+	const numOfPunctuation = 0x70
+	offset := rng.Intn(numOfPunctuation)
+	return rune(base + offset)
+}
+
+func randomSpace(rng *rand.Rand) rune {
+	const numOfSpace = 5
+	space := map[int]int{
+		0: 0x0020, //SPACE
+		1: 0x00A0, //NO-BREAK SPACE
+		2: 0x3000, //IDEOGRAPHIC SPACE
+		3: 0xFEFF, //ZERO WIDTH NO-BREAK SPACE
+		4: 0x0009, //CHARACTER TABULATION
+	}
+	no := rng.Intn(numOfSpace)
+	return rune(space[no])
 }
 
 //!-random

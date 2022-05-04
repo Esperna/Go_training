@@ -65,46 +65,132 @@ func TestPopCount(t *testing.T) {
 
 // -- Benchmarks --
 
-func BenchmarkPopCount(b *testing.B) {
+func BenchmarkPopCount16digits(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		popcount.PopCount(0x1234567890ABCDEF)
 	}
 }
 
-func BenchmarkPopCountByShift(b *testing.B) {
+func BenchmarkPopCountByShift16digits(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		popcount.PopCountByShift(0x1234567890ABCDEF)
 	}
 
 }
 
-func BenchmarkPopCountByLoop(b *testing.B) {
+func BenchmarkPopCountByLoop16digits(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		popcount.PopCountByLoop(0x1234567890ABCDEF)
 	}
 }
 
-func BenchmarkBitCount(b *testing.B) {
+func BenchmarkBitCount16digits(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		BitCount(0x1234567890ABCDEF)
 	}
 }
 
-func BenchmarkPopCountByClear(b *testing.B) {
+func BenchmarkPopCountByClear16digits(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		popcount.PopCountByClear(0x1234567890ABCDEF)
 	}
 }
 
-func BenchmarkPopCountByClearing(b *testing.B) {
+func BenchmarkPopCountByClearing16digits(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		PopCountByClearing(0x1234567890ABCDEF)
 	}
 }
 
-func BenchmarkPopCountByShifting(b *testing.B) {
+func BenchmarkPopCountByShifting16digits(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		PopCountByShifting(0x1234567890ABCDEF)
+	}
+}
+
+func BenchmarkPopCount8digits(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		popcount.PopCount(0x12345678)
+	}
+}
+
+func BenchmarkPopCountByShift8digits(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		popcount.PopCountByShift(0x12345678)
+	}
+
+}
+
+func BenchmarkPopCountByLoop8digits(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		popcount.PopCountByLoop(0x12345678)
+	}
+}
+
+func BenchmarkBitCount8digits(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		BitCount(0x12345678)
+	}
+}
+
+func BenchmarkPopCountByClear8digits(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		popcount.PopCountByClear(0x12345678)
+	}
+}
+
+func BenchmarkPopCountByClearing8digits(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		PopCountByClearing(0x12345678)
+	}
+}
+
+func BenchmarkPopCountByShifting8digits(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		PopCountByShifting(0x12345678)
+	}
+}
+
+func BenchmarkPopCount4digits(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		popcount.PopCount(0x1234)
+	}
+}
+
+func BenchmarkPopCountByShift4digits(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		popcount.PopCountByShift(0x1234)
+	}
+
+}
+
+func BenchmarkPopCountByLoop4digits(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		popcount.PopCountByLoop(0x1234)
+	}
+}
+
+func BenchmarkBitCount4digits(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		BitCount(0x1234)
+	}
+}
+
+func BenchmarkPopCountByClear4digits(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		popcount.PopCountByClear(0x1234)
+	}
+}
+
+func BenchmarkPopCountByClearing4digits(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		PopCountByClearing(0x1234)
+	}
+}
+
+func BenchmarkPopCountByShifting4digits(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		PopCountByShifting(0x1234)
 	}
 }
 

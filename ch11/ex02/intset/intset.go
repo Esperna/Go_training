@@ -9,9 +9,9 @@ package intset
 import (
 	"bytes"
 	"fmt"
-)
 
-//!+intset
+	"gopl.io/ch2/popcount"
+)
 
 // An IntSet is a set of small non-negative integers.
 // Its zero value represents the empty set.
@@ -45,10 +45,6 @@ func (s *IntSet) UnionWith(t *IntSet) {
 	}
 }
 
-//!-intset
-
-//!+string
-
 // String returns the set as a string of the form "{1 2 3}".
 func (s *IntSet) String() string {
 	var buf bytes.Buffer
@@ -70,4 +66,87 @@ func (s *IntSet) String() string {
 	return buf.String()
 }
 
-//!-string
+func (s *IntSet) Len() int {
+	sum := 0
+	for _, word := range s.words {
+		sum += popcount.PopCount(word)
+	}
+	return sum
+}
+
+func (s *IntSet) Remove(x int) {
+	word, bit := x/64, uint(x%64)
+	if word >= len(s.words) {
+		return
+	}
+	s.words[word] &= ^(1 << bit)
+}
+
+func (s *IntSet) Clear() {
+	s.words = nil
+}
+
+func (s *IntSet) Copy() *IntSet {
+	var ret IntSet
+	ret.words = make([]uint64, len(s.words))
+	copy(ret.words, s.words)
+	return &ret
+}
+
+func (s *IntSet) AddAll(vals ...int) *IntSet {
+	for _, v := range vals {
+		s.Add(v)
+	}
+	return s
+}
+
+func (s *IntSet) IntersectWith(t *IntSet) {
+	lengthS := len(s.words)
+	lengthT := len(t.words)
+
+	if lengthT < lengthS {
+		for i, word := range t.words {
+			s.words[i] &= word
+		}
+		for j := lengthT; j < lengthS; j++ {
+			s.words[j] = 0
+		}
+	} else {
+		for i, _ := range s.words {
+			s.words[i] &= t.words[i]
+		}
+	}
+}
+func (s *IntSet) DifferenceWith(t *IntSet) {
+	lengthS := len(s.words)
+	lengthT := len(t.words)
+
+	if lengthT < lengthS {
+		for i, word := range t.words {
+			mask := s.words[i] & word
+			s.words[i] &= ^mask
+		}
+	} else {
+		for i, _ := range s.words {
+			mask := t.words[i] & s.words[i]
+			s.words[i] &= ^mask
+		}
+	}
+}
+func (s *IntSet) SymmetricDifference(t *IntSet) {
+	lengthS := len(s.words)
+	lengthT := len(t.words)
+
+	if lengthT < lengthS {
+		for i, word := range t.words {
+			s.words[i] ^= word
+		}
+	} else {
+		for i, _ := range s.words {
+			s.words[i] ^= t.words[i]
+		}
+		for i := lengthS; i < lengthT; i++ {
+			s.words = append(s.words, t.words[i])
+		}
+	}
+}

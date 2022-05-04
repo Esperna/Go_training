@@ -68,5 +68,24 @@ func (s *MapIntSet) IntersectWith(t *MapIntSet) {
 			delete(s.words, key)
 		}
 	}
+}
 
+func (s *MapIntSet) DifferenceWith(t *MapIntSet) {
+	for key := range s.words {
+		if t.words[key] {
+			delete(s.words, key)
+		}
+	}
+}
+
+func (s *MapIntSet) SymmetricDifference(t *MapIntSet) {
+	for key := range s.words {
+		if t.words[key] {
+			delete(s.words, key)
+			delete(t.words, key)
+		}
+	}
+	for key := range t.words {
+		s.words[key] = true
+	}
 }

@@ -40,6 +40,29 @@ func PopCountByShifting(x uint64) int {
 	return n
 }
 
+func TestPopCount(t *testing.T) {
+	var tests = []struct {
+		want  int
+		given uint64
+		f     func(uint64) int
+	}{
+		{32, 0x1234567890ABCDEF, popcount.PopCount},
+		{32, 0x1234567890ABCDEF, popcount.PopCountByShift},
+		{32, 0x1234567890ABCDEF, popcount.PopCountByLoop},
+		{32, 0x1234567890ABCDEF, BitCount},
+		{32, 0x1234567890ABCDEF, popcount.PopCountByClear},
+		{32, 0x1234567890ABCDEF, PopCountByClearing},
+		{32, 0x1234567890ABCDEF, PopCountByShifting},
+	}
+	for _, test := range tests {
+		actual := test.f(test.given)
+		if actual != test.want {
+			t.Errorf("(%d): want %d, actual %d", test.given, test.want, actual)
+		}
+	}
+
+}
+
 // -- Benchmarks --
 
 func BenchmarkPopCount(b *testing.B) {

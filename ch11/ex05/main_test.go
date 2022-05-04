@@ -6,9 +6,17 @@ import (
 )
 
 func TestSplit(t *testing.T) {
-	s, sep := "a:b:c", ":"
-	words := strings.Split(s, sep)
-	if got, want := len(words), 3; got != want {
-		t.Errorf("Split(%q, %q) returned %d words, want %d", s, sep, got, want)
+	var tests = []struct {
+		want int
+		s    string
+		sep  string
+	}{
+		{3, "a:b:c", ":"},
+	}
+	for _, test := range tests {
+		words := strings.Split(test.s, test.sep)
+		if got, want := len(words), test.want; got != want {
+			t.Errorf("Split(%q, %q) returned %d words, want %d", test.s, test.sep, got, want)
+		}
 	}
 }

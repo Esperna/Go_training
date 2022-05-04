@@ -61,3 +61,12 @@ func (s *MapIntSet) Len() int {
 func (s *MapIntSet) Remove(x int) {
 	delete(s.words, uint64(x))
 }
+
+func (s *MapIntSet) IntersectWith(t *MapIntSet) {
+	for key := range s.words {
+		if !t.words[key] {
+			delete(s.words, key)
+		}
+	}
+
+}

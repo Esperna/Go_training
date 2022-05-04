@@ -115,3 +115,28 @@ func TestRemoveMapIntSet(t *testing.T) {
 		t.Errorf("Expected x1.String() == x2.String(), x1.String():%s x2.String():%s", x1.String(), x2.String())
 	}
 }
+
+func TestIntersectWithMapIntSet(t *testing.T) {
+	var x1, y1 IntSet
+	x1.Add(1)
+	x1.Add(144)
+	x1.Add(9)
+	y1.Add(9)
+	y1.Add(42)
+	x1.IntersectWith(&y1)
+
+	var x2, y2 MapIntSet
+	x2.words = make(map[uint64]bool)
+	y2.words = make(map[uint64]bool)
+	x2.Add(1)
+	x2.Add(144)
+	x2.Add(9)
+	y2.Add(9)
+	y2.Add(42)
+	x2.IntersectWith(&y2)
+
+	if x1.String() != x2.String() {
+		t.Errorf("Expected x1.String() != x2.String(). x1.String():%s, x2.String():%s", x1.String(), x2.String())
+	}
+
+}

@@ -12,6 +12,7 @@ func TestSplit(t *testing.T) {
 		sep  string
 	}{
 		{3, "a:b:c", ":"},
+		{5, "2,4,6,8,10", ","},
 	}
 	for _, test := range tests {
 		words := strings.Split(test.s, test.sep)

@@ -69,3 +69,49 @@ func TestHasMapIntSet(t *testing.T) {
 		}
 	}
 }
+
+func TestLenMapIntSet(t *testing.T) {
+	var x1 IntSet
+	var x2 MapIntSet
+	x1.Add(1)
+	x1.Add(144)
+	x1.Add(9)
+	x1.Add(42)
+
+	x2.words = make(map[uint64]bool)
+	x2.Add(1)
+	x2.Add(144)
+	x2.Add(9)
+	x2.Add(42)
+
+	if x1.Len() != x2.Len() {
+		t.Errorf("Expected x1.Len() == x2.Len(), x1.Len():%d x2.Len():%d", x1.Len(), x2.Len())
+	}
+}
+
+func TestRemoveMapIntSet(t *testing.T) {
+	var x1 IntSet
+	var x2 MapIntSet
+	x1.Add(1)
+	x1.Add(144)
+	x1.Add(9)
+	x1.Add(42)
+	x1.Remove(9)
+
+	x2.words = make(map[uint64]bool)
+	x2.Add(1)
+	x2.Add(144)
+	x2.Add(9)
+	x2.Add(42)
+	x2.Remove(9)
+
+	if x1.String() != x2.String() {
+		t.Errorf("Expected x1.String() == x2.String(), x1.String():%s x2.String():%s", x1.String(), x2.String())
+	}
+	x1.Remove(9999)
+	x2.Remove(9999)
+
+	if x1.String() != x2.String() {
+		t.Errorf("Expected x1.String() == x2.String(), x1.String():%s x2.String():%s", x1.String(), x2.String())
+	}
+}

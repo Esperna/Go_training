@@ -53,3 +53,11 @@ func (s *MapIntSet) String() string {
 	buf.WriteByte('}')
 	return buf.String()
 }
+
+func (s *MapIntSet) Len() int {
+	return len(s.words)
+}
+
+func (s *MapIntSet) Remove(x int) {
+	delete(s.words, uint64(x))
+}

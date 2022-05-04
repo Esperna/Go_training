@@ -5,7 +5,10 @@ package intset
 
 import (
 	"fmt"
+	"log"
+	"math/rand"
 	"testing"
+	"time"
 )
 
 func Example_one() {
@@ -251,4 +254,21 @@ func TestSymmetricDifference(t *testing.T) {
 		t.Errorf("a.String() != {1 42 256}. a.String() is %s", a.String())
 	}
 
+}
+
+var rng *rand.Rand
+
+func init() {
+	seed := time.Now().UTC().UnixNano()
+	log.Printf("Random seed: %d", seed)
+	rng = rand.New(rand.NewSource(seed))
+}
+
+func BenchmarkAdd(b *testing.B) {
+	var x IntSet
+	for i := 0; i < b.N; i++ {
+		for j := 0; j < 100; j++ {
+			x.Add(rng.Intn(0x1000))
+		}
+	}
 }

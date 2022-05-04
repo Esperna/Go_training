@@ -184,3 +184,13 @@ func TestSymmetricDifferenceMapIntset(t *testing.T) {
 		t.Errorf("Expected x1.String() == x2.String(). x1.String():%s, x2.String():%s", x1.String(), x2.String())
 	}
 }
+
+func BenchmarkAddMapIntset(b *testing.B) {
+	var x MapIntSet
+	x.words = make(map[uint64]bool)
+	for i := 0; i < b.N; i++ {
+		for j := 0; j < 100; j++ {
+			x.Add(rng.Intn(0x1000))
+		}
+	}
+}

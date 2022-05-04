@@ -46,7 +46,7 @@ func TestUnionWithMapIntSet(t *testing.T) {
 	x2.UnionWith(&y2)
 
 	if x1.String() != x2.String() {
-		t.Errorf("x1:%s, x2:%s", x1.String(), x2.String())
+		t.Errorf("Want:x1==x2 Actual: x1:%s, x2:%s", x1.String(), x2.String())
 	}
 }
 
@@ -65,7 +65,7 @@ func TestHasMapIntSet(t *testing.T) {
 
 	for key := range x2.words {
 		if x1.Has(int(key)) != x2.Has(int(key)) {
-			t.Errorf("x1:%t, x2:%t,key:%d", x1.Has(int(key)), x2.Has(int(key)), key)
+			t.Errorf("Want:x1.Has(key)==x2.Has(key) Actual: x1.Has(key)=%t, x2.Has(key)=%t, key=%d", x1.Has(int(key)), x2.Has(int(key)), key)
 		}
 	}
 }

@@ -25,7 +25,8 @@ func Test(t *testing.T) {
 		Actor           map[string]string
 		Oscars          []string
 		Sequel          *string
-		Complex         complex128
+		Complex1        complex128
+		Complex2        complex64
 	}
 	strangelove := Movie{
 		Title:    "Dr. Strangelove",
@@ -46,7 +47,8 @@ func Test(t *testing.T) {
 			"Best Director (Nomin.)",
 			"Best Picture (Nomin.)",
 		},
-		Complex: complex(1, 2),
+		Complex1: complex(1, 2),
+		Complex2: complex(3, 4),
 	}
 
 	// Encode it

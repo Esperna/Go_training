@@ -93,7 +93,7 @@ func encode(buf *bytes.Buffer, v reflect.Value) error {
 		} else {
 			buf.WriteString("nil")
 		}
-	case reflect.Complex128:
+	case reflect.Complex64, reflect.Complex128:
 		z := v.Complex()
 		fmt.Fprintf(buf, "#C(%.1f %.1f)", real(z), imag(z))
 

@@ -29,6 +29,8 @@ func Test(t *testing.T) {
 		Complex2        complex64
 		Price           float64
 		Func            func(int) int
+		Anything        interface{}
+		Nothing         interface{}
 	}
 	f := func(x int) int {
 		return x * x
@@ -56,6 +58,8 @@ func Test(t *testing.T) {
 		Complex2: complex(3, 4),
 		Price:    15.55,
 		Func:     f,
+		Anything: []int{1, 2, 3},
+		Nothing:  nil,
 	}
 
 	// Encode it

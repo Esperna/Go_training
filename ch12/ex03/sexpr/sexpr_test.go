@@ -28,6 +28,10 @@ func Test(t *testing.T) {
 		Complex1        complex128
 		Complex2        complex64
 		Price           float64
+		Func            func(int) int
+	}
+	f := func(x int) int {
+		return x * x
 	}
 	strangelove := Movie{
 		Title:    "Dr. Strangelove",
@@ -51,6 +55,7 @@ func Test(t *testing.T) {
 		Complex1: complex(1, 2),
 		Complex2: complex(3, 4),
 		Price:    15.55,
+		Func:     f,
 	}
 
 	// Encode it

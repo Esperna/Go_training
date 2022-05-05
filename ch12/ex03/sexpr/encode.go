@@ -100,7 +100,9 @@ func encode(buf *bytes.Buffer, v reflect.Value) error {
 	case reflect.Float32, reflect.Float64:
 		fmt.Fprintf(buf, "%.2f", v.Float())
 
-	default: // float, complex, chan, func, interface
+	case reflect.Func:
+		fmt.Fprintf(buf, "%v", v.Type())
+	default: // chan, interface
 		return fmt.Errorf("unsupported type: %s", v.Type())
 	}
 	return nil

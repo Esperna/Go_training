@@ -257,3 +257,29 @@ func Test(t *testing.T) {
 		// ...ad infinitum...
 	}
 }
+
+func TestMapWhoseKeyIsArray(t *testing.T) {
+	type M map[[2]int]int
+	m := make(M)
+	a := [2]int{1, 1}
+	b := [2]int{3, 2}
+	m[a] = 1
+	m[b] = 6
+	Display("m", m)
+}
+
+/*
+func TestMapWhoseKeyIsStruct(t *testing.T) {
+	type Point struct {
+		X, Y int
+	}
+
+	type M map[Point]int
+	m := make(M)
+	a := Point{1, 1}
+	b := Point{3, 2}
+	m[a] = 1
+	m[b] = 6
+	Display("m", m)
+}
+*/

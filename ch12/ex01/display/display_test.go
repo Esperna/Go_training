@@ -268,7 +268,6 @@ func TestMapWhoseKeyIsArray(t *testing.T) {
 	Display("m", m)
 }
 
-/*
 func TestMapWhoseKeyIsStruct(t *testing.T) {
 	type Point struct {
 		X, Y int
@@ -282,4 +281,3 @@ func TestMapWhoseKeyIsStruct(t *testing.T) {
 	m[b] = 6
 	Display("m", m)
 }
-*/

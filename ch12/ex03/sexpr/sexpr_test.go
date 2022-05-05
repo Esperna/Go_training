@@ -31,6 +31,7 @@ func Test(t *testing.T) {
 		Title:    "Dr. Strangelove",
 		Subtitle: "How I Learned to Stop Worrying and Love the Bomb",
 		Year:     1964,
+		Color:    false,
 		Actor: map[string]string{
 			"Dr. Strangelove":            "Peter Sellers",
 			"Grp. Capt. Lionel Mandrake": "Peter Sellers",

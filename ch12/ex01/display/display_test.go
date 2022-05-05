@@ -272,7 +272,6 @@ func TestMapWhoseKeyIsStruct(t *testing.T) {
 	type Point struct {
 		X, Y int
 	}
-
 	type M map[Point]int
 	m := make(M)
 	a := Point{1, 1}

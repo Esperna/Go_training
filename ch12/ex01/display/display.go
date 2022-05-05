@@ -54,6 +54,15 @@ func formatAtom(v reflect.Value) string {
 			s = fmt.Sprintf("%s%v", s, v.Index(i))
 		}
 		return v.Type().String() + "{" + s + "}"
+	case reflect.Struct:
+		var s string
+		for i := 0; i < v.NumField(); i++ {
+			if i > 0 {
+				s += ", "
+			}
+			s = fmt.Sprintf("%s%v", s, v.Field(i))
+		}
+		return v.Type().String() + "{" + s + "}"
 	default: //  reflect.Struct, reflect.Interface
 		return v.Type().String() + " value"
 	}

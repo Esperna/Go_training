@@ -114,8 +114,7 @@ func encode(buf *bytes.Buffer, v reflect.Value) error {
 			}
 			buf.WriteByte(')')
 		}
-	case reflect.Chan:
-	default:
+	default: //chan
 		return fmt.Errorf("unsupported type: %s", v.Type())
 	}
 	return nil

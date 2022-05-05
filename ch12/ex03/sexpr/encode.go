@@ -87,8 +87,13 @@ func encode(buf *bytes.Buffer, v reflect.Value) error {
 			buf.WriteByte(')')
 		}
 		buf.WriteByte(')')
-
-	default: // float, complex, bool, chan, func, interface
+	case reflect.Bool:
+		if v.Bool() {
+			buf.WriteString("t")
+		} else {
+			buf.WriteString("nil")
+		}
+	default: // float, complex, chan, func, interface
 		return fmt.Errorf("unsupported type: %s", v.Type())
 	}
 	return nil

@@ -22,6 +22,7 @@ func Test(t *testing.T) {
 	type Movie struct {
 		Title, Subtitle string
 		Year            int
+		Color           bool
 		Actor           map[string]string
 		Oscars          []string
 		Sequel          *string
@@ -66,9 +67,9 @@ func Test(t *testing.T) {
 	}
 
 	// Pretty-print it:
-	data, err = MarshalIndent(strangelove)
-	if err != nil {
-		t.Fatal(err)
-	}
-	t.Logf("MarshalIdent() = %s\n", data)
+	// data, err = MarshalIndent(strangelove)
+	// if err != nil {
+	// 	t.Fatal(err)
+	// }
+	// t.Logf("MarshalIdent() = %s\n", data)
 }

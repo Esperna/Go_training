@@ -27,6 +27,7 @@ func Test(t *testing.T) {
 		Sequel          *string
 		Complex1        complex128
 		Complex2        complex64
+		Price           float64
 	}
 	strangelove := Movie{
 		Title:    "Dr. Strangelove",
@@ -49,6 +50,7 @@ func Test(t *testing.T) {
 		},
 		Complex1: complex(1, 2),
 		Complex2: complex(3, 4),
+		Price:    15.55,
 	}
 
 	// Encode it

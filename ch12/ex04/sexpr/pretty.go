@@ -14,13 +14,14 @@ import (
 
 func MarshalIndent(v interface{}) ([]byte, error) {
 	p := printer{width: margin}
+	p.string("\n")
 	if err := pretty(&p, reflect.ValueOf(v)); err != nil {
 		return nil, err
 	}
 	return p.Bytes(), nil
 }
 
-const margin = 80
+const margin = 1000
 
 type token struct {
 	kind rune // one of "s ()" (string, blank, start, end)
@@ -132,9 +133,17 @@ func pretty(p *printer, v reflect.Value) error {
 		for i := 0; i < v.Len(); i++ {
 			if i > 0 {
 				p.space()
+				if v.Index(i).Kind() == reflect.String {
+					p.string("\t")
+				}
 			}
 			if err := pretty(p, v.Index(i)); err != nil {
 				return err
+			}
+			if i < v.Len()-1 {
+				if v.Index(i).Kind() == reflect.String {
+					p.string("\n")
+				}
 			}
 		}
 		p.end()
@@ -152,6 +161,9 @@ func pretty(p *printer, v reflect.Value) error {
 				return err
 			}
 			p.end()
+			if i < v.NumField()-1 {
+				p.string("\n")
+			}
 		}
 		p.end()
 
@@ -160,6 +172,7 @@ func pretty(p *printer, v reflect.Value) error {
 		for i, key := range v.MapKeys() {
 			if i > 0 {
 				p.space()
+				p.string("\t")
 			}
 			p.begin()
 			if err := pretty(p, key); err != nil {
@@ -170,6 +183,9 @@ func pretty(p *printer, v reflect.Value) error {
 				return err
 			}
 			p.end()
+			if i < len(v.MapKeys())-1 {
+				p.string("\n")
+			}
 		}
 		p.end()
 

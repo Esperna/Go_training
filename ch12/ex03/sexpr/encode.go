@@ -26,7 +26,6 @@ func Marshal(v interface{}) ([]byte, error) {
 // encode writes to buf an S-expression representation of v.
 //!+encode
 func encode(buf *bytes.Buffer, v reflect.Value) error {
-	fmt.Printf("v.Kind:%v\n", v.Kind())
 	switch v.Kind() {
 	case reflect.Invalid:
 		buf.WriteString("nil")

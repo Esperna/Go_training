@@ -94,10 +94,24 @@ func read(lex *lexer, v reflect.Value) {
 		v.SetInt(int64(i))
 		lex.next()
 		return
+	case scanner.Float:
+		f, _ := strconv.ParseFloat(lex.text(), 64)
+		v.SetFloat(f)
+		return
 	case '(':
 		lex.next()
 		readList(lex, v)
 		lex.next() // consume ')'
+		return
+	case '#':
+		lex.next()
+		lex.next()
+		lex.consume('(')
+		x, _ := strconv.ParseFloat(lex.text(), 64)
+		lex.next()
+		y, _ := strconv.ParseFloat(lex.text(), 64)
+		lex.next()
+		v.SetComplex(complex(x, y))
 		return
 	}
 	panic(fmt.Sprintf("unexpected token %q", lex.text()))

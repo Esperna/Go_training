@@ -26,6 +26,7 @@ func Marshal(v interface{}) ([]byte, error) {
 // encode writes to buf an S-expression representation of v.
 //!+encode
 func encode(buf *bytes.Buffer, v reflect.Value) error {
+	fmt.Printf("v.Kind:%v\n", v.Kind())
 	switch v.Kind() {
 	case reflect.Invalid:
 		buf.WriteString("nil")
@@ -63,6 +64,7 @@ func encode(buf *bytes.Buffer, v reflect.Value) error {
 				buf.WriteByte(' ')
 			}
 			fmt.Fprintf(buf, "(%s ", v.Type().Field(i).Name)
+
 			if err := encode(buf, v.Field(i)); err != nil {
 				return err
 			}
@@ -87,12 +89,14 @@ func encode(buf *bytes.Buffer, v reflect.Value) error {
 			buf.WriteByte(')')
 		}
 		buf.WriteByte(')')
+
 	case reflect.Bool:
 		if v.Bool() {
 			buf.WriteString("t")
 		} else {
 			buf.WriteString("nil")
 		}
+
 	case reflect.Complex64, reflect.Complex128:
 		z := v.Complex()
 		fmt.Fprintf(buf, "#C(%.1f %.1f)", real(z), imag(z))
@@ -102,14 +106,19 @@ func encode(buf *bytes.Buffer, v reflect.Value) error {
 
 	case reflect.Func:
 		fmt.Fprintf(buf, "%v", v.Type())
+
 	case reflect.Interface:
 		if v.IsNil() {
-			fmt.Fprintf(buf, "nil")
+			buf.WriteString("nil")
 		} else {
 			buf.WriteByte('(')
-			elem := v.Elem()
-			fmt.Fprintf(buf, "\"%s\" ", elem.Type().String())
-			if err := encode(buf, elem); err != nil {
+			t := v.Type()
+			if t.Name() == "" {
+				fmt.Fprintf(buf, "%q ", v.Elem().Type().String())
+			} else {
+				fmt.Fprintf(buf, `"%s.%s" `, t.PkgPath(), t.Name())
+			}
+			if err := encode(buf, v.Elem()); err != nil {
 				return err
 			}
 			buf.WriteByte(')')

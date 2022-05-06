@@ -4,6 +4,8 @@
 package sexpr
 
 import (
+	"encoding/json"
+	"fmt"
 	"testing"
 )
 
@@ -17,6 +19,15 @@ import (
 //
 // 	$ go test -v gopl.io/ch12/sexpr
 //
+type SyntaxError struct {
+	*json.SyntaxError
+	input []byte
+}
+
+func (e SyntaxError) Error() string {
+	return fmt.Sprintf("syntax error near: `%s`", string(e.input[e.Offset-1:]))
+}
+
 func Test(t *testing.T) {
 	type Movie struct {
 		Title, Subtitle string
@@ -69,12 +80,14 @@ func Test(t *testing.T) {
 	}
 	t.Logf("Marshal() = %s\n", data)
 
-	// // Decode it
-	// var movie Movie
-	// if err := Unmarshal(data, &movie); err != nil {
-	// 	t.Fatalf("Unmarshal failed: %v", err)
-	// }
-	// t.Logf("Unmarshal() = %+v\n", movie)
+	// Decode it
+	var movie Movie
+	err = json.Unmarshal(data, &movie)
+
+	if e, ok := err.(*json.SyntaxError); ok {
+		t.Fatalf("Unmarshal failed: %v", SyntaxError{e, data})
+	}
+	t.Logf("Unmarshal() = %+v\n", movie)
 
 	// Check equality.
 	// if !reflect.DeepEqual(movie, strangelove) {
@@ -82,9 +95,9 @@ func Test(t *testing.T) {
 	// }
 
 	// Pretty-print it:
-	data, err = MarshalIndent(strangelove)
-	if err != nil {
-		t.Fatal(err)
-	}
-	t.Logf("MarshalIdent() = %s\n", data)
+	// data, err = MarshalIndent(strangelove)
+	// if err != nil {
+	// 	t.Fatal(err)
+	// }
+	// t.Logf("MarshalIdent() = %s\n", data)
 }

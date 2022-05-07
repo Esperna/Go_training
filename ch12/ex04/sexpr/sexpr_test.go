@@ -4,6 +4,7 @@
 package sexpr
 
 import (
+	"reflect"
 	"testing"
 )
 
@@ -28,13 +29,13 @@ func Test(t *testing.T) {
 		Complex1        complex128
 		Complex2        complex64
 		Price           float64
-		Func            func(int) int
-		Anything        interface{}
-		Nothing         interface{}
+		//Func            func(int) int
+		Anything interface{}
+		Nothing  interface{}
 	}
-	f := func(x int) int {
-		return x * x
-	}
+	// f := func(x int) int {
+	// 	return x * x
+	// }
 	strangelove := Movie{
 		Title:    "Dr. Strangelove",
 		Subtitle: "How I Learned to Stop Worrying and Love the Bomb",
@@ -57,7 +58,7 @@ func Test(t *testing.T) {
 		Complex1: complex(1, 2),
 		Complex2: complex(3, 4),
 		Price:    15.55,
-		Func:     f,
+		//Func:     f,
 		Anything: []int{1, 2, 3},
 		Nothing:  nil,
 	}
@@ -69,17 +70,17 @@ func Test(t *testing.T) {
 	}
 	t.Logf("Marshal() = %s\n", data)
 
-	// // Decode it
-	// var movie Movie
-	// if err := Unmarshal(data, &movie); err != nil {
-	// 	t.Fatalf("Unmarshal failed: %v", err)
-	// }
-	// t.Logf("Unmarshal() = %+v\n", movie)
+	// Decode it
+	var movie Movie
+	if err := Unmarshal(data, &movie); err != nil {
+		t.Fatalf("Unmarshal failed: %v", err)
+	}
+	t.Logf("Unmarshal() = %+v\n", movie)
 
 	// Check equality.
-	// if !reflect.DeepEqual(movie, strangelove) {
-	// 	t.Fatal("not equal")
-	// }
+	if !reflect.DeepEqual(movie, strangelove) {
+		t.Fatal("not equal")
+	}
 
 	// Pretty-print it:
 	data, err = MarshalIndent(strangelove)

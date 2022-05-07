@@ -10,6 +10,7 @@ package sexpr
 import (
 	"bytes"
 	"fmt"
+	"log"
 	"reflect"
 	"strconv"
 	"text/scanner"
@@ -94,10 +95,40 @@ func read(lex *lexer, v reflect.Value) {
 		v.SetInt(int64(i))
 		lex.next()
 		return
+	case scanner.Float:
+		f, _ := strconv.ParseFloat(lex.text(), 64)
+		v.SetFloat(f)
+		lex.next()
+		return
 	case '(':
 		lex.next()
 		readList(lex, v)
 		lex.next() // consume ')'
+		return
+	case '#':
+		lex.next()
+		lex.next()
+		var bitSize int
+		switch v.Kind() {
+		case reflect.Complex128:
+			bitSize = 64
+		case reflect.Complex64:
+			bitSize = 32
+		}
+		lex.consume('(')
+		var err error
+		x, err := strconv.ParseFloat(lex.text(), bitSize)
+		if err != nil {
+			log.Printf("ParseFloat failed:%v", err)
+		}
+		lex.next()
+		y, err := strconv.ParseFloat(lex.text(), bitSize)
+		if err != nil {
+			log.Printf("ParseFloat failed:%v", err)
+		}
+		v.SetComplex(complex(x, y))
+		lex.next()
+		lex.consume(')')
 		return
 	}
 	panic(fmt.Sprintf("unexpected token %q", lex.text()))
@@ -143,7 +174,23 @@ func readList(lex *lexer, v reflect.Value) {
 			v.SetMapIndex(key, value)
 			lex.consume(')')
 		}
-
+	case reflect.Interface:
+		t, _ := strconv.Unquote(lex.text())
+		var typ reflect.Type
+		switch t {
+		case "[]int":
+			var x []int
+			typ = reflect.TypeOf(x)
+		case "int":
+			var x int
+			typ = reflect.TypeOf(x)
+		default:
+			panic(fmt.Sprintf("unsupported type:%s", t))
+		}
+		value := reflect.New(typ).Elem()
+		lex.next()
+		read(lex, value)
+		v.Set(value)
 	default:
 		panic(fmt.Sprintf("cannot decode list into %v", v.Type()))
 	}

@@ -97,6 +97,7 @@ func read(lex *lexer, v reflect.Value) {
 	case scanner.Float:
 		f, _ := strconv.ParseFloat(lex.text(), 64)
 		v.SetFloat(f)
+		lex.next()
 		return
 	case '(':
 		lex.next()
@@ -110,8 +111,9 @@ func read(lex *lexer, v reflect.Value) {
 		x, _ := strconv.ParseFloat(lex.text(), 64)
 		lex.next()
 		y, _ := strconv.ParseFloat(lex.text(), 64)
-		lex.next()
 		v.SetComplex(complex(x, y))
+		lex.next()
+		lex.consume(')')
 		return
 	}
 	panic(fmt.Sprintf("unexpected token %q", lex.text()))
@@ -157,7 +159,23 @@ func readList(lex *lexer, v reflect.Value) {
 			v.SetMapIndex(key, value)
 			lex.consume(')')
 		}
-
+	case reflect.Interface:
+		t, _ := strconv.Unquote(lex.text())
+		var typ reflect.Type
+		switch t {
+		case "[]int":
+			var x []int
+			typ = reflect.TypeOf(x)
+		case "int":
+			var x int
+			typ = reflect.TypeOf(x)
+		default:
+			panic(fmt.Sprintf("unsupported type:%s", t))
+		}
+		value := reflect.New(typ).Elem()
+		lex.next()
+		read(lex, value)
+		v.Set(value)
 	default:
 		panic(fmt.Sprintf("cannot decode list into %v", v.Type()))
 	}

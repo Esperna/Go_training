@@ -4,6 +4,7 @@
 package sexpr
 
 import (
+	"reflect"
 	"testing"
 )
 
@@ -77,9 +78,9 @@ func Test(t *testing.T) {
 	t.Logf("Unmarshal() = %+v\n", movie)
 
 	// Check equality.
-	// if !reflect.DeepEqual(movie, strangelove) {
-	// 	t.Fatal("not equal")
-	// }
+	if !reflect.DeepEqual(movie, strangelove) {
+		t.Fatal("not equal")
+	}
 
 	// Pretty-print it:
 	// data, err = MarshalIndent(strangelove)

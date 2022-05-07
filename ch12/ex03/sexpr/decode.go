@@ -10,6 +10,7 @@ package sexpr
 import (
 	"bytes"
 	"fmt"
+	"log"
 	"reflect"
 	"strconv"
 	"text/scanner"
@@ -107,10 +108,24 @@ func read(lex *lexer, v reflect.Value) {
 	case '#':
 		lex.next()
 		lex.next()
+		var bitSize int
+		switch v.Kind() {
+		case reflect.Complex128:
+			bitSize = 64
+		case reflect.Complex64:
+			bitSize = 32
+		}
 		lex.consume('(')
-		x, _ := strconv.ParseFloat(lex.text(), 64)
+		var err error
+		x, err := strconv.ParseFloat(lex.text(), bitSize)
+		if err != nil {
+			log.Printf("ParseFloat failed:%v", err)
+		}
 		lex.next()
-		y, _ := strconv.ParseFloat(lex.text(), 64)
+		y, err := strconv.ParseFloat(lex.text(), bitSize)
+		if err != nil {
+			log.Printf("ParseFloat failed:%v", err)
+		}
 		v.SetComplex(complex(x, y))
 		lex.next()
 		lex.consume(')')

@@ -90,6 +90,7 @@ func encode(buf *bytes.Buffer, v reflect.Value) error {
 		} else {
 			buf.WriteString("false")
 		}
+
 	case reflect.Complex64, reflect.Complex128:
 		z := v.Complex()
 		fmt.Fprintf(buf, "\"%.1f+%.1fi\"", real(z), imag(z))
@@ -97,17 +98,16 @@ func encode(buf *bytes.Buffer, v reflect.Value) error {
 	case reflect.Float32, reflect.Float64:
 		fmt.Fprintf(buf, "%.2f", v.Float())
 
-	case reflect.Func:
-		fmt.Fprintf(buf, "\"%v\"", v.Type())
 	case reflect.Interface:
 		if v.IsNil() {
-			fmt.Fprintf(buf, "null")
+			buf.WriteString("null")
 		} else {
 			if err := encode(buf, v.Elem()); err != nil {
 				return err
 			}
 		}
-	default: //chan
+
+	default: //chan, func
 		return fmt.Errorf("unsupported type: %s", v.Type())
 	}
 	return nil

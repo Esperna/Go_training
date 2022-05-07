@@ -36,16 +36,16 @@ func Test(t *testing.T) {
 		Actor           map[string]string
 		Oscars          []string
 		Sequel          *string
-		Complex1        complex128
-		Complex2        complex64
-		Price           float64
-		Func            func(int) int
-		Anything        interface{}
-		Nothing         interface{}
+		//Complex1        complex128 //Not Supported by JSON
+		//Complex2        complex64 //Not Supported by JSON
+		Price float64
+		//Func            func(int) int //Not Supported by JSON
+		Anything interface{}
+		Nothing  interface{}
 	}
-	f := func(x int) int {
-		return x * x
-	}
+	// f := func(x int) int {
+	// 	return x * x
+	// }
 	strangelove := Movie{
 		Title:    "Dr. Strangelove",
 		Subtitle: "How I Learned to Stop Worrying and Love the Bomb",
@@ -65,11 +65,11 @@ func Test(t *testing.T) {
 			"Best Director (Nomin.)",
 			"Best Picture (Nomin.)",
 		},
-		Complex1: complex(1, 2),
-		Complex2: complex(3, 4),
-		Price:    15.55,
-		Func:     f,
-		Anything: []int{1, 2, 3},
+		//Complex1: complex(1, 2),
+		//Complex2: complex(3, 4),
+		Price: 15.55,
+		//Func:     f,
+		Anything: []string{"a", "b", "c"},
 		Nothing:  nil,
 	}
 
@@ -87,7 +87,12 @@ func Test(t *testing.T) {
 	if e, ok := err.(*json.SyntaxError); ok {
 		t.Fatalf("Unmarshal failed: %v", SyntaxError{e, data})
 	}
-	t.Logf("Unmarshal() = %+v\n", movie)
+	//t.Logf("Unmarshal() = %+v\n", movie)
+	data2, err := Marshal(movie)
+	if err != nil {
+		t.Fatalf("Marshal failed: %v", err)
+	}
+	t.Logf("Marshal() = %s\n", data2)
 
 	// Check equality.
 	// if !reflect.DeepEqual(movie, strangelove) {

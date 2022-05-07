@@ -6,6 +6,7 @@ package sexpr
 import (
 	"encoding/json"
 	"fmt"
+	"reflect"
 	"testing"
 )
 
@@ -40,8 +41,8 @@ func Test(t *testing.T) {
 		//Complex2        complex64 //Not Supported by JSON
 		Price float64
 		//Func            func(int) int //Not Supported by JSON
-		Anything interface{}
-		Nothing  interface{}
+		//Anything interface{}
+		//Nothing  interface{}
 	}
 	// f := func(x int) int {
 	// 	return x * x
@@ -69,8 +70,8 @@ func Test(t *testing.T) {
 		//Complex2: complex(3, 4),
 		Price: 15.55,
 		//Func:     f,
-		Anything: []string{"a", "b", "c"},
-		Nothing:  nil,
+		//Anything: []string{"a", "b", "c"},
+		//Nothing:  nil,
 	}
 
 	// Encode it
@@ -95,9 +96,9 @@ func Test(t *testing.T) {
 	t.Logf("Marshal() = %s\n", data2)
 
 	// Check equality.
-	// if !reflect.DeepEqual(movie, strangelove) {
-	// 	t.Fatal("not equal")
-	// }
+	if !reflect.DeepEqual(movie, strangelove) {
+		t.Fatal("not equal")
+	}
 
 	// Pretty-print it:
 	// data, err = MarshalIndent(strangelove)

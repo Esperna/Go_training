@@ -9,12 +9,42 @@ package params
 import (
 	"fmt"
 	"net/http"
+	"net/url"
 	"reflect"
 	"strconv"
 	"strings"
 )
 
-//!+Unpack
+func Pack(ptr interface{}) (*url.URL, error) {
+	var url url.URL
+	url.Scheme = "http"
+	url.Host = "localhost:12345"
+	url.Path = "search"
+	v := reflect.ValueOf(ptr).Elem()
+	for i := 0; i < v.NumField(); i++ {
+		if i > 0 {
+			url.RawQuery += "&"
+		}
+		fieldInfo := v.Type().Field(i)
+		tag := fieldInfo.Tag
+		name := tag.Get(url.Scheme)
+		if name == "" {
+			name = strings.ToLower(fieldInfo.Name)
+		}
+		if v.Field(i).Kind() == reflect.Slice {
+			for j := 0; j < v.Field(i).Len(); j++ {
+				if j > 0 {
+					url.RawQuery += "&"
+				}
+				url.RawQuery += fmt.Sprintf("%s=%s", name, v.Field(i).Index(j))
+			}
+		} else {
+			value := v.Field(i)
+			url.RawQuery += fmt.Sprintf("%s=%v", name, value)
+		}
+	}
+	return &url, nil
+}
 
 // Unpack populates the fields of the struct pointed to by ptr
 // from the HTTP request parameters in req.
@@ -59,9 +89,6 @@ func Unpack(req *http.Request, ptr interface{}) error {
 	return nil
 }
 
-//!-Unpack
-
-//!+populate
 func populate(v reflect.Value, value string) error {
 	switch v.Kind() {
 	case reflect.String:
@@ -86,5 +113,3 @@ func populate(v reflect.Value, value string) error {
 	}
 	return nil
 }
-
-//!-populate

@@ -119,3 +119,32 @@ func TestUnpackExtentionWithInvalidParam(t *testing.T) {
 	}
 
 }
+
+func TestUnpackExtentionWithValidParam(t *testing.T) {
+	type queryParam struct {
+		MailAddr   string `http:"ma,mail"`
+		CardNo     string `http:"cn,number"`
+		PostalCode string `http:"pc,code"`
+	}
+	var tests = []struct {
+		want  queryParam
+		given string
+	}{
+		{queryParam{MailAddr: "abc@gmail.com", CardNo: "", PostalCode: ""}, "http://localhost:12345/search?ma=abc@gmail.com"},
+	}
+	for _, test := range tests {
+		var req http.Request
+		var actual queryParam
+		url, err := url.Parse(test.given)
+		if err != nil {
+			t.Errorf("url parse failed:%s", err.Error())
+		}
+		req.URL = url
+		if err := Unpack(&req, &actual); err != nil {
+			t.Errorf("Unpacked failed:%s", err.Error())
+		}
+		if !reflect.DeepEqual(actual, test.want) {
+			t.Errorf("actual:%v, want:%v", actual, test.want)
+		}
+	}
+}

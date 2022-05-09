@@ -86,5 +86,28 @@ func TestSexpr(t *testing.T) {
 		t.Fatalf("Decode failed: %v", err)
 	}
 	t.Logf("Decode() = %+v\n", movie2)
+}
+func TestSexprWithStructFieldTag(t *testing.T) {
+	type Movie struct {
+		Title, Subtitle string
+		Year            int `sexpr:"released"`
+		Color           bool
+	}
+
+	strangelove := Movie{
+		Title:    "Dr. Strangelove",
+		Subtitle: "How I Learned to Stop Worrying and Love the Bomb",
+		Year:     1964,
+		Color:    false,
+	}
+	want := `((Title "Dr. Strangelove") (Subtitle "How I Learned to Stop Worrying and Love the Bomb") (released 1964) (Color nil))`
+	// Encode it
+	data, err := Marshal(strangelove)
+	if err != nil {
+		t.Fatalf("Marshal failed: %v", err)
+	}
+	if string(data) != want {
+		t.Errorf("\ngot : %s\nwant: %s", data, want)
+	}
 
 }

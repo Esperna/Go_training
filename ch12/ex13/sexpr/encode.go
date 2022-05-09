@@ -62,8 +62,14 @@ func encode(buf *bytes.Buffer, v reflect.Value) error {
 			if i > 0 {
 				buf.WriteByte(' ')
 			}
-			fmt.Fprintf(buf, "(%s ", v.Type().Field(i).Name)
+			fieldInfo := v.Type().Field(i)
+			tag := fieldInfo.Tag
+			name := tag.Get("sexpr")
+			if name == "" {
+				name = fieldInfo.Name
+			}
 
+			fmt.Fprintf(buf, "(%s ", name)
 			if err := encode(buf, v.Field(i)); err != nil {
 				return err
 			}

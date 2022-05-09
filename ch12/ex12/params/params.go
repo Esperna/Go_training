@@ -55,13 +55,21 @@ func Unpack(req *http.Request, ptr interface{}) error {
 
 	// Build map of fields keyed by effective name.
 	fields := make(map[string]reflect.Value)
+	options := make(map[string]string)
 	v := reflect.ValueOf(ptr).Elem() // the struct variable
 	for i := 0; i < v.NumField(); i++ {
 		fieldInfo := v.Type().Field(i) // a reflect.StructField
 		tag := fieldInfo.Tag           // a reflect.StructTag
 		name := tag.Get("http")
-		if name == "" {
-			name = strings.ToLower(fieldInfo.Name)
+		args := strings.Split(name, ",")
+		length := len(args)
+		if length == 1 {
+			if name == "" {
+				name = strings.ToLower(fieldInfo.Name)
+			}
+		} else if length == 2 {
+			name = args[0]
+			options[name] = args[1]
 		}
 		fields[name] = v.Field(i)
 	}
@@ -80,6 +88,12 @@ func Unpack(req *http.Request, ptr interface{}) error {
 				}
 				f.Set(reflect.Append(f, elem))
 			} else {
+				if options[name] != "" {
+					if !isValid(options[name], value) {
+						return fmt.Errorf("invalid %s:%s", options[name], value)
+					}
+				}
+
 				if err := populate(f, value); err != nil {
 					return fmt.Errorf("%s: %v", name, err)
 				}
@@ -87,6 +101,17 @@ func Unpack(req *http.Request, ptr interface{}) error {
 		}
 	}
 	return nil
+}
+
+func isValid(option, value string) bool {
+	if option == "mail" {
+		return false
+	} else if option == "number" {
+
+	} else if option == "code" {
+
+	}
+	return true
 }
 
 func populate(v reflect.Value, value string) error {

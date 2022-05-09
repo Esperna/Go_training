@@ -112,7 +112,8 @@ func isValid(option, value string) bool {
 		r := regexp.MustCompile(`(\d{4}-){3}\d{4}`)
 		return r.MatchString(value)
 	} else if option == "code" {
-		return false
+		r := regexp.MustCompile(`^\d\d{2}-\d{4}`)
+		return r.MatchString(value)
 	}
 	return true
 }

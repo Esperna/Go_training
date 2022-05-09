@@ -109,7 +109,7 @@ func isValid(option, value string) bool {
 		r := regexp.MustCompile(`[0-9A-Za-z.+-]+@([A-Za-z]+\.)[A-Za-z]+`)
 		return r.MatchString(value)
 	} else if option == "number" {
-		r := regexp.MustCompile(`(\d{4}-){3}\d{4}`)
+		r := regexp.MustCompile(`^(\d{4}-)(\d{4}-){2}\d{4}`)
 		return r.MatchString(value)
 	} else if option == "code" {
 		r := regexp.MustCompile(`^\d\d{2}-\d{4}`)

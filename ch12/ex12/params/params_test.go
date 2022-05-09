@@ -98,8 +98,8 @@ func TestUnpackExtentionWithInvalidParam(t *testing.T) {
 		want  string
 		given string
 	}{
-		//{"", "http://localhost:12345/search?ma=abc@gmail.com"},
 		{"invalid mail:abc.com", "http://localhost:12345/search?ma=abc.com"},
+		{"invalid mail:!abc@gmail.com", "http://localhost:12345/search?ma=!abc@gmail.com"},
 		{"invalid number:abcdef", "http://localhost:12345/search?cn=abcdef"},
 		{"invalid number:12345-6789-0123-4567", "http://localhost:12345/search?cn=12345-6789-0123-4567"},
 		{"invalid code:123456", "http://localhost:12345/search?pc=123456"},

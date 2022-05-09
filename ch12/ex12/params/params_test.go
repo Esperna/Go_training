@@ -100,6 +100,8 @@ func TestUnpackExtentionWithInvalidParam(t *testing.T) {
 	}{
 		//{"", "http://localhost:12345/search?ma=abc@gmail.com"},
 		{"invalid mail:abc.com", "http://localhost:12345/search?ma=abc.com"},
+		{"invalid number:abcdef", "http://localhost:12345/search?cn=abcdef"},
+		{"invalid code:123456", "http://localhost:12345/search?pc=123456"},
 	}
 	for _, test := range tests {
 		var req http.Request

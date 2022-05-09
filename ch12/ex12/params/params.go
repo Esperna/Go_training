@@ -107,9 +107,9 @@ func isValid(option, value string) bool {
 	if option == "mail" {
 		return false
 	} else if option == "number" {
-
+		return false
 	} else if option == "code" {
-
+		return false
 	}
 	return true
 }

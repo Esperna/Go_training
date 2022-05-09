@@ -131,6 +131,7 @@ func TestUnpackExtentionWithValidParam(t *testing.T) {
 		given string
 	}{
 		{queryParam{MailAddr: "abc@gmail.com", CardNo: "", PostalCode: ""}, "http://localhost:12345/search?ma=abc@gmail.com"},
+		{queryParam{MailAddr: "1a2b3c@docomo.ne.jp", CardNo: "", PostalCode: ""}, "http://localhost:12345/search?ma=1a2b3c@docomo.ne.jp"},
 	}
 	for _, test := range tests {
 		var req http.Request

@@ -106,7 +106,7 @@ func Unpack(req *http.Request, ptr interface{}) error {
 
 func isValid(option, value string) bool {
 	if option == "mail" {
-		r := regexp.MustCompile(`[0-9A-Za-z]+@[A-Za-z]+\.[A-Za-z]+`)
+		r := regexp.MustCompile(`[0-9A-Za-z.+-]+@([A-Za-z]+\.)[A-Za-z]+`)
 		return r.MatchString(value)
 	} else if option == "number" {
 		return false

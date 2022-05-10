@@ -65,7 +65,7 @@ func encode(buf *bytes.Buffer, v reflect.Value) error {
 			if name == "" {
 				name = fieldInfo.Name
 			}
-			if option != "omitempty" {
+			if option == "" {
 				if i > 0 {
 					buf.WriteByte(' ')
 				}
@@ -74,6 +74,8 @@ func encode(buf *bytes.Buffer, v reflect.Value) error {
 					return err
 				}
 				buf.WriteByte(')')
+			} else {
+				doOption(buf, v, option)
 			}
 		}
 		buf.WriteByte(')')
@@ -147,6 +149,12 @@ func parseFieldTag(tag reflect.StructTag) (string, string) {
 		option = args[1]
 	}
 	return name, option
+}
+
+func doOption(buf *bytes.Buffer, v reflect.Value, opt string) {
+	if opt == "omitempty" {
+		//Do Nothing
+	}
 }
 
 //!-encode

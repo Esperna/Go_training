@@ -87,6 +87,7 @@ func TestSexpr(t *testing.T) {
 	}
 	t.Logf("Decode() = %+v\n", movie2)
 }
+
 func TestSexprWithStructFieldTag(t *testing.T) {
 	type Movie struct {
 		Title, Subtitle string
@@ -94,34 +95,40 @@ func TestSexprWithStructFieldTag(t *testing.T) {
 		Color           bool
 	}
 
-	strangelove := Movie{
-		Title:    "Dr. Strangelove",
-		Subtitle: "How I Learned to Stop Worrying and Love the Bomb",
-		Year:     1964,
-		Color:    false,
+	var tests = []struct {
+		want  string
+		given Movie
+	}{
+		{
+			`((Title "Dr. Strangelove") (Subtitle "How I Learned to Stop Worrying and Love the Bomb") (released 1964) (Color nil))`,
+			Movie{
+				Title:    "Dr. Strangelove",
+				Subtitle: "How I Learned to Stop Worrying and Love the Bomb",
+				Year:     1964,
+				Color:    false,
+			},
+		},
 	}
-	want := `((Title "Dr. Strangelove") (Subtitle "How I Learned to Stop Worrying and Love the Bomb") (released 1964) (Color nil))`
+	for _, test := range tests {
+		// Encode
+		got, err := Marshal(test.given)
+		if err != nil {
+			t.Fatalf("Marshal failed: %v", err)
+		}
+		if string(got) != test.want {
+			t.Errorf("\ngot : %s\nwant: %s", got, test.want)
+		}
+		//Decode
+		t.Logf("Marshal() = %s\n", got)
+		var movie Movie
+		if err := Unmarshal(got, &movie); err != nil {
+			t.Fatalf("Unmarshal failed: %v", err)
+		}
+		t.Logf("Unmarshal() = %+v\n", movie)
 
-	// Encode
-	data, err := Marshal(strangelove)
-	if err != nil {
-		t.Fatalf("Marshal failed: %v", err)
+		// Check equality.
+		if !reflect.DeepEqual(movie, test.given) {
+			t.Fatal("not equal")
+		}
 	}
-	if string(data) != want {
-		t.Errorf("\ngot : %s\nwant: %s", data, want)
-	}
-
-	//Decode
-	t.Logf("Marshal() = %s\n", data)
-	var movie Movie
-	if err := Unmarshal(data, &movie); err != nil {
-		t.Fatalf("Unmarshal failed: %v", err)
-	}
-	t.Logf("Unmarshal() = %+v\n", movie)
-
-	// Check equality.
-	if !reflect.DeepEqual(movie, strangelove) {
-		t.Fatal("not equal")
-	}
-
 }

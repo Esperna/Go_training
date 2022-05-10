@@ -61,22 +61,10 @@ func encode(buf *bytes.Buffer, v reflect.Value) error {
 		buf.WriteByte('(')
 		for i := 0; i < v.NumField(); i++ {
 			fieldInfo := v.Type().Field(i)
-			tag := fieldInfo.Tag
-			name := tag.Get("sexpr")
-			args := strings.Split(name, ",")
-			length := len(args)
-			var option string
-			if length == 1 {
-				name = args[0]
-			} else if length == 2 {
-				name = args[0]
-				option = args[1]
-			}
-
+			name, option := parseFieldTag(fieldInfo.Tag)
 			if name == "" {
 				name = fieldInfo.Name
 			}
-
 			if option != "omitempty" {
 				if i > 0 {
 					buf.WriteByte(' ')
@@ -145,6 +133,20 @@ func encode(buf *bytes.Buffer, v reflect.Value) error {
 		return fmt.Errorf("unsupported type: %s", v.Type())
 	}
 	return nil
+}
+
+func parseFieldTag(tag reflect.StructTag) (string, string) {
+	name := tag.Get("sexpr")
+	args := strings.Split(name, ",")
+	length := len(args)
+	var option string
+	if length == 1 {
+		name = args[0]
+	} else if length == 2 {
+		name = args[0]
+		option = args[1]
+	}
+	return name, option
 }
 
 //!-encode

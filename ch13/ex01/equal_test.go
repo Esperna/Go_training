@@ -141,6 +141,8 @@ func TestEqualWhenDiffIsLessThanNano(t *testing.T) {
 		{1.0, 1.01, false},
 		{1, 1.00000000001, true},
 		{1.00000000001, 1, true},
+		{1.00000000001 + 1.0i, 1.0 + 1.0i, true},
+		//{1.00000000001 + 1i, 1 + 1i, true},
 	} {
 		if Equal(test.x, test.y) != test.want {
 			t.Errorf("Equal(%v, %v) = %t",

@@ -8,6 +8,7 @@ package equal
 
 import (
 	"math"
+	"math/cmplx"
 	"reflect"
 	"unsafe"
 )
@@ -60,8 +61,11 @@ func equal(x, y reflect.Value, seen map[comparison]bool) bool {
 		if isInteger(y) {
 			return x.Int() == y.Int()
 		} else if isFloat(y) {
-			return isLessThanEqualThresh(float64(x.Int()), y.Float())
+			return isLessThanEqualThresh(math.Abs(float64(x.Int()) - y.Float()))
+		} else if isComplex(y) {
+			return false
 		}
+		return false
 
 	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32,
 		reflect.Uint64, reflect.Uintptr:
@@ -69,14 +73,23 @@ func equal(x, y reflect.Value, seen map[comparison]bool) bool {
 
 	case reflect.Float32, reflect.Float64:
 		if isInteger(y) {
-			return isLessThanEqualThresh(x.Float(), float64(y.Int()))
+			return isLessThanEqualThresh(math.Abs(x.Float() - float64(y.Int())))
 		} else if isFloat(y) {
-			return isLessThanEqualThresh(x.Float(), y.Float())
+			return isLessThanEqualThresh(math.Abs(x.Float() - y.Float()))
+		} else if isComplex(y) {
+			return false
 		}
-		return isLessThanEqualThresh(x.Float(), y.Float())
+		return false
 
 	case reflect.Complex64, reflect.Complex128:
-		return x.Complex() == y.Complex()
+		if isInteger(y) {
+			return false
+		} else if isFloat(y) {
+			return false
+		} else if isComplex(y) {
+			return isLessThanEqualThresh(cmplx.Abs(x.Complex() - y.Complex()))
+		}
+		return false
 	//!+
 	case reflect.Chan, reflect.UnsafePointer, reflect.Func:
 		return x.Pointer() == y.Pointer()
@@ -160,14 +173,22 @@ func isInteger(v reflect.Value) bool {
 	}
 }
 
-func isLessThanEqualThresh(x, y float64) bool {
-	diff := math.Abs(x - y)
+func isComplex(v reflect.Value) bool {
+	switch v.Kind() {
+	case reflect.Complex64, reflect.Complex128:
+		return true
+	default:
+		return false
+	}
+}
+
+func isNumComparable(x, y reflect.Value) bool {
+	return (isInteger(x) || isFloat(x) || isComplex(x)) && (isInteger(y) || isFloat(y) || isComplex(y))
+}
+
+func isLessThanEqualThresh(diff float64) bool {
 	if diff < equalThresh {
 		return true
 	}
 	return false
-}
-
-func isNumComparable(x, y reflect.Value) bool {
-	return (isInteger(x) || isFloat(x)) && (isInteger(y) || isFloat(y))
 }

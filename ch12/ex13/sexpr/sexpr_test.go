@@ -101,13 +101,27 @@ func TestSexprWithStructFieldTag(t *testing.T) {
 		Color:    false,
 	}
 	want := `((Title "Dr. Strangelove") (Subtitle "How I Learned to Stop Worrying and Love the Bomb") (released 1964) (Color nil))`
-	// Encode it
+
+	// Encode
 	data, err := Marshal(strangelove)
 	if err != nil {
 		t.Fatalf("Marshal failed: %v", err)
 	}
 	if string(data) != want {
 		t.Errorf("\ngot : %s\nwant: %s", data, want)
+	}
+
+	//Decode
+	t.Logf("Marshal() = %s\n", data)
+	var movie Movie
+	if err := Unmarshal(data, &movie); err != nil {
+		t.Fatalf("Unmarshal failed: %v", err)
+	}
+	t.Logf("Unmarshal() = %+v\n", movie)
+
+	// Check equality.
+	if !reflect.DeepEqual(movie, strangelove) {
+		t.Fatal("not equal")
 	}
 
 }

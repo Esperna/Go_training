@@ -152,6 +152,16 @@ func readList(lex *lexer, v reflect.Value) {
 		}
 
 	case reflect.Struct: // ((name value) ...)
+		fieldnames := make(map[string]string)
+		for i := 0; i < v.NumField(); i++ {
+			fieldInfo := v.Type().Field(i) // a reflect.StructField
+			tag := fieldInfo.Tag           // a reflect.StructTag
+			name := tag.Get("sexpr")
+			if name == "" {
+				name = fieldInfo.Name
+			}
+			fieldnames[name] = fieldInfo.Name
+		}
 		for !endList(lex) {
 			lex.consume('(')
 			if lex.token != scanner.Ident {
@@ -159,7 +169,7 @@ func readList(lex *lexer, v reflect.Value) {
 			}
 			name := lex.text()
 			lex.next()
-			read(lex, v.FieldByName(name))
+			read(lex, v.FieldByName(fieldnames[name]))
 			lex.consume(')')
 		}
 

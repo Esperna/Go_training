@@ -9,6 +9,7 @@ import (
 	"bytes"
 	"fmt"
 	"reflect"
+	"strings"
 )
 
 //!+Marshal
@@ -59,21 +60,33 @@ func encode(buf *bytes.Buffer, v reflect.Value) error {
 	case reflect.Struct: // ((name value) ...)
 		buf.WriteByte('(')
 		for i := 0; i < v.NumField(); i++ {
-			if i > 0 {
-				buf.WriteByte(' ')
-			}
 			fieldInfo := v.Type().Field(i)
 			tag := fieldInfo.Tag
 			name := tag.Get("sexpr")
+			args := strings.Split(name, ",")
+			length := len(args)
+			var option string
+			if length == 1 {
+				name = args[0]
+			} else if length == 2 {
+				name = args[0]
+				option = args[1]
+			}
+
 			if name == "" {
 				name = fieldInfo.Name
 			}
 
-			fmt.Fprintf(buf, "(%s ", name)
-			if err := encode(buf, v.Field(i)); err != nil {
-				return err
+			if option != "omitempty" {
+				if i > 0 {
+					buf.WriteByte(' ')
+				}
+				fmt.Fprintf(buf, "(%s ", name)
+				if err := encode(buf, v.Field(i)); err != nil {
+					return err
+				}
+				buf.WriteByte(')')
 			}
-			buf.WriteByte(')')
 		}
 		buf.WriteByte(')')
 

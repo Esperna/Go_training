@@ -7,17 +7,23 @@
 package equal
 
 import (
+	"math"
 	"reflect"
 	"unsafe"
 )
+
+const equalThresh = 0.0000000001
 
 //!+
 func equal(x, y reflect.Value, seen map[comparison]bool) bool {
 	if !x.IsValid() || !y.IsValid() {
 		return x.IsValid() == y.IsValid()
 	}
-	if x.Type() != y.Type() {
-		return false
+
+	if !isNumComparable(x, y) {
+		if x.Type() != y.Type() {
+			return false
+		}
 	}
 
 	// ...cycle check omitted (shown later)...
@@ -51,14 +57,23 @@ func equal(x, y reflect.Value, seen map[comparison]bool) bool {
 	//!-
 	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32,
 		reflect.Int64:
-		return x.Int() == y.Int()
+		if isInteger(y) {
+			return x.Int() == y.Int()
+		} else if isFloat(y) {
+			return isLessThanEqualThresh(float64(x.Int()), y.Float())
+		}
 
 	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32,
 		reflect.Uint64, reflect.Uintptr:
 		return x.Uint() == y.Uint()
 
 	case reflect.Float32, reflect.Float64:
-		return x.Float() == y.Float()
+		if isInteger(y) {
+			return isLessThanEqualThresh(x.Float(), float64(y.Int()))
+		} else if isFloat(y) {
+			return isLessThanEqualThresh(x.Float(), y.Float())
+		}
+		return isLessThanEqualThresh(x.Float(), y.Float())
 
 	case reflect.Complex64, reflect.Complex128:
 		return x.Complex() == y.Complex()
@@ -125,3 +140,34 @@ type comparison struct {
 }
 
 //!-comparison
+
+func isFloat(v reflect.Value) bool {
+	switch v.Kind() {
+	case reflect.Float32, reflect.Float64:
+		return true
+	default:
+		return false
+	}
+}
+
+func isInteger(v reflect.Value) bool {
+	switch v.Kind() {
+	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64,
+		reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32:
+		return true
+	default:
+		return false
+	}
+}
+
+func isLessThanEqualThresh(x, y float64) bool {
+	diff := math.Abs(x - y)
+	if diff < equalThresh {
+		return true
+	}
+	return false
+}
+
+func isNumComparable(x, y reflect.Value) bool {
+	return (isInteger(x) || isFloat(x)) && (isInteger(y) || isFloat(y))
+}

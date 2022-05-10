@@ -34,8 +34,8 @@ func TestEqual(t *testing.T) {
 	}{
 		// basic types
 		{1, 1, true},
-		{1, 2, false},   // different values
-		{1, 1.0, false}, // different types
+		{1, 2, false}, // different values
+		// {1, 1.0, false}, // different types
 		{"foo", "foo", true},
 		{"foo", "bar", false},
 		{mystring("foo"), "foo", false}, // different types
@@ -130,4 +130,21 @@ func Example_equalCycle() {
 	// true
 	// false
 	// false
+}
+
+func TestEqualWhenDiffIsLessThanNano(t *testing.T) {
+	for _, test := range []struct {
+		x, y interface{}
+		want bool
+	}{
+		{1.0, 1.00000000001, true},
+		{1.0, 1.01, false},
+		{1, 1.00000000001, true},
+		{1.00000000001, 1, true},
+	} {
+		if Equal(test.x, test.y) != test.want {
+			t.Errorf("Equal(%v, %v) = %t",
+				test.x, test.y, !test.want)
+		}
+	}
 }

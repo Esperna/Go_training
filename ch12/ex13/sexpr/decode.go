@@ -13,6 +13,7 @@ import (
 	"log"
 	"reflect"
 	"strconv"
+	"strings"
 	"text/scanner"
 )
 
@@ -76,6 +77,16 @@ func (lex *lexer) consume(want rune) {
 
 //!+read
 func read(lex *lexer, v reflect.Value) {
+	if v.Kind() == reflect.Bool {
+		text := lex.text()
+		if text == "t" {
+			v.SetBool(true)
+		} else if text == "nil" {
+			v.SetBool(false)
+		}
+		lex.next()
+		return
+	}
 	switch lex.token {
 	case scanner.Ident:
 		// The only valid identifiers are
@@ -160,6 +171,7 @@ func readList(lex *lexer, v reflect.Value) {
 			if name == "" {
 				name = fieldInfo.Name
 			}
+			name = strings.Split(name, ",")[0]
 			fieldnames[name] = fieldInfo.Name
 		}
 		for !endList(lex) {
@@ -184,6 +196,7 @@ func readList(lex *lexer, v reflect.Value) {
 			v.SetMapIndex(key, value)
 			lex.consume(')')
 		}
+
 	case reflect.Interface:
 		t, _ := strconv.Unquote(lex.text())
 		var typ reflect.Type

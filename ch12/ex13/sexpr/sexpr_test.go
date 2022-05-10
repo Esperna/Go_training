@@ -151,6 +151,15 @@ func TestSexprWithStructFieldTag2(t *testing.T) {
 				Color:    false,
 			},
 		},
+		{
+			`((Title "Dr. Strangelove") (Subtitle "How I Learned to Stop Worrying and Love the Bomb") (released 1964) (color t))`,
+			Movie{
+				Title:    "Dr. Strangelove",
+				Subtitle: "How I Learned to Stop Worrying and Love the Bomb",
+				Year:     1964,
+				Color:    true,
+			},
+		},
 	}
 	for _, test := range tests {
 		// Encode

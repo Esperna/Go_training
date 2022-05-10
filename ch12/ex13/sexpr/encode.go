@@ -75,7 +75,9 @@ func encode(buf *bytes.Buffer, v reflect.Value) error {
 				}
 				buf.WriteByte(')')
 			} else {
-				doOption(buf, v, option)
+				if err := doOption(buf, v.Field(i), i, name, option); err != nil {
+					return err
+				}
 			}
 		}
 		buf.WriteByte(')')
@@ -151,10 +153,20 @@ func parseFieldTag(tag reflect.StructTag) (string, string) {
 	return name, option
 }
 
-func doOption(buf *bytes.Buffer, v reflect.Value, opt string) {
+func doOption(buf *bytes.Buffer, v reflect.Value, i int, name, opt string) error {
 	if opt == "omitempty" {
-		//Do Nothing
+		if !v.IsZero() {
+			if i > 0 {
+				buf.WriteByte(' ')
+			}
+			fmt.Fprintf(buf, "(%s ", name)
+			if err := encode(buf, v); err != nil {
+				return err
+			}
+			buf.WriteByte(')')
+		}
 	}
+	return nil
 }
 
 //!-encode

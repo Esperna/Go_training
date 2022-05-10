@@ -161,18 +161,18 @@ func TestSexprWithStructFieldTag2(t *testing.T) {
 		if string(got) != test.want {
 			t.Errorf("\ngot : %s\nwant: %s", got, test.want)
 		}
-		/*
-			//Decode
-			t.Logf("Marshal() = %s\n", got)
-			var movie Movie
-			if err := Unmarshal(got, &movie); err != nil {
-				t.Fatalf("Unmarshal failed: %v", err)
-			}
-			t.Logf("Unmarshal() = %+v\n", movie)
 
-			// Check equality.
-			if !reflect.DeepEqual(movie, test.given) {
-				t.Fatal("not equal")
-			}*/
+		//Decode
+		t.Logf("Marshal() = %s\n", got)
+		var movie Movie
+		if err := Unmarshal(got, &movie); err != nil {
+			t.Fatalf("Unmarshal failed: %v", err)
+		}
+		t.Logf("Unmarshal() = %+v\n", movie)
+
+		// Check equality.
+		if !reflect.DeepEqual(movie, test.given) {
+			t.Fatal("not equal")
+		}
 	}
 }

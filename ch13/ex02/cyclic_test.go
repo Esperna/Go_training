@@ -7,47 +7,29 @@ import (
 	"testing"
 )
 
-func TestIsCyclic(t *testing.T) {
-	type link struct {
-		value string
-		tail  *link
-	}
-	a := &link{value: "a"}
-	a.tail = a
-
-	actual := IsCyclic(a)
-	want := true
-	if actual != want {
-		t.Errorf("actual:%t want:%t", actual, want)
-	}
-}
-
-func TestIsCyclic2(t *testing.T) {
+func TestIsCyclicLinkedList(t *testing.T) {
 	type link struct {
 		value string
 		tail  *link
 	}
 	a, b, c := &link{value: "a"}, &link{value: "b"}, &link{value: "c"}
 	a.tail, b.tail, c.tail = b, a, c
+	d, e := &link{value: "d"}, &link{value: "e"}
+	d.tail, e.tail = e, nil
 
-	actual := IsCyclic(a)
-	want := true
-	if actual != want {
-		t.Errorf("actual:%t want:%t", actual, want)
+	var tests = []struct {
+		given *link
+		want  bool
+	}{
+		{a, true},
+		{b, true},
+		{c, true},
+		{d, false},
 	}
-}
-
-func TestIsCyclic3(t *testing.T) {
-	type link struct {
-		value string
-		tail  *link
-	}
-	a, b, c := &link{value: "a"}, &link{value: "b"}, &link{value: "c"}
-	a.tail, b.tail, c.tail = b, c, nil
-
-	actual := IsCyclic(a)
-	want := false
-	if actual != want {
-		t.Errorf("actual:%t want:%t", actual, want)
+	for _, test := range tests {
+		actual := IsCyclic(test.given)
+		if actual != test.want {
+			t.Errorf("actual:%t want:%t", actual, test.want)
+		}
 	}
 }

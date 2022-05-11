@@ -7,7 +7,6 @@
 package cyclic
 
 import (
-	"fmt"
 	"reflect"
 	"unsafe"
 )
@@ -31,7 +30,6 @@ func isCyclic(x reflect.Value, seen map[unsafe.Pointer]bool) bool {
 	}
 	switch kind {
 	case reflect.Ptr, reflect.Interface:
-		fmt.Printf("%v Type:%s \n", x, x.Type())
 		return isCyclic(x.Elem(), seen)
 	case reflect.Array, reflect.Slice:
 		for i := 0; i < x.Len(); i++ {
@@ -41,7 +39,6 @@ func isCyclic(x reflect.Value, seen map[unsafe.Pointer]bool) bool {
 		}
 	case reflect.Struct:
 		for i, n := 0, x.NumField(); i < n; i++ {
-			fmt.Printf("Field%d:%v Type:%s Name:%s\n", i, x.Field(i), x.Field(i).Type(), x.Field(i).Type().Name())
 			if isCyclic(x.Field(i), seen) {
 				return true
 			}

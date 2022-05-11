@@ -33,3 +33,47 @@ func TestIsCyclicLinkedList(t *testing.T) {
 		}
 	}
 }
+
+func TestIsCyclicSlice(t *testing.T) {
+	type Slice struct {
+		slices []Slice
+	}
+	s := make([]Slice, 1)
+	s[0].slices = s
+	actual := IsCyclic(s)
+	want := true
+	if actual != want {
+		t.Errorf("actual:%t want:%t", actual, want)
+	}
+}
+
+func TestIsCyclicArray(t *testing.T) {
+	type pointer struct {
+		next [1]*pointer
+	}
+
+	a1, a2, a3 := pointer{}, pointer{}, pointer{}
+	a1.next, a2.next, a3.next = [1]*pointer{&a2}, [1]*pointer{&a3}, [1]*pointer{&a1}
+	actual := IsCyclic(a1)
+	want := true
+	if actual != want {
+		t.Errorf("actual:%t want:%t", actual, want)
+	}
+}
+
+/*
+func TestIsCyclicMap(t *testing.T) {
+	type pointer struct {
+		p map[string]pointer
+	}
+
+	p1 := pointer{make(map[string]pointer)}
+	p1.p["p"] = p1
+	actual := IsCyclic(p1)
+	want := true
+	if actual != want {
+		t.Errorf("actual:%t want:%t", actual, want)
+	}
+
+}
+*/

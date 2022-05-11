@@ -4,124 +4,54 @@
 // See page 359.
 
 // Package equal provides a deep equivalence relation for arbitrary values.
-package equal
+package cyclic
 
 import (
+	"fmt"
 	"reflect"
 	"unsafe"
 )
 
-//!+
-func equal(x, y reflect.Value, seen map[comparison]bool) bool {
-	if !x.IsValid() || !y.IsValid() {
-		return x.IsValid() == y.IsValid()
-	}
-	if x.Type() != y.Type() {
+func IsCyclic(x interface{}) bool {
+	seen := make(map[unsafe.Pointer]bool)
+	return isCyclic(reflect.ValueOf(x), seen)
+}
+
+func isCyclic(x reflect.Value, seen map[unsafe.Pointer]bool) bool {
+	if !x.IsValid() {
 		return false
 	}
-
-	// ...cycle check omitted (shown later)...
-
-	//!-
-	//!+cyclecheck
-	// cycle check
-	if x.CanAddr() && y.CanAddr() {
+	kind := x.Kind()
+	if x.CanAddr() && kind != reflect.Struct && kind != reflect.Array {
 		xptr := unsafe.Pointer(x.UnsafeAddr())
-		yptr := unsafe.Pointer(y.UnsafeAddr())
-		if xptr == yptr {
-			return true // identical references
-		}
-		c := comparison{xptr, yptr, x.Type()}
-		if seen[c] {
+		if seen[xptr] {
 			return true // already seen
 		}
-		seen[c] = true
+		seen[xptr] = true
 	}
-	//!-cyclecheck
-	//!+
-	switch x.Kind() {
-	case reflect.Bool:
-		return x.Bool() == y.Bool()
-
-	case reflect.String:
-		return x.String() == y.String()
-
-	// ...numeric cases omitted for brevity...
-
-	//!-
-	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32,
-		reflect.Int64:
-		return x.Int() == y.Int()
-
-	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32,
-		reflect.Uint64, reflect.Uintptr:
-		return x.Uint() == y.Uint()
-
-	case reflect.Float32, reflect.Float64:
-		return x.Float() == y.Float()
-
-	case reflect.Complex64, reflect.Complex128:
-		return x.Complex() == y.Complex()
-	//!+
-	case reflect.Chan, reflect.UnsafePointer, reflect.Func:
-		return x.Pointer() == y.Pointer()
-
+	switch kind {
 	case reflect.Ptr, reflect.Interface:
-		return equal(x.Elem(), y.Elem(), seen)
-
+		fmt.Printf("%v Type:%s \n", x, x.Type())
+		return isCyclic(x.Elem(), seen)
 	case reflect.Array, reflect.Slice:
-		if x.Len() != y.Len() {
-			return false
-		}
 		for i := 0; i < x.Len(); i++ {
-			if !equal(x.Index(i), y.Index(i), seen) {
-				return false
+			if isCyclic(x.Index(i), seen) {
+				return true
 			}
 		}
-		return true
-
-	// ...struct and map cases omitted for brevity...
-	//!-
 	case reflect.Struct:
 		for i, n := 0, x.NumField(); i < n; i++ {
-			if !equal(x.Field(i), y.Field(i), seen) {
-				return false
+			fmt.Printf("Field%d:%v Type:%s Name:%s\n", i, x.Field(i), x.Field(i).Type(), x.Field(i).Type().Name())
+			if isCyclic(x.Field(i), seen) {
+				return true
 			}
 		}
-		return true
-
 	case reflect.Map:
-		if x.Len() != y.Len() {
-			return false
-		}
 		for _, k := range x.MapKeys() {
-			if !equal(x.MapIndex(k), y.MapIndex(k), seen) {
-				return false
+			if isCyclic(x.MapIndex(k), seen) {
+				return true
 			}
 		}
-		return true
-		//!+
 	}
-	panic("unreachable")
+	return false
 }
-
-//!-
-
-//!+comparison
-// Equal reports whether x and y are deeply equal.
-//!-comparison
-//
-// Map keys are always compared with ==, not deeply.
-// (This matters for keys containing pointers or interfaces.)
-//!+comparison
-func Equal(x, y interface{}) bool {
-	seen := make(map[comparison]bool)
-	return equal(reflect.ValueOf(x), reflect.ValueOf(y), seen)
-}
-
-type comparison struct {
-	x, y unsafe.Pointer
-	t    reflect.Type
-}
-
-//!-comparison

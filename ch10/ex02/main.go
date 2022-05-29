@@ -1,6 +1,7 @@
 package main
 
 import (
+	"archive/tar"
 	"archive/zip"
 	"fmt"
 	"io"
@@ -29,6 +30,10 @@ func main() {
 				log.Fatal(err)
 			}
 		} else if acvType == Tar {
+			err = readTar(path)
+			if err != nil {
+				log.Fatal(err)
+			}
 
 		}
 	}
@@ -40,75 +45,52 @@ func checkArchiveType(filepath string) (ArchiveType, error) {
 	if err != nil {
 		return Unknown, err
 	}
-	fmt.Printf("Archive File type:")
-	if isZip(f) {
-		fmt.Println("zip")
-		return Zip, err
-	} else if isTar(f) {
-		fmt.Println("tar")
-		return Tar, err
-	} else {
-		fmt.Println("unknown")
+	var b [512]byte
+	n, err := f.Read(b[:])
+	if err != nil {
+		log.Printf("%s", err)
 		return Unknown, err
 	}
+	if n > 0 {
+		const zipOffset = 0
+		const zipSize = 2
+		//magic field offset and size
+		const tarOffset = 257
+		const tarSize = 6
+		if string(b[zipOffset:zipOffset+zipSize]) == "PK" {
+			fmt.Println("Archive File type:zip")
+			return Zip, nil
+		} else if string(b[tarOffset:tarOffset+tarSize]) == "ustar"+string([]byte{0}) {
+			fmt.Println("Archive File type:tar")
+			return Tar, nil
+		} else {
+			fmt.Println("Archive File type:unknown")
+		}
+	}
+	return Unknown, nil
 }
 
 func readZip(filepath string) error {
 	r, err := zip.OpenReader(filepath)
 	defer r.Close()
-	for i, f := range r.File {
-		fmt.Printf("---Entry%d---\n", i+1)
-		if f.FileInfo().IsDir() {
-			fmt.Printf("name:%s\n", f.Name)
-		} else {
-			fmt.Printf("name:%s\n", f.Name)
-			fmt.Println("Contents:")
-			rc, err := f.Open()
-			if err != nil {
-				log.Fatal(err)
-			}
-			_, err = io.CopyN(os.Stdout, rc, 68)
-			if err != nil {
-				fmt.Println(err)
-			}
-			rc.Close()
-		}
+	for _, f := range r.File {
+		fmt.Println(f.Name)
 	}
 	return err
 }
 
 func readTar(filepath string) error {
+	f, _ := os.Open(filepath)
+	defer f.Close()
+	tr := tar.NewReader(f)
+
+	for {
+		trHeader, err := tr.Next()
+		if err == io.EOF {
+			break
+		}
+		fmt.Println(trHeader.Name)
+	}
+
 	return nil
-}
-
-func isZip(r io.Reader) bool {
-	var b [2]byte
-	n, err := r.Read(b[:])
-	if err != nil {
-		log.Printf("%s", err)
-		return false
-	}
-	if n > 0 {
-		if string(b[0]) == "P" && string(b[1]) == "K" {
-			return true
-		}
-	}
-	return false
-}
-
-func isTar(r io.Reader) bool {
-	const offset = 257
-	const size = 6
-	var b [512]byte
-	n, err := r.Read(b[offset : offset+size])
-	if err != nil {
-		log.Printf("%s", err)
-		return false
-	}
-	if n > 0 {
-		for i := 0; i < size; i++ {
-			fmt.Printf("%s\n", string(b[i]))
-		}
-	}
-	return false
 }

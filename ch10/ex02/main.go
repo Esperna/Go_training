@@ -8,38 +8,52 @@ import (
 	"os"
 )
 
+type ArchiveType int
+
+const (
+	Unknown ArchiveType = iota
+	Zip
+	Tar
+)
+
 func main() {
-	filepaths := []string{"archive1.zip", "archive2.zip"}
+	filepaths := []string{"archive1.zip", "archive2.zip", "archive3.tar"}
 	for _, path := range filepaths {
-		err := checkArchiveType(path)
+		acvType, err := checkArchiveType(path)
 		if err != nil {
 			log.Fatal(err)
 		}
-		err = readArchive(path)
-		if err != nil {
-			log.Fatal(err)
+		if acvType == Zip {
+			err = readZip(path)
+			if err != nil {
+				log.Fatal(err)
+			}
+		} else if acvType == Tar {
+
 		}
 	}
 }
 
-func checkArchiveType(filepath string) error {
+func checkArchiveType(filepath string) (ArchiveType, error) {
 	f, err := os.Open(filepath)
+	defer f.Close()
 	if err != nil {
-		return err
+		return Unknown, err
 	}
 	fmt.Printf("Archive File type:")
 	if isZip(f) {
 		fmt.Println("zip")
+		return Zip, err
 	} else if isTar(f) {
 		fmt.Println("tar")
+		return Tar, err
 	} else {
 		fmt.Println("unknown")
+		return Unknown, err
 	}
-	f.Close()
-	return nil
 }
 
-func readArchive(filepath string) error {
+func readZip(filepath string) error {
 	r, err := zip.OpenReader(filepath)
 	defer r.Close()
 	for i, f := range r.File {
@@ -63,6 +77,10 @@ func readArchive(filepath string) error {
 	return err
 }
 
+func readTar(filepath string) error {
+	return nil
+}
+
 func isZip(r io.Reader) bool {
 	var b [2]byte
 	n, err := r.Read(b[:])
@@ -79,5 +97,18 @@ func isZip(r io.Reader) bool {
 }
 
 func isTar(r io.Reader) bool {
+	const offset = 257
+	const size = 6
+	var b [512]byte
+	n, err := r.Read(b[offset : offset+size])
+	if err != nil {
+		log.Printf("%s", err)
+		return false
+	}
+	if n > 0 {
+		for i := 0; i < size; i++ {
+			fmt.Printf("%s\n", string(b[i]))
+		}
+	}
 	return false
 }

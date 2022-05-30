@@ -16,7 +16,6 @@ func main() {
 	sc := bufio.NewScanner(os.Stdin)
 	for sc.Scan() {
 		b := sc.Bytes()
-		fmt.Printf("%v = %v\n", b, string(b))
 		if *hash == "sha256" {
 			c := sha256.Sum256(b)
 			fmt.Printf("%x\n", c)

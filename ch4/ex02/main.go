@@ -1,33 +1,31 @@
 package main
 
 import (
+	"bufio"
 	"crypto/sha256"
 	"crypto/sha512"
+	"flag"
 	"fmt"
 	"os"
 )
 
-func main() {
-	length := len(os.Args)
-	if length == 2 {
-		c := sha256.Sum256([]byte(os.Args[1]))
-		fmt.Printf("%x\n", c)
-	} else if length == 3 {
-		if os.Args[2] == "-256" {
-			c := sha256.Sum256([]byte(os.Args[1]))
-			fmt.Printf("%x\n", c)
-		} else if os.Args[2] == "-384" {
-			c := sha512.Sum384([]byte(os.Args[1]))
-			fmt.Printf("%x\n", c)
-		} else if os.Args[2] == "-512" {
-			c := sha512.Sum512([]byte(os.Args[1]))
-			fmt.Printf("%x\n", c)
+var hash = flag.String("h", "sha256", "hash function type")
 
-		} else {
-			fmt.Printf("Invalid Option. -256,-384,or -512 is Expected\n")
+func main() {
+	flag.Parse()
+	sc := bufio.NewScanner(os.Stdin)
+	for sc.Scan() {
+		b := sc.Bytes()
+		fmt.Printf("%v = %v\n", b, string(b))
+		if *hash == "sha256" {
+			c := sha256.Sum256(b)
+			fmt.Printf("%x\n", c)
+		} else if *hash == "sha384" {
+			c := sha512.Sum384(b)
+			fmt.Printf("%x\n", c)
+		} else if *hash == "sha512" {
+			c := sha512.Sum512(b)
+			fmt.Printf("%x\n", c)
 		}
-	} else {
-		fmt.Printf("Invalid Number of Argument. Expected Number of Argument is 2 or 3.\n")
-		fmt.Printf("Ex: ./main abc -256\n")
 	}
 }

@@ -8,7 +8,6 @@
 package links
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"time"
@@ -19,10 +18,24 @@ import (
 // Extract makes an HTTP GET request to the specified URL, parses
 // the response as HTML, and returns the links in the HTML document.
 func Extract(url string) ([]string, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
-	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
-	client := &http.Client{}
+	//implementation by ctx
+	//ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	//defer cancel()
+	//req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
+
+	//implementation by Cancel channel
+	done := make(chan struct{})
+	time.AfterFunc(5*time.Second, func() {
+		close(done)
+	})
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	req.Cancel = done
+	client := &http.Client{Timeout: 5 * time.Second}
+	//client := &http.Client{}
+
 	resp, err := client.Do(req)
 	if err != nil {
 		return nil, err

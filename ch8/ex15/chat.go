@@ -40,7 +40,6 @@ func broadcaster() {
 					//Do Nothing.
 				default:
 					log.Printf("client channel is full\n")
-					break
 				}
 			}
 		case cli := <-entering:

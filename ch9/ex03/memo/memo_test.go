@@ -6,8 +6,8 @@ package memo_test
 import (
 	"testing"
 
-	"gopl.io/ch9/memo5"
-	"gopl.io/ch9/memotest"
+	"ch9/ex03/memo"
+	"ch9/ex03/memotest"
 )
 
 var httpGetBody = memotest.HTTPGetBody
@@ -22,4 +22,10 @@ func TestConcurrent(t *testing.T) {
 	m := memo.New(httpGetBody)
 	defer m.Close()
 	memotest.Concurrent(t, m)
+}
+
+func TestConcurrentCancel(t *testing.T) {
+	m := memo.New(httpGetBody)
+	defer m.Close()
+	memotest.ConcurrentCancel(t, m)
 }

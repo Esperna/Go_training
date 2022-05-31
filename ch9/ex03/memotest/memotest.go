@@ -18,18 +18,13 @@ import (
 )
 
 //!+httpRequestBody
-func httpGetBody(url string, done <-chan struct{}) (interface{}, error) {
+func httpGetBody(url string) (interface{}, error) {
 	resp, err := http.Get(url)
 	if err != nil {
 		return nil, err
 	}
 	defer resp.Body.Close()
-	select {
-	case <-done:
-		return []byte{}, nil
-	default:
-		return ioutil.ReadAll(resp.Body)
-	}
+	return ioutil.ReadAll(resp.Body)
 }
 
 //!-httpRequestBody
@@ -57,20 +52,13 @@ func incomingURLs() <-chan string {
 }
 
 type M interface {
-	Get(key string) (interface{}, error)
+	Get(key string, done <-chan struct{}) (interface{}, error)
 }
 
-/*
-//!+seq
-	m := memo.New(httpGetBody)
-//!-seq
-*/
-
 func Sequential(t *testing.T, m M) {
-	//!+seq
 	for url := range incomingURLs() {
 		start := time.Now()
-		value, err := m.Get(url)
+		value, err := m.Get(url, nil)
 		if err != nil {
 			log.Print(err)
 			continue
@@ -78,24 +66,16 @@ func Sequential(t *testing.T, m M) {
 		fmt.Printf("%s, %s, %d bytes\n",
 			url, time.Since(start), len(value.([]byte)))
 	}
-	//!-seq
 }
 
-/*
-//!+conc
-	m := memo.New(httpGetBody)
-//!-conc
-*/
-
 func Concurrent(t *testing.T, m M) {
-	//!+conc
 	var n sync.WaitGroup
 	for url := range incomingURLs() {
 		n.Add(1)
 		go func(url string) {
 			defer n.Done()
 			start := time.Now()
-			value, err := m.Get(url)
+			value, err := m.Get(url, nil)
 			if err != nil {
 				log.Print(err)
 				return
@@ -105,5 +85,29 @@ func Concurrent(t *testing.T, m M) {
 		}(url)
 	}
 	n.Wait()
-	//!-conc
+}
+
+func ConcurrentCancel(t *testing.T, m M) {
+	var n sync.WaitGroup
+	for url := range incomingURLs() {
+		n.Add(1)
+		go func(url string) {
+			defer n.Done()
+			start := time.Now()
+			done := make(chan struct{})
+			go func() {
+				time.Sleep(100 * time.Millisecond)
+				close(done)
+			}()
+
+			value, err := m.Get(url, done)
+			if err != nil {
+				log.Print(err)
+				return
+			}
+			fmt.Printf("%s, %s, %d bytes\n",
+				url, time.Since(start), len(value.([]byte)))
+		}(url)
+	}
+	n.Wait()
 }

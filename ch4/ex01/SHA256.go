@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"ch4/ex01/popcount"
 	"crypto/sha256"
 	"encoding/binary"
@@ -16,11 +17,15 @@ func main() {
 }
 
 func CountBitDiff(b1, b2 [sha256.Size]byte) int {
-	count := 0
-	for i := 0; i < 4; i++ {
-		b1_i := binary.LittleEndian.Uint64(b1[8*i : 8*(i+1)])
-		b2_i := binary.LittleEndian.Uint64(b2[8*i : 8*(i+1)])
-		count += popcount.PopCount(b1_i ^ b2_i)
+	var i1, i2 uint64
+	buf1 := bytes.NewReader(b1[:])
+	if err := binary.Read(buf1, binary.LittleEndian, &i1); err != nil {
+		fmt.Printf("binary read failure:%s", err)
 	}
-	return count
+	buf2 := bytes.NewReader(b2[:])
+	if err := binary.Read(buf2, binary.LittleEndian, &i2); err != nil {
+		fmt.Printf("binary read failure:%s", err)
+	}
+
+	return popcount.PopCount(i1 ^ i2)
 }

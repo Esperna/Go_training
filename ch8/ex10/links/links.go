@@ -27,10 +27,6 @@ func Extract(url string) ([]string, error) {
 	if err != nil {
 		return nil, err
 	}
-	//resp, err := http.Get(url)
-	if err != nil {
-		return nil, err
-	}
 	if resp.StatusCode != http.StatusOK {
 		resp.Body.Close()
 		return nil, fmt.Errorf("getting %s: %s", url, resp.Status)

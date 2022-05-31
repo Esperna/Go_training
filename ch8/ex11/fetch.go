@@ -15,9 +15,10 @@ func main() {
 		os.Exit(1)
 	}
 	responses := make(chan string, len(os.Args))
+	done := make(chan struct{})
 	cancelled := func() bool {
 		select {
-		case <-responses:
+		case <-done:
 			return true
 		default:
 			return false
@@ -31,6 +32,7 @@ func main() {
 			resp, err := http.Get(url)
 			if err != nil {
 				responses <- fmt.Errorf("failed to get %s: %v", url, err).Error()
+				done <- struct{}{}
 			}
 			if cancelled() {
 				fmt.Printf("cancelled %s after GET\n", url)
@@ -40,6 +42,7 @@ func main() {
 			defer resp.Body.Close()
 			if err != nil {
 				responses <- fmt.Errorf("failed to read %s: %v", url, err).Error()
+				done <- struct{}{}
 			}
 			if cancelled() {
 				fmt.Printf("cancelled after reading%s\n", url)
@@ -49,7 +52,7 @@ func main() {
 		}(url)
 	}
 	s := <-responses
-	close(responses)
+	close(done)
 	wg.Wait()
 	fmt.Printf("%s", s)
 }

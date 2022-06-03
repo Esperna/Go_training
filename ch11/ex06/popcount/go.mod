@@ -1,3 +1,3 @@
-module ch2/ex05/popcount
+module ch11/ex06/popcount
 
 go 1.17

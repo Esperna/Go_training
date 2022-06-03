@@ -47,11 +47,9 @@ func PopCountByShift(x uint64) int {
 
 func PopCountByClear(x uint64) int {
 	count := 0
-	for i := 0; i < 64; i++ {
-		if x != 0 {
-			count++
-			x = x & (x - 1)
-		}
+	for x != 0 {
+		count++
+		x = x & (x - 1)
 	}
 	return count
 }

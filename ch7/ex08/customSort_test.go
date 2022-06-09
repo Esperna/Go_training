@@ -1,6 +1,10 @@
 package main
 
-import "testing"
+import (
+	"fmt"
+	"testing"
+	"time"
+)
 
 func TestCustomSortBy1st2ndKey(t *testing.T) {
 	var tests = []struct {
@@ -58,6 +62,90 @@ func equal(x, y []*Track) bool {
 	return true
 }
 
+func TestCustomSortBy1st2ndKey1Time(t *testing.T) {
+	type Keys struct {
+		key1 string
+		key2 string
+	}
+	keys := []Keys{
+		{key1: "Title", key2: "Artist"},
+	}
+	start := time.Now()
+	CustomSortBy1st2ndKey(keys[0].key1, keys[0].key2, tracks100forCustom)
+	nanoSec := time.Since(start).Nanoseconds()
+	fmt.Printf("100 Track was sorted by CustomSort. %d ns\n", nanoSec)
+}
+
+func TestCustomSortBy1st2ndKeyAlreadySorted(t *testing.T) {
+	type Keys struct {
+		key1 string
+		key2 string
+	}
+	keys := []Keys{
+		{key1: "Title", key2: "Artist"},
+	}
+	start := time.Now()
+	CustomSortBy1st2ndKey(keys[0].key1, keys[0].key2, tracks100SortedForCustom)
+	nanoSec := time.Since(start).Nanoseconds()
+	fmt.Printf("100 sorted Track was sorted by CustomSort. %d ns\n", nanoSec)
+}
+
+func TestCustomSortBy1st2ndKeyReversed(t *testing.T) {
+	type Keys struct {
+		key1 string
+		key2 string
+	}
+	keys := []Keys{
+		{key1: "Title", key2: "Artist"},
+	}
+	start := time.Now()
+	CustomSortBy1st2ndKey(keys[0].key1, keys[0].key2, tracks100ReversedForCustom)
+	nanoSec := time.Since(start).Nanoseconds()
+	fmt.Printf("100 reversed Track was sorted by CustomSort. %d ns\n", nanoSec)
+}
+
+func TestSortStable1Time(t *testing.T) {
+	type Keys struct {
+		key1 string
+		key2 string
+	}
+	keys := []Keys{
+		{key1: "Title", key2: "Artist"},
+	}
+	start := time.Now()
+	SortStable(keys[0].key1, keys[0].key2, tracks100forSortStable)
+	nanoSec := time.Since(start).Nanoseconds()
+	fmt.Printf("100 Track was sorted by SortStable. %d ns\n", nanoSec)
+}
+
+func TestSortStableAlreadySorted(t *testing.T) {
+	type Keys struct {
+		key1 string
+		key2 string
+	}
+	keys := []Keys{
+		{key1: "Title", key2: "Artist"},
+	}
+	start := time.Now()
+	SortStable(keys[0].key1, keys[0].key2, tracks100SortedForSortStable)
+	nanoSec := time.Since(start).Nanoseconds()
+	fmt.Printf("100 sorted Track was sorted by SortStable. %d ns\n", nanoSec)
+}
+
+func TestSortStableReversed(t *testing.T) {
+	type Keys struct {
+		key1 string
+		key2 string
+	}
+	keys := []Keys{
+		{key1: "Title", key2: "Artist"},
+	}
+	start := time.Now()
+	SortStable(keys[0].key1, keys[0].key2, tracks100ReversedForSortStable)
+	nanoSec := time.Since(start).Nanoseconds()
+	fmt.Printf("100 reversed Track was sorted by SortStable. %d ns\n", nanoSec)
+}
+
 func BenchmarkCustomSortBy1st2ndKey(b *testing.B) {
 	type Keys struct {
 		key1 string
@@ -65,14 +153,24 @@ func BenchmarkCustomSortBy1st2ndKey(b *testing.B) {
 	}
 	keys := []Keys{
 		{key1: "Title", key2: "Artist"},
-		{key1: "Album", key2: "Year"},
-		{key1: "Length", key2: "Title"},
-		{key1: "Artist", key2: "Album"},
-		{key1: "Year", key2: "Length"},
 	}
 	length := len(keys)
 	for i := 0; i < b.N; i++ {
-		CustomSortBy1st2ndKey(keys[i%length].key1, keys[i%length].key2, tracks2)
+		CustomSortBy1st2ndKey(keys[i%length].key1, keys[i%length].key2, tracks100forCustom)
+	}
+}
+
+func BenchmarkCustomSortBy1st2ndKeyAlreadySorted(b *testing.B) {
+	type Keys struct {
+		key1 string
+		key2 string
+	}
+	keys := []Keys{
+		{key1: "Title", key2: "Artist"},
+	}
+	length := len(keys)
+	for i := 0; i < b.N; i++ {
+		CustomSortBy1st2ndKey(keys[i%length].key1, keys[i%length].key2, tracks100SortedForCustom)
 	}
 }
 
@@ -83,6 +181,34 @@ func BenchmarkSortStable(b *testing.B) {
 	}
 	keys := []Keys{
 		{key1: "Title", key2: "Artist"},
+	}
+	length := len(keys)
+	for i := 0; i < b.N; i++ {
+		SortStable(keys[i%length].key1, keys[i%length].key2, tracks100forSortStable)
+	}
+}
+
+func BenchmarkSortStableAlreadySorted(b *testing.B) {
+	type Keys struct {
+		key1 string
+		key2 string
+	}
+	keys := []Keys{
+		{key1: "Title", key2: "Artist"},
+	}
+	length := len(keys)
+	for i := 0; i < b.N; i++ {
+		SortStable(keys[i%length].key1, keys[i%length].key2, tracks100SortedForSortStable)
+	}
+}
+
+func BenchmarkCustomSortBy1st2ndKeyRandom(b *testing.B) {
+	type Keys struct {
+		key1 string
+		key2 string
+	}
+	keys := []Keys{
+		{key1: "Title", key2: "Artist"},
 		{key1: "Album", key2: "Year"},
 		{key1: "Length", key2: "Title"},
 		{key1: "Artist", key2: "Album"},
@@ -90,6 +216,24 @@ func BenchmarkSortStable(b *testing.B) {
 	}
 	length := len(keys)
 	for i := 0; i < b.N; i++ {
-		SortStable(keys[i%length].key1, keys[i%length].key2, tracks2)
+		CustomSortBy1st2ndKey(keys[i%length].key1, keys[i%length].key2, tracks100forCustom)
+	}
+}
+
+func BenchmarkSortStableRandom(b *testing.B) {
+	type Keys struct {
+		key1 string
+		key2 string
+	}
+	keys := []Keys{
+		{key1: "Title", key2: "Artist"},
+		{key1: "Album", key2: "Year"},
+		{key1: "Length", key2: "Title"},
+		{key1: "Artist", key2: "Album"},
+		{key1: "Year", key2: "Length"},
+	}
+	length := len(keys)
+	for i := 0; i < b.N; i++ {
+		SortStable(keys[i%length].key1, keys[i%length].key2, tracks100forCustom)
 	}
 }

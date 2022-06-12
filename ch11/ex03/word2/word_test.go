@@ -50,10 +50,6 @@ func BenchmarkIsPalindrome(b *testing.B) {
 	}
 }
 
-//!-bench
-
-//!+example
-
 func ExampleIsPalindrome() {
 	fmt.Println(IsPalindrome("A man, a plan, a canal: Panama"))
 	fmt.Println(IsPalindrome("palindrome"))
@@ -62,16 +58,6 @@ func ExampleIsPalindrome() {
 	// false
 }
 
-//!-example
-
-/*
-//!+random
-import "math/rand"
-
-//!-random
-*/
-
-//!+random
 // randomPalindrome returns a palindrome whose length and contents
 // are derived from the pseudo-random number generator rng.
 func randomPalindrome(rng *rand.Rand) string {
@@ -122,8 +108,6 @@ func TestRandomNotPrindrome(t *testing.T) {
 		}
 	}
 }
-
-//!-random
 
 /*
 // Answer for Exercicse 11.1: Modify randomPalindrome to exercise

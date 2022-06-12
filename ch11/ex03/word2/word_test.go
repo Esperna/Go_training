@@ -8,6 +8,7 @@ import (
 	"math/rand"
 	"testing"
 	"time"
+	"unicode"
 )
 
 //!+bench
@@ -96,6 +97,26 @@ func randomNotPalindrome(rng *rand.Rand) string {
 	return "a" + string(runes) + "b"
 }
 
+func randomNotPalindrome2(rng *rand.Rand) string {
+	const seedNum = 25
+	n := rng.Intn(seedNum) + 2
+	runes := make([]rune, n) //length is more than 1
+	for i := 0; i < (n+1)/2; i++ {
+		var r rune
+		for !unicode.IsLetter(r) {
+			r = rune(rng.Intn(0x1000))
+			runes[i] = r
+			runes[n-1-i] = r
+		}
+	}
+	var lastRune rune
+	for !unicode.IsLetter(lastRune) {
+		lastRune = rune(rng.Intn(0x1000))
+	}
+	//runes = append(runes, lastRune)
+	return string(runes) + string(lastRune)
+}
+
 func TestRandomNotPrindrome(t *testing.T) {
 	seed := time.Now().UTC().UnixNano()
 	t.Logf("Random seed: %d", seed)
@@ -103,6 +124,19 @@ func TestRandomNotPrindrome(t *testing.T) {
 
 	for i := 0; i < 1000; i++ {
 		p := randomNotPalindrome(rng)
+		if IsPalindrome(p) {
+			t.Errorf("IsPalindrome(%q) = true", p)
+		}
+	}
+}
+
+func TestRandomNotPrindrome2(t *testing.T) {
+	seed := time.Now().UTC().UnixNano()
+	t.Logf("Random seed: %d", seed)
+	rng := rand.New(rand.NewSource(seed))
+
+	for i := 0; i < 1000; i++ {
+		p := randomNotPalindrome2(rng)
 		if IsPalindrome(p) {
 			t.Errorf("IsPalindrome(%q) = true", p)
 		}

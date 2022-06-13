@@ -23,24 +23,17 @@ func main() {
 	}
 	wsPkgs := getPackagesInfo("...")
 	argPkgs := getPackagesInfo(os.Args[1:]...)
-	seen := make(map[string]bool)
 
-	for _, pkg := range wsPkgs {
-		if seen[pkg.ImportPath] {
-			break
-		}
-	loop:
-		for _, dep := range pkg.Deps {
-			for _, arg := range argPkgs {
-				if dep == arg.ImportPath {
-					seen[pkg.ImportPath] = true
-					break loop
+	for _, arg := range argPkgs {
+		fmt.Printf("Followings transitively depend on %s:\n", arg.ImportPath)
+		for _, pkg := range wsPkgs {
+			for _, dep := range pkg.Deps {
+				if arg.ImportPath == dep {
+					fmt.Println(pkg.ImportPath)
+					break
 				}
 			}
 		}
-	}
-	for k := range seen {
-		fmt.Println(k)
 	}
 }
 
